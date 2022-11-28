@@ -19,14 +19,14 @@ default: &default
 
 development:
   <<: *default
-  database: fable_development
+  database: fable_backend_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: fable_test
+  database: fable_backend_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -50,6 +50,6 @@ test:
 #
 production:
   <<: *default
-  database: fable_production
-  username: fable
-  password: <%= ENV["FABLE_DATABASE_PASSWORD"] %>
+  database: fable_backend_production
+  username: fable_backend
+  password: <%= ENV["fable_backend_DATABASE_PASSWORD"] %>
