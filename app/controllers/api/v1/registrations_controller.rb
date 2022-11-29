@@ -1,15 +1,9 @@
 module Api
   module V1
-    class UsersController < ApplicationController
+    class RegistrationsController < ApplicationController
       
-      # def index
-      #   users = User.all
-      #   render json: users
-      # end
-
       def create
-
-        @user = User.new(user_params)
+        @user = User.new(registrations_params)
         
         if @user.save
           render json:{
@@ -22,9 +16,10 @@ module Api
         end
 
       end
-    
-      def user_params
-        params.require(:user).permit(:nickname, :email, :encrypted_password)
+      
+      private
+      def registrations_params
+        params.require(:user).permit(:nickname, :email, :password, :password_confirmation)
       end
 
     end
