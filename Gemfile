@@ -50,3 +50,5 @@ group :development do
 
 end
 
+
+gem "rename"
