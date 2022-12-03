@@ -4,7 +4,7 @@ module Api
       
       def create
         @user = User.new(registrations_params)
-        
+        binding.pry
         if @user.save
           render json:{
             @user, status: :created
