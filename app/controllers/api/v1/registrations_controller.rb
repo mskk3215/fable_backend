@@ -6,6 +6,9 @@ module Api
         @user = User.new(registrations_params)
 
         if @user.save
+          reset_session
+          login!
+          
           render json: { status: :created, user: @user
           }
         else
