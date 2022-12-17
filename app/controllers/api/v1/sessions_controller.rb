@@ -1,15 +1,14 @@
 module Api
   module V1
     class SessionsController < ApplicationController
-
+      before_action :current_user
+      
       def create
         @user = User.find_by(email: session_params[:email])
         
-
         if @user && @user.authenticate(session_params[:password])  # hash化したpasswordとDB内のpassword_digestカラムの値を比較する
           reset_session
           login!
-
           render json: {logged_in: true, user:@user}
 
         else
@@ -23,6 +22,7 @@ module Api
       end
 
       def logged_in?
+        
         if @current_user
           render json: {logged_in: true, user: current_user}
         else

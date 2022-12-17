@@ -9,8 +9,7 @@ module Api
           reset_session
           login!
           
-          render json: { status: :created, user: @user
-          }
+          render json: { status: :created, user: @user }
         else
             render json: { status: 500 }
         end
