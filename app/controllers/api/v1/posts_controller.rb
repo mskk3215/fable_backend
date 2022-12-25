@@ -5,16 +5,17 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
-    post = Post.new(post_params)
+    post = Post.new(posts_params)
     if post.save
-      render json:{post :post}
+      render json: { post: post}
     else
-      render json: { post.errors, status: 422}
+      render json: { status: 422 }
     end
   end
 
   private
-  def post_params
-    params.require(:post).permit(:image)
+  def posts_params
+    params.permit(:image)    
+    # params.require(:post).permit({image: [] } )
   end
 end
