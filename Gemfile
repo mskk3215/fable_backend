@@ -51,3 +51,6 @@ group :development do
 end
 
 gem "rename"
+
+gem "carrierwave"
+gem "mini_magick"
