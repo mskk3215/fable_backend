@@ -1,4 +1,6 @@
 class Api::V1::PostsController < ApplicationController
+  before_action :current_user
+
   def index
     posts = Post.all.order(created_at: :desc)
     render json: posts
@@ -22,6 +24,9 @@ class Api::V1::PostsController < ApplicationController
 
   private
   def post_params
-    params.require(:post).permit({image: []})
+    binding.pry
+    # params.require(:post).permit( {image: []})
+    params.require(:post).permit( {image: []}).merge(user_id: current_user.id)
+
   end
 end
