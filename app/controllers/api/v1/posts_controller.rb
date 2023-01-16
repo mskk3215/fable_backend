@@ -1,5 +1,4 @@
 class Api::V1::PostsController < ApplicationController
-  before_action :current_user
 
   def index
     posts = Post.all.order(created_at: :desc)
@@ -7,9 +6,8 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def create
-    
     post_params[:image].each do |image|
-      post = Post.new(image: image)
+      post = Post.new(image: image, user: current_user)
       if post.save
       else
         render json: post.errors
@@ -24,9 +22,6 @@ class Api::V1::PostsController < ApplicationController
 
   private
   def post_params
-    binding.pry
-    # params.require(:post).permit( {image: []})
-    params.require(:post).permit( {image: []}).merge(user_id: current_user.id)
-
+    params.require(:post).permit( {image: []})
   end
 end
