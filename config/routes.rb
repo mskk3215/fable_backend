@@ -1,14 +1,14 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      post "/signup",   to: "registrations#create"
-      post "/login",    to: "sessions#create"
-      delete "/logout", to: "sessions#destroy"
-      get "/logged_in", to: "sessions#logged_in?"
+      post '/signup',   to: 'registrations#create'
+      post '/login',    to: 'sessions#create'
+      delete '/logout', to: 'sessions#destroy'
+      get '/logged_in', to: 'sessions#logged_in?'
 
-      resources :posts, only:[:index, :create]
-
+      resources :posts, only: %i[index create]
     end
   end
 end

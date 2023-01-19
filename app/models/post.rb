@@ -1,7 +1,8 @@
-class Post < ApplicationRecord
+# frozen_string_literal: true
 
+class Post < ApplicationRecord
   mount_uploader :image, ImageUploader
-  
+
   validates :image, presence: true
   validates :user_id, presence: true
 

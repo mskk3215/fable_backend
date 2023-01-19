@@ -1,43 +1,42 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class SessionsController < ApplicationController
       skip_before_action :authenticate_user!
       before_action :current_user
-      
+
       def create
         @user = User.find_by(email: session_params[:email])
-        
-        if @user && @user.authenticate(session_params[:password])  # hash化したpasswordとDB内のpassword_digestカラムの値を比較する
+
+        if @user&.authenticate(session_params[:password])  # hash化したpasswordとDB内のpassword_digestカラムの値を比較する
           reset_session
           login!
-          render json: {logged_in: true, user:@user}
+          render json: { logged_in: true, user: @user }
 
         else
-          render json: {status: 401, errors: ["認証に失敗しました", "正しいメールアドレス・パスワードを入力し直すか、新規登録を行ってください。"]}
+          render json: { status: 401, errors: ['認証に失敗しました', '正しいメールアドレス・パスワードを入力し直すか、新規登録を行ってください。'] }
         end
       end
 
       def destroy
         reset_session
-        render json: {status:200, logged_out: true}
+        render json: { status: 200, logged_out: true }
       end
 
       def logged_in?
-        
         if @current_user
-          render json: {logged_in: true, user: current_user}
+          render json: { logged_in: true, user: current_user }
         else
-          render json: {logged_in: false,  message: "ユーザーが存在しません"}
+          render json: { logged_in: false, message: 'ユーザーが存在しません' }
         end
-
       end
 
-
       private
+
       def session_params
         params.require(:session).permit(:nickname, :email, :password)
       end
-
     end
   end
 end

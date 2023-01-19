@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::API
   include ActionController::Cookies
   include ActionController::Helpers
@@ -9,7 +11,8 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id] #@current_userがUser.find(session[:user_id]でなければUser.find(session[:user_id]を代入する)
-  end
+    return unless session[:user_id]
 
+    @current_user ||= User.find(session[:user_id])
+  end
 end

@@ -1,28 +1,32 @@
-class Api::V1::PostsController < ApplicationController
-  skip_before_action :authenticate_user!, only:[:index]
+# frozen_string_literal: true
 
-  def index
-    posts = Post.all.order(created_at: :desc)
-    render json: posts
-  end
+module Api
+  module V1
+    class PostsController < ApplicationController
+      skip_before_action :authenticate_user!, only: %i[index create]
 
-  def create
-    post_params[:image].each do |image|
-      post = Post.new(image: image, user: current_user)
-      if post.save
-      else
-        render json: post.errors
+      def index
+        posts = Post.all.order(created_at: :desc)
+        render json: posts
+      end
+
+      def create
+        post_params[:image].each do |image|
+          post = Post.new(image:, user: current_user)
+          render json: post.errors unless post.save
+        end
+      end
+
+      def destroy
+        post = Post.find(params[:id])
+        post.destroy
+      end
+
+      private
+
+      def post_params
+        params.require(:post).permit({ image: [] })
       end
     end
-  end
-
-  def destroy
-    post = Post.find(params[:id])
-    post.destroy
-  end
-
-  private
-  def post_params
-    params.require(:post).permit( {image: []})
   end
 end
