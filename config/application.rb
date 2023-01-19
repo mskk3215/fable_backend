@@ -1,6 +1,8 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
+
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -17,7 +19,7 @@ module FableBackend
     # in config/environments, which are processed later.
     #
     config.active_record.default_timezone = :local
-    config.time_zone = "Tokyo"
+    config.time_zone = 'Tokyo'
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Only loads a smaller set of middleware suitable for API only apps.
@@ -28,6 +30,5 @@ module FableBackend
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
     config.middleware.use ActionDispatch::ContentSecurityPolicy::Middleware
-
   end
 end
