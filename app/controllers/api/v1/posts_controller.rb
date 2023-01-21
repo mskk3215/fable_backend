@@ -6,8 +6,11 @@ module Api
       skip_before_action :authenticate_user!, only: %i[index create]
 
       def index
-        posts = Post.all.order(created_at: :desc)
-        render json: posts
+        # posts = Post.all.order(created_at: :desc)
+        # render json: posts
+        post = Post.where(user_id: current_user.id).order(created_at: :desc)
+        render json: post
+
       end
 
       def create
