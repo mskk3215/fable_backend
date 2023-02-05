@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
       resources :posts, only: %i[index create update]
       resources :parks, only: %i[index]
+      resources :insects, only: %i[index]
     end
   end
 end
