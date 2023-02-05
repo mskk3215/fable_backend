@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_05_142457) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_05_144720) do
+  create_table "insect_posts", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.bigint "insect_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["insect_id"], name: "index_insect_posts_on_insect_id"
+    t.index ["post_id"], name: "index_insect_posts_on_post_id"
+  end
+
   create_table "insects", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "sex", null: false
@@ -44,5 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_142457) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "insect_posts", "insects"
+  add_foreign_key "insect_posts", "posts"
   add_foreign_key "posts", "users"
 end

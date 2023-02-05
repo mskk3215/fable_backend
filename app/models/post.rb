@@ -7,6 +7,7 @@ class Post < ApplicationRecord
   validates :user_id, presence: true
 
   belongs_to :user
+  has_many :insects, through: :insect_posts
+
   # belongs_to :park
-  # has_many :insect_post
 end
