@@ -8,6 +8,5 @@ class Post < ApplicationRecord
 
   belongs_to :user
   has_many :insects, through: :insect_posts
-
-  # belongs_to :park
+  belongs_to :park
 end
