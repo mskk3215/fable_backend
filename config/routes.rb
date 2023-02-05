@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       get '/logged_in', to: 'sessions#logged_in?'
 
       resources :posts, only: %i[index create update]
-
+      resources :parks, only: %i[index]
     end
   end
 end
