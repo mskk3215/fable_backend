@@ -2,9 +2,7 @@
 
 module Api
   module V1
-    class RegistrationsController < ApplicationController
-      skip_before_action :authenticate_user!
-
+    class RegistrationsController < ApplicationController            
       def create
         @user = User.new(registrations_params)
 

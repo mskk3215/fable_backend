@@ -3,7 +3,6 @@
 module Api
   module V1
     class PostsController < ApplicationController
-      # skip_before_action :authenticate_user!, only: %i[index create]
       before_action :set_post, only:%i[update]
       def index
         # posts = Post.all.order(created_at: :desc)
