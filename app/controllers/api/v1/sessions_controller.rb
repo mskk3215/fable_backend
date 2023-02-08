@@ -3,7 +3,6 @@
 module Api
   module V1
     class SessionsController < ApplicationController
-      skip_before_action :authenticate_user!
       before_action :current_user
 
       def create

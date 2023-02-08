@@ -3,7 +3,6 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
   include ActionController::Helpers
-  before_action :authenticate_user!
   helper_method :login!, :current_user
 
   def login!
