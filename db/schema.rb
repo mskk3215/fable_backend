@@ -40,8 +40,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_144720) do
   create_table "posts", charset: "utf8mb3", force: :cascade do |t|
     t.string "image", null: false
     t.bigint "user_id", null: false
+    t.bigint "park_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["park_id"], name: "index_posts_on_park_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -55,5 +57,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_144720) do
 
   add_foreign_key "insect_posts", "insects"
   add_foreign_key "insect_posts", "posts"
+  add_foreign_key "posts", "parks"
   add_foreign_key "posts", "users"
 end
