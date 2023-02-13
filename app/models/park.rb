@@ -8,6 +8,6 @@ class Park < ApplicationRecord
     validates :latitude, presence: true
     validates :longitude, presence: true
   
-    has_many :posts
+    has_many :images
 
 end
