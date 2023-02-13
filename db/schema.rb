@@ -10,14 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_05_144720) do
-  create_table "insect_posts", charset: "utf8mb3", force: :cascade do |t|
-    t.bigint "post_id", null: false
-    t.bigint "insect_id", null: false
+ActiveRecord::Schema[7.0].define(version: 2023_02_12_074557) do
+  create_table "images", charset: "utf8mb3", force: :cascade do |t|
+    t.string "image", null: false
+    t.bigint "user_id", null: false
+    t.bigint "insect_id"
+    t.bigint "park_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["insect_id"], name: "index_insect_posts_on_insect_id"
-    t.index ["post_id"], name: "index_insect_posts_on_post_id"
+    t.index ["insect_id"], name: "index_images_on_insect_id"
+    t.index ["park_id"], name: "index_images_on_park_id"
+    t.index ["user_id"], name: "index_images_on_user_id"
   end
 
   create_table "insects", charset: "utf8mb3", force: :cascade do |t|
@@ -37,16 +40,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_144720) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "posts", charset: "utf8mb3", force: :cascade do |t|
-    t.string "image", null: false
-    t.bigint "user_id", null: false
-    t.bigint "park_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["park_id"], name: "index_posts_on_park_id"
-    t.index ["user_id"], name: "index_posts_on_user_id"
-  end
-
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
     t.string "nickname", null: false
     t.string "email", null: false
@@ -55,8 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_05_144720) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "insect_posts", "insects"
-  add_foreign_key "insect_posts", "posts"
-  add_foreign_key "posts", "parks"
-  add_foreign_key "posts", "users"
+  add_foreign_key "images", "insects"
+  add_foreign_key "images", "parks"
+  add_foreign_key "images", "users"
 end
