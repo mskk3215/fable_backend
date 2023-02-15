@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Image < ApplicationRecord
   mount_uploader :image, ImageUploader
 
@@ -7,5 +9,4 @@ class Image < ApplicationRecord
   belongs_to :insect, optional: true
   belongs_to :park,   optional: true
   belongs_to :user
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,45 +12,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_12_074557) do
-  create_table "images", charset: "utf8mb3", force: :cascade do |t|
-    t.string "image", null: false
-    t.bigint "user_id", null: false
-    t.bigint "insect_id"
-    t.bigint "park_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["insect_id"], name: "index_images_on_insect_id"
-    t.index ["park_id"], name: "index_images_on_park_id"
-    t.index ["user_id"], name: "index_images_on_user_id"
+ActiveRecord::Schema[7.0].define(version: 20_230_212_074_557) do
+  create_table 'images', charset: 'utf8mb3', force: :cascade do |t|
+    t.string 'image', null: false
+    t.bigint 'user_id', null: false
+    t.bigint 'insect_id'
+    t.bigint 'park_id'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['insect_id'], name: 'index_images_on_insect_id'
+    t.index ['park_id'], name: 'index_images_on_park_id'
+    t.index ['user_id'], name: 'index_images_on_user_id'
   end
 
-  create_table "insects", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "sex", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table 'insects', charset: 'utf8mb3', force: :cascade do |t|
+    t.string 'name', null: false
+    t.string 'sex', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
-  create_table "parks", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "post_code", null: false
-    t.string "address", null: false
-    t.float "latitude", null: false
-    t.float "longitude", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table 'parks', charset: 'utf8mb3', force: :cascade do |t|
+    t.string 'name', null: false
+    t.string 'post_code', null: false
+    t.string 'address', null: false
+    t.float 'latitude', null: false
+    t.float 'longitude', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
-  create_table "users", charset: "utf8mb3", force: :cascade do |t|
-    t.string "nickname", null: false
-    t.string "email", null: false
-    t.string "password_digest", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table 'users', charset: 'utf8mb3', force: :cascade do |t|
+    t.string 'nickname', null: false
+    t.string 'email', null: false
+    t.string 'password_digest', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
-  add_foreign_key "images", "insects"
-  add_foreign_key "images", "parks"
-  add_foreign_key "images", "users"
+  add_foreign_key 'images', 'insects'
+  add_foreign_key 'images', 'parks'
+  add_foreign_key 'images', 'users'
 end
