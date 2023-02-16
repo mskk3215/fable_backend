@@ -3,7 +3,7 @@
 module Api
   module V1
     class ImagesController < ApplicationController
-      before_action :set_image, only: %i[update]
+      before_action :set_image, only: %i[bulk_update]
       def index
         image = Image.where(user_id: current_user.id).order(created_at: :desc)
         render json: image
@@ -16,24 +16,20 @@ module Api
         end
       end
 
-      def update
-        if @images.update(image_params)
-          render json: { status: 200 }
-        else
-          render json: { status: 500, error_messages: @image.error_messages }
+      def bulk_update
+        @images.each do |image|
+          render json: { status: 500, error_messages: @image.error_messages } unless image.update(image_params)
         end
       end
 
       private
 
       def image_params
-        binding.pry
         params.require(:image).permit({ image: [] }, :insect_id, :park_id)
       end
 
       def set_image
-        @images = Image.find(params[:id])
-        binding.pry
+        @images = Image.find(params[:id].split(','))
       end
     end
   end
