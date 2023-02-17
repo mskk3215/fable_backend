@@ -10,16 +10,23 @@ module Api
       end
 
       def create
-        image_params[:image].each do |image|
-          image = Image.new(image:, user: current_user)
-          render json: image.errors unless image.save
+        ActiveRecord::Base.transaction do
+          image_params[:image].each do |image|
+            image = Image.create(image:, user: current_user)
+          end
         end
+      rescue ActiveRecord::RecordInvalid
+        render json: { status: 500, error_messages: image.error_messages }
       end
 
       def bulk_update
-        @images.each do |image|
-          render json: { status: 500, error_messages: @image.error_messages } unless image.update(image_params)
+        ActiveRecord::Base.transaction do
+          @images.each do |image|
+            image.update(image_params)
+          end
         end
+      rescue ActiveRecord::RecordInvalid
+        render json: { status: 500, error_messages: @image.error_messages }
       end
 
       private
