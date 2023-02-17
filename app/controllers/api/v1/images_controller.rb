@@ -3,7 +3,7 @@
 module Api
   module V1
     class ImagesController < ApplicationController
-      before_action :set_image, only: %i[bulk_update]
+      before_action :set_image, only: %i[bulk_update destroy]
       def index
         image = Image.where(user_id: current_user.id).order(created_at: :desc)
         render json: image
@@ -27,6 +27,14 @@ module Api
         end
       rescue ActiveRecord::RecordInvalid
         render json: { status: 500, error_messages: @image.error_messages }
+      end
+
+      def destroy
+        ActiveRecord::Base.transaction do
+          @images.each(&:destroy)
+        end
+      rescue ActiveRecord::RecordInvalid
+        render json: { status: :deleted }
       end
 
       private
