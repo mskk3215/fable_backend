@@ -12,29 +12,31 @@ module Api
       def create
         ActiveRecord::Base.transaction do
           image_params[:image].each do |image|
-            image = Image.create(image:, user: current_user)
+            image = Image.new(image:, user: current_user)
+            image.save!
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render json: { status: 500, error_messages: image.error_messages }
+        render json: { status: 500, error_messages: '予期せぬエラーが発生しました' }
       end
 
       def bulk_update
         ActiveRecord::Base.transaction do
           @images.each do |image|
-            image.update(image_params)
+            image.update!(image_params)
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render json: { status: 500, error_messages: @image.error_messages }
+        render json: { status: 500, error_messages: '予期せぬエラーが発生しました' }
       end
 
       def destroy
         ActiveRecord::Base.transaction do
-          @images.each(&:destroy)
+          @images.each(&:destroy!)
         end
-      rescue ActiveRecord::RecordInvalid
         render json: { status: :deleted }
+      rescue ActiveRecord::RecordInvalid
+        render json: { status: 500, error_messages: '予期せぬエラーが発生しました' }
       end
 
       private
