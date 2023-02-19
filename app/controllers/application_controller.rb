@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
   include ActionController::Helpers
+  include ExceptionHandler
   helper_method :login!, :current_user
 
   def login!
