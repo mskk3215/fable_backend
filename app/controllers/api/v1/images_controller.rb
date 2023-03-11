@@ -23,7 +23,8 @@ module Api
       def bulk_update
         ActiveRecord::Base.transaction do
           @images.each do |image|
-            image.update!(image_params)
+            insect = Insect.find_by!(name: image_params[:name].split(','), sex: image_params[:sex].split(','))
+            image.update!(insect_id: insect.id, park_id: image_params[:park_id])
           end
         end
       rescue ActiveRecord::RecordInvalid
@@ -42,7 +43,7 @@ module Api
       private
 
       def image_params
-        params.require(:image).permit({ image: [] }, :insect_id, :park_id)
+        params.require(:image).permit({ image: [] }, :name, :sex, :park_id)
       end
 
       def set_image
