@@ -10,4 +10,6 @@ class Park < ApplicationRecord
   validates :longitude, presence: true
 
   has_many :images
+  has_many :insect_parks
+  has_many :insects, through: :insect_parks
 end
