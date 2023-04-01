@@ -55,4 +55,5 @@ end
 gem 'rename'
 
 gem 'carrierwave'
+gem 'jbuilder'
 gem 'mini_magick'
