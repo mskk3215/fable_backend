@@ -6,11 +6,11 @@ module Api
       def index
         if params[:search_word].present?
           insect_name = params[:search_word]
-          parks = Park.joins(images: :insect).where('insects.name = ?', insect_name).distinct
+          @parks = Park.joins(images: :insect).where('insects.name = ?', insect_name).distinct
         else
-          parks = Park.all.order(created_at: :desc)
+          @parks = Park.all.order(created_at: :desc)
         end
-        render json: parks
+        render 'api/v1/parks/index'
       end
     end
   end
