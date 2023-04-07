@@ -4,9 +4,10 @@ module Api
   module V1
     class ImagesController < ApplicationController
       before_action :set_image, only: %i[bulk_update destroy]
-      
+
       def index
         @images = Image.where(user_id: current_user.id).order(created_at: :desc)
+        render 'api/v1/images/index'
       end
 
       def create
