@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       delete '/logout', to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#logged_in?'
 
-      resources :images, only: %i[index create destroy]
+      resources :images, only: %i[index create destroy], defaults: { format: 'json' }
       put '/images/:id', to: 'images#bulk_update'
 
       resources :parks, only: %i[index], defaults: { format: 'json' }
