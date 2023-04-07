@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       resources :images, only: %i[index create destroy]
       put '/images/:id', to: 'images#bulk_update'
 
-      resources :parks, only: %i[index]
+      resources :parks, only: %i[index], defaults: { format: 'json' }
       resources :insects, only: %i[index]
     end
   end
