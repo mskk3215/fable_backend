@@ -5,12 +5,31 @@ class ImageUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
 
+  attr_accessor :prefecture_name, :city_name, :taken_at
+
   # Choose what kind of storage to use for this uploader:
   storage :file
   # storage :fog
 
   def asset_host
     'http://localhost:3001'
+  end
+
+  # exif情報を取得し都道府県市町村撮影日のデータを取得する
+  require 'exifr/jpeg'
+  process :get_exif_info
+  def get_exif_info
+    exif = EXIFR::JPEG.new(file.file)
+    latitude = exif.gps.latitude
+    longitude = exif.gps.longitude
+    @taken_at = exif.date_time
+
+    result = Geocoder.search("#{latitude},#{longitude}").first
+    if result
+      @prefecture_name = result.data['address']['province']
+      @city_name = %w[city town village].map { |type| result.data['address'][type] }.compact.join('')
+    end
+  rescue StandardError
   end
 
   # Override the directory where uploaded files will be stored.
