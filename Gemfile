@@ -55,5 +55,7 @@ end
 gem 'rename'
 
 gem 'carrierwave'
+gem 'exifr'
+gem 'geocoder'
 gem 'jbuilder'
 gem 'mini_magick'

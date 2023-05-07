@@ -88,7 +88,9 @@ GEM
       irb (>= 1.3.6)
       reline (>= 0.3.1)
     erubi (1.11.0)
+    exifr (1.3.10)
     ffi (1.15.5)
+    geocoder (1.8.1)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.12.0)
@@ -217,6 +219,8 @@ DEPENDENCIES
   bootsnap
   carrierwave
   debug
+  exifr
+  geocoder
   jbuilder
   mini_magick
   mysql2 (~> 0.5)
