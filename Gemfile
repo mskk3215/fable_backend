@@ -59,3 +59,5 @@ gem 'exifr'
 gem 'geocoder'
 gem 'jbuilder'
 gem 'mini_magick'
+
+gem 'rubyzip', require: 'zip'
