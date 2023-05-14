@@ -8,5 +8,6 @@ class Image < ApplicationRecord
 
   belongs_to :insect, optional: true
   belongs_to :park,   optional: true
+  belogs_to :city, optional: true
   belongs_to :user
 end

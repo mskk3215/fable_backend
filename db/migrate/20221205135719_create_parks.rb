@@ -8,6 +8,8 @@ class CreateParks < ActiveRecord::Migration[7.0]
       t.string      :address, null: false
       t.float       :latitude, null: false
       t.float       :longitude, null: false
+      t.references  :city, null: false, foreign_key: true
+      t.references  :prefecture, null: false, foreign_key: true
       t.timestamps
     end
   end
