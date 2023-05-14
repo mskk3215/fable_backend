@@ -8,8 +8,12 @@ class Park < ApplicationRecord
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
+  validates :city_id, presence: true
+  validates :prefecture_id, presence: true
 
   has_many :images
   has_many :insect_parks
   has_many :insects, through: :insect_parks
+  belogs_to :city
+  belogs_to :prefecture
 end
