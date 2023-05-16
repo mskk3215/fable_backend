@@ -14,6 +14,6 @@ class Park < ApplicationRecord
   has_many :images
   has_many :insect_parks
   has_many :insects, through: :insect_parks
-  belogs_to :city
-  belogs_to :prefecture
+  belongs_to :city
+  belongs_to :prefecture
 end
