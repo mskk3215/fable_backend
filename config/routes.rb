@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
       resources :parks, only: %i[index], defaults: { format: 'json' }
       resources :insects, only: %i[index]
+      resources :prefectures, only: %i[index]
     end
   end
 end
