@@ -2,7 +2,7 @@
 
 json.array! @images.map do |image|
   # id, user_id, insect_id, park_id, updated_at
-  json.extract! image, :id, :user_id, :insect_id, :park_id, :created_at
+  json.extract! image, :id, :user_id, :insect_id, :park_id, :taken_at
   # image_url
   json.image image.image.url
   # insect_name,insect_sex
