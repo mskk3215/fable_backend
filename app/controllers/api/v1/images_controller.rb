@@ -25,7 +25,8 @@ module Api
         ActiveRecord::Base.transaction do
           @images.each do |image|
             insect = Insect.find_by!(name: image_params[:name].split(','), sex: image_params[:sex].split(','))
-            image.update!(insect_id: insect.id, park_id: image_params[:park_id])
+            city = City.find_by!(name: image_params[:cityName])
+            image.update!(insect_id: insect.id, park_id: image_params[:park_id], city_id: city.id, taken_at: image_params[:taken_at])
           end
         end
       rescue ActiveRecord::RecordInvalid
@@ -44,7 +45,7 @@ module Api
       private
 
       def image_params
-        params.require(:image).permit({ image: [] }, :name, :sex, :park_id)
+        params.require(:image).permit({ image: [] }, :name, :sex, :park_id,:cityName, :taken_at)
       end
 
       def set_image
