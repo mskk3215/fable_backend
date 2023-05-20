@@ -12,4 +12,9 @@ json.array! @images.map do |image|
     json.insect_name insect_name
     json.insect_sex insect_sex
   end
+  # city_name
+  if city = City.find_by(id: image.city_id)
+    city_name = city ? city.name : ''
+    json.city_name city_name
+  end
 end
