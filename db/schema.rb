@@ -54,10 +54,10 @@ ActiveRecord::Schema[7.0].define(version: 20_230_321_105_830) do
 
   create_table 'parks', charset: 'utf8mb3', force: :cascade do |t|
     t.string 'name', null: false
-    t.string 'post_code', null: false
-    t.string 'address', null: false
-    t.float 'latitude', null: false
-    t.float 'longitude', null: false
+    t.string 'post_code'
+    t.string 'address'
+    t.float 'latitude'
+    t.float 'longitude'
     t.bigint 'city_id', null: false
     t.bigint 'prefecture_id', null: false
     t.datetime 'created_at', null: false
