@@ -13,7 +13,15 @@ module Api
       def create
         ActiveRecord::Base.transaction do
           image_params[:image].each do |image|
+            # imageインスタンスの生成
             image = Image.new(image:, user: current_user)
+            # exifデータから取得したcity_idとtaken_atの登録
+            prefecture_id = Prefecture.find_by(name: image.image.prefecture_name).id
+            city_id= City.where("name LIKE ?", "%#{image.image.city_name}%").find_by(prefecture_id: prefecture_id).id
+            date_time = image.image.taken_at.strftime('%Y-%m-%d %H:%M:%S.%N')
+            image.taken_at = date_time
+            image.city_id = city_id
+            # imageの保存
             image.save!
           end
         end
