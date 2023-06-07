@@ -18,7 +18,7 @@ module Api
             # exifデータから取得したcity_idとtaken_atの登録
             prefecture = Prefecture.find_by(name: image.image.prefecture_name)
             prefecture_id = prefecture ? prefecture.id : nil
-            city= City.where("name LIKE ?", "%#{image.image.city_name}%").find_by(prefecture_id: prefecture_id)
+            city = City.where('name LIKE ?', "%#{image.image.city_name}%").find_by(prefecture_id:)
             city_id = city ? city.id : nil
             date_time = image.image.taken_at&.strftime('%Y-%m-%d %H:%M:%S.%N')
             image.taken_at = date_time
