@@ -2,6 +2,7 @@
 
 class Insect < ApplicationRecord
   validates :name, presence: true
+  validates :sex, presence: true
 
   has_many :images
   has_many :insect_parks
