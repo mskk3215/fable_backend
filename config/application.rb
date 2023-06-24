@@ -1,6 +1,8 @@
-require_relative "boot"
+# frozen_string_literal: true
 
-require "rails/all"
+require_relative 'boot'
+
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -16,7 +18,8 @@ module FableBackend
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
+    config.active_record.default_timezone = :local
+    config.time_zone = 'Tokyo'
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Only loads a smaller set of middleware suitable for API only apps.
@@ -27,8 +30,5 @@ module FableBackend
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
     config.middleware.use ActionDispatch::ContentSecurityPolicy::Middleware
-    # config.session_store :cookie_store
-    # config.middleware.insert_before ActiveRecord::Middleware::DatabaseSelector, ActionDispatch::Cookies
-    # config.middleware.insert_before ActiveRecord::Middleware::DatabaseSelector, ActionDispatch::Session::CookieStore
   end
 end
