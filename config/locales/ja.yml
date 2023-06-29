@@ -5,3 +5,4 @@ ja:
       taken: "同じ%{attribute}がすでに使用されています"
       invalid: "%{attribute}の形式が正しくありません"
       too_short: "%{attribute}は6文字以上で入力してください"
+      confirmation: "%{attribute}が一致しません"
