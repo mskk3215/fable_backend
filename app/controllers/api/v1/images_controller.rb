@@ -28,7 +28,7 @@ module Api
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render json: { status: 500, error_messages: '予期せぬエラーが発生しました' }
+        render json: {  error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
 
       def bulk_update
@@ -50,7 +50,7 @@ module Api
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render json: { status: 500, error_messages: '予期せぬエラーが発生しました' }
+        render json: {  error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
 
       def destroy
@@ -59,7 +59,7 @@ module Api
         end
         render json: { status: :deleted }
       rescue ActiveRecord::RecordInvalid
-        render json: { status: 500, error_messages: '予期せぬエラーが発生しました' }
+        render json: {  error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
 
       private
