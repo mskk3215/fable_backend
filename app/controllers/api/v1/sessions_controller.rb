@@ -14,7 +14,7 @@ module Api
           render json: { logged_in: true, user: @user }
 
         else
-          render json: { errors: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。'] } ,status: :unauthorized
+          render json: { errors: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。'] }, status: :unauthorized
         end
       end
 
