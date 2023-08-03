@@ -2,24 +2,23 @@
 
 module Api
   module V1
-    class RegistrationsController < ApplicationController
+    class UsersController < ApplicationController
       def create
-        @user = User.new(registrations_params)
+        @user = User.new(users_params)
 
         if @user.save
           reset_session
           login!
 
-          render json: { status: :created, user: @user }
+          render 'api/v1/users/create'
         else
           render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
       end
-
       private
 
-      def registrations_params
-        params.require(:registration).permit(:nickname, :email, :password, :password_confirmation)
+      def users_params
+        params.require(:user).permit(:nickname, :email, :password, :new_password, :avatar)
       end
     end
   end
