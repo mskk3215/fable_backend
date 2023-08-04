@@ -76,6 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_321_105_830) do
     t.string 'nickname', null: false
     t.string 'email', null: false
     t.string 'password_digest', null: false
+    t.string 'avatar'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
   end
