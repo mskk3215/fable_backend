@@ -11,10 +11,10 @@ module Api
         if @user&.authenticate(session_params[:password])  # hash化したpasswordとDB内のpassword_digestカラムの値を比較する
           reset_session
           login!
-          render json: { logged_in: true, user: @user }
+          render 'api/v1/sessions/create'
 
         else
-          render json: { errors: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。'] } ,status: :unauthorized
+          render json: { errors: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。'] }, status: :unauthorized
         end
       end
 
@@ -25,7 +25,7 @@ module Api
 
       def logged_in?
         if @current_user
-          render json: { logged_in: true, user: current_user }
+          render 'api/v1/sessions/logged_in'
         else
           render json: { logged_in: false, message: 'ユーザーが存在しません' }
         end
