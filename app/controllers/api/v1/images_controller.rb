@@ -6,7 +6,13 @@ module Api
       before_action :set_image, only: %i[bulk_update destroy]
 
       def index
-        @images = Image.where(user_id: current_user.id).order(created_at: :desc)
+        @images = if params[:user_id].present?
+                    # binding.pry
+                    Image.where(user_id: params[:user_id]).order(created_at: :desc)
+                  else
+                    # binding.pry
+                    Image.where(user_id: current_user.id).order(created_at: :desc)
+                  end
         render 'api/v1/images/index'
       end
 
@@ -28,7 +34,7 @@ module Api
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render json: {  error_messages: '予期せぬエラーが発生しました' }, status: 500
+        render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
 
       def bulk_update
@@ -50,7 +56,7 @@ module Api
           end
         end
       rescue ActiveRecord::RecordInvalid
-        render json: {  error_messages: '予期せぬエラーが発生しました' }, status: 500
+        render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
 
       def destroy
@@ -59,7 +65,7 @@ module Api
         end
         render json: { status: :deleted }
       rescue ActiveRecord::RecordInvalid
-        render json: {  error_messages: '予期せぬエラーが発生しました' }, status: 500
+        render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
 
       private
