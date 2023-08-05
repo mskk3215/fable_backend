@@ -3,6 +3,15 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      def index
+        @user = if params[:user_id].present?
+                  User.find(params[:user_id])
+                else
+                  current_user
+                end
+        render 'api/v1/users/index'
+      end
+
       def create
         @user = User.new(users_params)
 
