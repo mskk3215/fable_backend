@@ -6,7 +6,13 @@ module Api
       before_action :set_image, only: %i[bulk_update destroy]
 
       def index
-        @images = Image.where(user_id: current_user.id).order(created_at: :desc)
+        @images = if params[:user_id].present?
+                    # binding.pry
+                    Image.where(user_id: params[:user_id]).order(created_at: :desc)
+                  else
+                    # binding.pry
+                    Image.where(user_id: current_user.id).order(created_at: :desc)
+                  end
         render 'api/v1/images/index'
       end
 
