@@ -3,6 +3,8 @@
 module Api
   module V1
     class ParksController < ApplicationController
+      skip_before_action :ensure_logged_in, only: %i[index]
+
       def index
         if params[:search_word].present?
           insect_name = params[:search_word]
