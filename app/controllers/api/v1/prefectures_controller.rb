@@ -3,6 +3,8 @@
 module Api
   module V1
     class PrefecturesController < ApplicationController
+      skip_before_action :ensure_logged_in, only: %i[index]
+
       def index
         all_cities = City.all
         prefectures = all_cities.group_by(&:prefecture_id).map do |prefecture_id, cities|

@@ -3,6 +3,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      skip_before_action :ensure_logged_in, only: %i[create]
       def index
         @user = if params[:user_id].present?
                   User.find(params[:user_id])
