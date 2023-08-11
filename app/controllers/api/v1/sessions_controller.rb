@@ -3,6 +3,7 @@
 module Api
   module V1
     class SessionsController < ApplicationController
+      skip_before_action :ensure_logged_in, only: %i[create logged_in?]
       before_action :current_user
 
       def create
