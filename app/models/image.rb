@@ -10,4 +10,11 @@ class Image < ApplicationRecord
   belongs_to :park,   optional: true
   belongs_to :city, optional: true
   belongs_to :user
+
+  has_many :likes, dependent: :destroy
+  after_initialize :set_default_likes_count, if: :new_record?
+
+  def set_default_likes_count
+    self.likes_count ||= 0
+  end
 end

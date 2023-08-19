@@ -11,7 +11,10 @@ Rails.application.routes.draw do
         resources :relationships, only: %i[create destroy], defaults: { format: 'json' }
       end
 
-      resources :images, only: %i[index create destroy], defaults: { format: 'json' }
+      resources :images, only: %i[index create destroy], defaults: { format: 'json' } do
+        post :likes, to: 'likes#create', defaults: { format: 'json' }
+        delete :likes, to: 'likes#destroy', defaults: { format: 'json' }
+      end
       put '/images/:id', to: 'images#bulk_update'
 
       resources :parks, only: %i[index], defaults: { format: 'json' }
