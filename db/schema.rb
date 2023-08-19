@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_805_145_353) do
+ActiveRecord::Schema[7.0].define(version: 20_230_811_055_943) do
   create_table 'cities', charset: 'utf8mb3', force: :cascade do |t|
     t.string 'name', null: false
     t.bigint 'prefecture_id', null: false
@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_805_145_353) do
     t.bigint 'city_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.integer 'likes_count', default: 0, null: false
     t.index ['city_id'], name: 'index_images_on_city_id'
     t.index ['insect_id'], name: 'index_images_on_insect_id'
     t.index ['park_id'], name: 'index_images_on_park_id'
@@ -50,6 +51,15 @@ ActiveRecord::Schema[7.0].define(version: 20_230_805_145_353) do
     t.string 'sex', null: false
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+  end
+
+  create_table 'likes', charset: 'utf8mb3', force: :cascade do |t|
+    t.bigint 'user_id', null: false
+    t.bigint 'image_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['image_id'], name: 'index_likes_on_image_id'
+    t.index ['user_id'], name: 'index_likes_on_user_id'
   end
 
   create_table 'parks', charset: 'utf8mb3', force: :cascade do |t|
@@ -98,6 +108,8 @@ ActiveRecord::Schema[7.0].define(version: 20_230_805_145_353) do
   add_foreign_key 'images', 'users'
   add_foreign_key 'insect_parks', 'insects'
   add_foreign_key 'insect_parks', 'parks'
+  add_foreign_key 'likes', 'images'
+  add_foreign_key 'likes', 'users'
   add_foreign_key 'parks', 'cities'
   add_foreign_key 'parks', 'prefectures'
 end
