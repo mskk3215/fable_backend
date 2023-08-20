@@ -16,27 +16,6 @@ module Api
         render 'api/v1/images/index'
       end
 
-      def create
-        ActiveRecord::Base.transaction do
-          image_params[:image].each do |image|
-            # imageインスタンスの生成
-            image = Image.new(image:, user: current_user)
-            # exifデータから取得したcity_idとtaken_atの登録
-            prefecture = Prefecture.find_by(name: image.image.prefecture_name)
-            prefecture_id = prefecture ? prefecture.id : nil
-            city = City.where('name LIKE ?', "%#{image.image.city_name}%").find_by(prefecture_id:)
-            city_id = city ? city.id : nil
-            date_time = image.image.taken_at&.strftime('%Y-%m-%d %H:%M:%S.%N')
-            image.taken_at = date_time
-            image.city_id = city_id
-            # imageの保存
-            image.save!
-          end
-        end
-      rescue ActiveRecord::RecordInvalid
-        render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
-      end
-
       def bulk_update
         ActiveRecord::Base.transaction do
           @images.each do |image|
