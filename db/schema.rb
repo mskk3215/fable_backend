@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_811_055_943) do
     t.string 'image', null: false
     t.datetime 'taken_at'
     t.bigint 'user_id', null: false
+    t.bigint 'post_id', null: false
     t.bigint 'insect_id'
     t.bigint 'park_id'
     t.bigint 'city_id'
@@ -34,6 +35,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_811_055_943) do
     t.index ['city_id'], name: 'index_images_on_city_id'
     t.index ['insect_id'], name: 'index_images_on_insect_id'
     t.index ['park_id'], name: 'index_images_on_park_id'
+    t.index ['post_id'], name: 'index_images_on_post_id'
     t.index ['user_id'], name: 'index_images_on_user_id'
   end
 
@@ -76,6 +78,13 @@ ActiveRecord::Schema[7.0].define(version: 20_230_811_055_943) do
     t.index ['prefecture_id'], name: 'index_parks_on_prefecture_id'
   end
 
+  create_table 'posts', charset: 'utf8mb3', force: :cascade do |t|
+    t.bigint 'user_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['user_id'], name: 'index_posts_on_user_id'
+  end
+
   create_table 'prefectures', charset: 'utf8mb3', force: :cascade do |t|
     t.string 'name', null: false
     t.datetime 'created_at', null: false
@@ -105,6 +114,7 @@ ActiveRecord::Schema[7.0].define(version: 20_230_811_055_943) do
   add_foreign_key 'images', 'cities'
   add_foreign_key 'images', 'insects'
   add_foreign_key 'images', 'parks'
+  add_foreign_key 'images', 'posts'
   add_foreign_key 'images', 'users'
   add_foreign_key 'insect_parks', 'insects'
   add_foreign_key 'insect_parks', 'parks'
@@ -112,4 +122,5 @@ ActiveRecord::Schema[7.0].define(version: 20_230_811_055_943) do
   add_foreign_key 'likes', 'users'
   add_foreign_key 'parks', 'cities'
   add_foreign_key 'parks', 'prefectures'
+  add_foreign_key 'posts', 'users'
 end
