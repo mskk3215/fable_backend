@@ -9,8 +9,8 @@ class User < ApplicationRecord
   validates :email,    presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }, on: :create
 
-  has_many  :images
   has_many  :posts, dependent: :destroy
+  has_many  :images, dependent: :destroy
   has_many :likes, dependent: :destroy
 
   # follow,followedのrelathionships(中間テーブル)との関連付け
