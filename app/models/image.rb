@@ -16,7 +16,13 @@ class Image < ApplicationRecord
   has_many :likes, dependent: :destroy
   after_initialize :set_default_likes_count, if: :new_record?
 
+  after_destroy :destroy_parent_post_if_no_images
+
   def set_default_likes_count
     self.likes_count ||= 0
+  end
+
+  def destroy_parent_post_if_no_images
+    post.destroy if post.images.empty?
   end
 end
