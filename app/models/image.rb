@@ -5,16 +5,24 @@ class Image < ApplicationRecord
 
   validates :image,   presence: true
   validates :user_id, presence: true
+  validates :post_id, presence: true
 
   belongs_to :insect, optional: true
   belongs_to :park,   optional: true
   belongs_to :city, optional: true
   belongs_to :user
+  belongs_to :post
 
   has_many :likes, dependent: :destroy
   after_initialize :set_default_likes_count, if: :new_record?
 
+  after_destroy :destroy_parent_post_if_no_images
+
   def set_default_likes_count
     self.likes_count ||= 0
+  end
+
+  def destroy_parent_post_if_no_images
+    post.destroy if post.images.empty?
   end
 end
