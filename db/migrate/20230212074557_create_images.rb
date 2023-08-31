@@ -6,6 +6,7 @@ class CreateImages < ActiveRecord::Migration[7.0]
       t.string :image, null: false
       t.datetime :taken_at
       t.references  :user, null: false, foreign_key: true
+      t.references  :post, null: false, foreign_key: true
       t.references  :insect,              foreign_key: true
       t.references  :park,                foreign_key: true
       t.references  :city,                foreign_key: true
