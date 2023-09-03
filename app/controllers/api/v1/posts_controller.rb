@@ -13,14 +13,12 @@ module Api
         ActiveRecord::Base.transaction do
           if post.save!
             # prefecture, cityの事前呼び出し
-            images = params[:image]['image']
-
+            images = post_params[:image]
             prefecture_names = images.map { |img| Image.new(image: img).image.prefecture_name }.uniq
             prefectures = Prefecture.where(name: prefecture_names).index_by(&:name)
             city_names = images.map { |img| Image.new(image: img).image.city_name }.uniq
             cities = City.where(name: city_names).group_by(&:name)
 
-            # image_params[:image].each do |img|
             images.each do |img|
               # imageインスタンスの生成
               image = Image.new(image: img, user: current_user, post:)
@@ -55,12 +53,12 @@ module Api
       rescue ActiveRecord::RecordInvalid
         render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
-    end
 
-    private
+      private
 
-    def image_params
-      params.require(:image).permit({ image: [] })
+      def post_params
+        result = params.require(:image).permit({ image: [] })
+      end
     end
   end
 end
