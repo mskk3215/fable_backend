@@ -11,8 +11,7 @@ json.array! @parks.map do |park|
   park_images = park.images
   json.image park_images.map { |image| image.image.url }
   # image_count
-  park_image_count = park_images.count
-  json.image_count park_image_count
+  json.image_count park_images.count
   # insect_count in the park
   insect_count = park_images.distinct.count(:insect_id)
   json.insect_count insect_count
