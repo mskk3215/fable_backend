@@ -6,24 +6,18 @@ module Api
       before_action :set_user, only: %i[create destroy]
 
       def create
-        ActiveRecord::Base.transaction do
-          current_user.following << @user
-          current_user.save!
-        end
+        current_user.following << @user
         render 'api/v1/users/relationships/create'
-      rescue ActiveRecord::RecordInvalid
-        render json: { status: 'ERROR', message: 'follow failed', data: current_user.errors.full_messages },
+      rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+        render json: { status: 'ERROR', message: 'follow failed', data: e.message },
                status: :unprocessable_entity
       end
 
       def destroy
-        ActiveRecord::Base.transaction do
-          current_user.following.delete(@user)
-          current_user.save!
-        end
+        current_user.following.delete(@user)
         render 'api/v1/users/relationships/destroy'
-      rescue ActiveRecord::RecordInvalid
-        render json: { status: 'ERROR', message: 'unfollow failed', data: current_user.errors.full_messages },
+      rescue ActiveRecord::RecordNotDestroyed => e
+        render json: { status: 'ERROR', message: 'unfollow failed', data: e.message },
                status: :unprocessable_entity
       end
 
