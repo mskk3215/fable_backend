@@ -8,19 +8,25 @@ module Api
       def index
         @images = if params[:user_id].present?
                     # binding.pry
-                    Image.where(user_id: params[:user_id]).order(created_at: :desc)
+                    Image.where(user_id: params[:user_id]).order(created_at: :desc).includes(:insect, :city)
                   else
                     # binding.pry
-                    Image.where(user_id: current_user.id).order(created_at: :desc)
+                    Image.where(user_id: current_user.id).order(created_at: :desc).includes(:insect, :city)
                   end
         render 'api/v1/images/index'
       end
 
       def bulk_update
         ActiveRecord::Base.transaction do
+          # insect, cityの事前呼び出し
+          insect_names = @images.map { |_image| image_params[:name] }.uniq
+          insects = Insect.where(name: insect_names).index_by(&:name)
+          city_names = @images.map { |_image| image_params[:cityName] }.uniq
+          cities = City.where(name: city_names).index_by(&:name)
+
           @images.each do |image|
-            insect = Insect.find_by(name: image_params[:name].split(','), sex: image_params[:sex].split(','))
-            city = City.find_by(name: image_params[:cityName])
+            insect = insects[image_params[:name]]
+            city = cities[image_params[:cityName]]
             park = find_or_create_park(image_params[:parkName], city)
 
             insect_id = insect&.id || image.insect_id
