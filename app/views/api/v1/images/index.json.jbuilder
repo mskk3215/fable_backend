@@ -6,16 +6,16 @@ json.array! @images.map do |image|
   # image_url
   json.image image.image.url
   # insect_name,insect_sex
-  if insect = Insect.find_by(id: image.insect_id)
     insect_name = insect ? insect.name : ''
     insect_sex = insect ? insect.sex : ''
     json.insect_name insect_name
     json.insect_sex insect_sex
+  if insect = image.insect
   end
   # city_name
-  if city = City.find_by(id: image.city_id)
     city_name = city ? city.name : ''
     json.city_name city_name
+  if city = image.city
   end
   # likes_count
   json.likes_count image.likes_count
