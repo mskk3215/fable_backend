@@ -9,18 +9,18 @@ json.array! @posts.map do |post|
     json.id image.id
     json.image image.image.url
     # insect_name
-    insect = Insect.where('id=?', image.insect_id)
+    insect = image.insect
     if insect.present?
-      json.insect_name insect[0].name
+      json.insect_name insect.name
       # insect_sex
-      json.insect_sex insect[0].sex
+      json.insect_sex insect.sex
     end
     # park_name
-    park_name = Park.where('id=?', image.park_id)
-    json.park_name park_name[0].name if park_name.present?
+    park_name = image.park
+    json.park_name park_name.name if park_name.present?
     # city_name
-    city_name = City.where('id=?', image.city_id)
-    json.city_name city_name[0].name if city_name.present?
+    city_name = image.city
+    json.city_name city_name.name if city_name.present?
     # likes
     json.likes_count image.likes_count
     json.liked_user_ids image.likes.pluck(:user_id)
