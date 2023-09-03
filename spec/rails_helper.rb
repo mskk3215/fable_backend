@@ -65,4 +65,15 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:all) do
+    # 画像処理無効化
+    CarrierWave.configure do |config|
+      config.enable_processing = false
+    end
+  end
+  # キャッシュファイルの削除
+  config.after(:each) do
+    CarrierWave.clean_cached_files!
+  end
 end
