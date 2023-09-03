@@ -64,4 +64,46 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'パスワードのハッシュ化' do
+    before do
+      @user.save
+    end
+    it '平文のパスワードと保存されているパスワードハッシュが一致する' do
+      expect(@user.authenticate(@user.password)).to eq(@user)
+    end
+
+    it '平文のパスワードと保存されているパスワードハッシュが一致しない' do
+      expect(@user.authenticate('password')).to eq(false)
+    end
+  end
+
+  describe 'アバター画像のアップロード' do
+    before do
+      @uploader = AvatarUploader.new(@user, :avatar)
+      # 画像処理有効かつ画像ファイルをアップロード
+      AvatarUploader.enable_processing = true
+      File.open(Rails.root.join('public', 'images', 'test_image.png')) { |f| @uploader.store!(f) }
+    end
+    after do
+      # 画像処理無効化かつ画像ファイルを削除
+      AvatarUploader.enable_processing = false
+      @uploader.remove!
+    end
+
+    context 'アバター画像が登録できる場合' do
+      it 'jpg, jpeg, gif, png, heif, heicの拡張子であれば登録できる' do
+        extensions = %w[jpg jpeg gif png heif heic]
+        extensions.each do |extension|
+          expect(@uploader.extension_allowlist).to include(extension)
+        end
+      end
+    end
+
+    context 'アバター画像が登録できない場合' do
+      it 'jpg, jpeg, gif, png, heif, heicの拡張子出なければ登録できない' do
+        expect(@uploader.extension_allowlist).not_to include('txt', 'pdf', 'doc')
+      end
+    end
+  end
 end
