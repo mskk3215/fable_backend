@@ -6,10 +6,8 @@ module Api
       skip_before_action :ensure_logged_in, only: %i[index]
 
       def index
-        all_cities = City.all
-        prefectures = all_cities.group_by(&:prefecture_id).map do |prefecture_id, cities|
-          prefecture = Prefecture.find(prefecture_id)
-          { name: prefecture.name, cities: cities.map(&:name) }
+        prefectures = Prefecture.includes(:cities).map do |prefecture|
+          { name: prefecture.name, cities: prefecture.cities.map(&:name) }
         end
         render json: prefectures
       end
