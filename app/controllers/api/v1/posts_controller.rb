@@ -10,7 +10,6 @@ module Api
 
       def create
         post = Post.new(user: current_user)
-
         ActiveRecord::Base.transaction do
           if post.save!
             # prefecture, cityの事前呼び出し
@@ -25,12 +24,17 @@ module Api
             images.each do |img|
               # imageインスタンスの生成
               image = Image.new(image: img, user: current_user, post:)
+
               # exifデータから取得したcity_idとtaken_atの登録
               prefecture = prefectures[image.image.prefecture_name]
               city = cities[image.image.city_name]&.find { |c| c.prefecture_id == prefecture&.id }
+
               date_time = image.image.taken_at&.strftime('%Y-%m-%d %H:%M:%S.%N')
-              image.taken_at = date_time
-              image.city_id = city_id
+              image.assign_attributes(
+                taken_at: date_time,
+                city_id: city&.id
+              )
+
               # imageの保存
               image.save!
             end
@@ -43,9 +47,9 @@ module Api
 
       def destroy
         ActiveRecord::Base.transaction do
-          @post = Post.find(params[:id])
-          @post.images.each(&:destroy!)
-          @post.destroy!
+          post = Post.find(params[:id])
+          post.images.each(&:destroy!)
+          post.destroy!
         end
         render json: { status: :deleted }
       rescue ActiveRecord::RecordInvalid
