@@ -1,25 +1,25 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  namespace :api do
+  namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
-      post '/login',    to: 'sessions#create', defaults: { format: 'json' }
+      post '/login',    to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
-      get '/logged_in', to: 'sessions#logged_in?', defaults: { format: 'json' }
+      get '/logged_in', to: 'sessions#logged_in?'
 
-      resources :users, only: %i[index create update], defaults: { format: 'json' } do
-        resources :relationships, only: %i[create destroy], defaults: { format: 'json' }
+      resources :users, only: %i[index create update] do
+        resources :relationships, only: %i[create destroy]
       end
 
-      resources :posts, only: %i[index create destroy], defaults: { format: 'json' }
+      resources :posts, only: %i[index create destroy]
 
-      resources :images, only: %i[index destroy], defaults: { format: 'json' } do
-        post :likes, to: 'likes#create', defaults: { format: 'json' }
-        delete :likes, to: 'likes#destroy', defaults: { format: 'json' }
+      resources :images, only: %i[index destroy] do
+        post :likes, to: 'likes#create'
+        delete :likes, to: 'likes#destroy'
       end
       put '/images/:id', to: 'images#bulk_update'
 
-      resources :parks, only: %i[index], defaults: { format: 'json' }
+      resources :parks, only: %i[index]
       resources :insects, only: %i[index]
       resources :prefectures, only: %i[index]
     end
