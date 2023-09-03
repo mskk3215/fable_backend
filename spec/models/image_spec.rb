@@ -9,7 +9,7 @@ RSpec.describe Image, type: :model do
     @image = FactoryBot.build(:image, image_path: 'public/images/test_image.png', user_id: user.id, post_id: post.id)
   end
 
-  describe do
+  describe '画像投稿' do
     context '投稿できる場合' do
       it 'imageがあれば投稿できる' do
         expect(@image).to be_valid
