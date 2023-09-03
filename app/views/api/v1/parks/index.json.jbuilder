@@ -4,13 +4,11 @@ json.array! @parks.map do |park|
   # id, name, post_code, address, latitude, longitude
   json.extract! park, :id, :name, :post_code, :address, :latitude, :longitude
   # prefecture_name
-  prefecture_name = Prefecture.where('id=?', park.prefecture_id)
-  json.prefecture_name prefecture_name[0].name
+  json.prefecture_name park.prefecture&.name
   # city_name
-  city_name = City.where('id=?', park.city_id)
-  json.city_name city_name[0].name
+  json.city_name park.city&.name
   # image_url
-  park_images = Image.where('park_id=?', park.id)
+  park_images = park.images
   json.image park_images.map { |image| image.image.url }
   # image_count
   park_image_count = park_images.count
