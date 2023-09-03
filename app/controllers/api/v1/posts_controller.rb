@@ -29,8 +29,11 @@ module Api
               prefecture = prefectures[image.image.prefecture_name]
               city = cities[image.image.city_name]&.find { |c| c.prefecture_id == prefecture&.id }
               date_time = image.image.taken_at&.strftime('%Y-%m-%d %H:%M:%S.%N')
-              image.taken_at = date_time
-              image.city_id = city_id
+              image.assign_attributes(
+                taken_at: date_time,
+                city_id: city&.id
+              )
+
               # imageの保存
               image.save!
             end
@@ -43,9 +46,9 @@ module Api
 
       def destroy
         ActiveRecord::Base.transaction do
-          @post = Post.find(params[:id])
-          @post.images.each(&:destroy!)
-          @post.destroy!
+          post = Post.find(params[:id])
+          post.images.each(&:destroy!)
+          post.destroy!
         end
         render json: { status: :deleted }
       rescue ActiveRecord::RecordInvalid
