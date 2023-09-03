@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       resources :images, only: %i[index destroy] do
         resources :likes, only: %i[create destroy]
       end
-      put '/images/:id', to: 'images#bulk_update'
+      put '/images/:id', to: 'images#bulk_update' # 一括更新
 
       resources :parks, only: %i[index]
       resources :insects, only: %i[index]
