@@ -14,8 +14,7 @@ Rails.application.routes.draw do
       resources :posts, only: %i[index create destroy]
 
       resources :images, only: %i[index destroy] do
-        post :likes, to: 'likes#create'
-        delete :likes, to: 'likes#destroy'
+        resources :likes, only: %i[create destroy]
       end
       put '/images/:id', to: 'images#bulk_update'
 
