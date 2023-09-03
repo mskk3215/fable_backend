@@ -4,7 +4,7 @@ module Api
   module V1
     class RelationshipsController < ApplicationController
       before_action :set_user, only: %i[create destroy]
-      
+
       def create
         ActiveRecord::Base.transaction do
           current_user.following << @user

@@ -6,11 +6,10 @@ module Api
       skip_before_action :ensure_logged_in, only: %i[index]
 
       def index
+        @parks = Park.includes(:prefecture, :city, :images).order(created_at: :asc)
         if params[:search_word].present?
           insect_name = params[:search_word]
-          @parks = Park.joins(images: :insect).where('insects.name = ?', insect_name).distinct
-        else
-        @parks = Park.includes(:prefecture, :city, :images).order(created_at: :asc)
+          @parks = @parks.joins(images: :insect).where('insects.name = ?', insect_name).distinct
         end
         render 'api/v1/parks/index'
       end
