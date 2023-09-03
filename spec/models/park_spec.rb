@@ -7,7 +7,7 @@ RSpec.describe Park, type: :model do
     @park = FactoryBot.create(:park)
   end
 
-  describe do
+  describe 'park新規登録' do
     context 'parkを保存できる場合' do
       it 'name,city_id,prefecture_idがあれば保存できる' do
         expect(@park).to be_valid
