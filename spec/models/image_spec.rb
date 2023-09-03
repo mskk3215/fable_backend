@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe Image, type: :model do
   before do
     user = FactoryBot.create(:user)
-    @image = FactoryBot.build(:image, image_path: 'public/images/test_image.png', user_id: user.id)
+    post = FactoryBot.create(:post, user_id: user.id)
+    @image = FactoryBot.build(:image, image_path: 'public/images/test_image.png', user_id: user.id, post_id: post.id)
   end
 
   describe do
