@@ -5,10 +5,11 @@ require 'rails_helper'
 RSpec.describe Image, type: :model do
   before do
     user = FactoryBot.create(:user)
-    @image = FactoryBot.build(:image, image_path: 'public/images/test_image.png', user_id: user.id)
+    post = FactoryBot.create(:post, user_id: user.id)
+    @image = FactoryBot.build(:image, image_path: 'public/images/test_image.png', user_id: user.id, post_id: post.id)
   end
 
-  describe do
+  describe '画像投稿' do
     context '投稿できる場合' do
       it 'imageがあれば投稿できる' do
         expect(@image).to be_valid

@@ -8,5 +8,6 @@ FactoryBot.define do
 
     image { Rack::Test::UploadedFile.new(image_path) }
     association :user
+    association :post
   end
 end
