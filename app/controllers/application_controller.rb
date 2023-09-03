@@ -23,6 +23,7 @@ class ApplicationController < ActionController::API
   # ログインしていない場合はエラーを返す
   def ensure_logged_in
     return if current_user
+
     render json: { status: 'ERROR', message: 'ログインしてください' }, status: :unauthorized
   end
 end
