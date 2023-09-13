@@ -14,15 +14,10 @@ module Api
       def bulk_update
         ActiveRecord::Base.transaction do
           # insect, cityの事前呼び出し
-          insect_names = @images.map { |_image| image_params[:name] }.uniq
-          insects = Insect.where(name: insect_names).index_by(&:name)
-          city_names = @images.map { |_image| image_params[:cityName] }.uniq
-          cities = City.where(name: city_names).index_by(&:name)
-
+          insect = Insect.find_by(name: image_params[:name], sex: image_params[:sex]) if image_params[:name].present?
+          city = City.find_by(name: image_params[:cityName]) if image_params[:cityName].present?
+          park = find_or_create_park(image_params[:parkName], city)
           @images.each do |image|
-            insect = insects[image_params[:name]]
-            city = cities[image_params[:cityName]]
-            park = find_or_create_park(image_params[:parkName], city)
             attributes = {
               insect_id: insect&.id || image.insect_id,
               park_id: park&.id || image.park_id,
