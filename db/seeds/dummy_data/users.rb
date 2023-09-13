@@ -2,10 +2,13 @@
 
 puts 'Start inserting Users data...'
 
-5.times do |n|
+names = %w[Ares Blaze Cyrus Drake Elara Faylinn Galen Helix Iris Jaxon Kai Lyra
+           Mars Nyx Orion Pax Quinn Rhea Sirius Thalia]
+
+20.times do |n|
   User.create!(
-    nickname: "test#{n + 1}",
-    email: "test#{n + 1}@test.com",
+    nickname: names[n],
+    email: "#{names[n].downcase}@test.com",
     password: '111111'
   )
 end
