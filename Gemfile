@@ -65,3 +65,5 @@ gem 'mini_magick'
 gem 'rubyzip', require: 'zip'
 
 gem 'rails-i18n'
+
+gem 'kaminari'
