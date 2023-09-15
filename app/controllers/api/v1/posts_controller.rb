@@ -4,7 +4,7 @@ module Api
   module V1
     class PostsController < ApplicationController
       def index
-        @posts = Post.all.includes(images: %i[insect park city user likes]).order(created_at: :desc)
+        @posts = Post.all.includes(images: %i[insect park city user likes]).order(created_at: :desc).page(params[:page]).per(5)
         render 'api/v1/posts/index'
       end
 
