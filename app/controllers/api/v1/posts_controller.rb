@@ -4,7 +4,16 @@ module Api
   module V1
     class PostsController < ApplicationController
       def index
-        @posts = Post.all.includes(images: %i[insect park city user likes]).order(created_at: :desc).page(params[:page]).per(5)
+        posts_query = Post.fetch_all_with_includes
+
+        case params[:tabValue].to_i
+        when 0
+          @posts = posts_query.page(params[:page]).per(5)
+        when 1
+          @posts = posts_query.for_followed_users(current_user).page(params[:page]).per(5)
+        when 2
+          @posts = posts_query.from_the_last_week.page(params[:page]).per(5).sort_by_recent_likes
+        end
         render 'api/v1/posts/index'
       end
 
