@@ -13,8 +13,8 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
   socket: /tmp/mysql.sock
 
 development:
@@ -50,6 +50,8 @@ test:
 #
 production:
   <<: *default
-  database: fable_backend_production
-  username: fable_backend
-  password: <%= ENV["fable_backend_DATABASE_PASSWORD"] %>
+  username: <%= ENV['JAWSDB_USERNAME'] %>
+  password: <%= ENV['JAWSDB_PASSWORD'] %>
+  host: <%= ENV['JAWSDB_HOST'] %>
+  database: <%= ENV['JAWSDB_DATABASE'] %>
+  port: 3306
