@@ -50,8 +50,12 @@ test:
 #
 production:
   <<: *default
+  database: <%= ENV['JAWSDB_DATABASE'] %>
   username: <%= ENV['JAWSDB_USERNAME'] %>
   password: <%= ENV['JAWSDB_PASSWORD'] %>
+  url: <%= ENV['JAWSDB_URL2'] %>
+  # username: <%= ENV['JAWSDB_USERNAME'] %>
+  # password: <%= ENV['JAWSDB_PASSWORD'] %>
   host: <%= ENV['JAWSDB_HOST'] %>
-  database: <%= ENV['JAWSDB_DATABASE'] %>
-  port: 3306
+  # database: <%= ENV['JAWSDB_DATABASE'] %>
+  # port: 3306
