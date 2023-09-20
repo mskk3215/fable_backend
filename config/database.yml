@@ -13,12 +13,12 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
 
 development:
   <<: *default
   database: fable_backend_development
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
   socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
@@ -27,6 +27,8 @@ development:
 test:
   <<: *default
   database: fable_backend_test
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
   socket: /tmp/mysql.sock
 
 # As with config/credentials.yml, you never want to store sensitive information,
