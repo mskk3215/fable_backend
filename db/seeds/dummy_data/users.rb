@@ -8,7 +8,7 @@ names = %w[Ares Blaze Cyrus Drake Elara Faylinn Galen Helix Iris Jaxon Kai Lyra
 20.times do |n|
   User.create!(
     nickname: names[n],
-    email: "#{names[n].downcase}@test.com",
+    email: "#{names[n].downcase}@example.com",
     password: '111111'
   )
 end
