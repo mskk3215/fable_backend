@@ -19,8 +19,8 @@ module Api
         ActiveRecord::Base.transaction do
           # insect, cityの事前呼び出し
           insect = Insect.find_by(name: image_params[:name], sex: image_params[:sex]) if image_params[:name].present?
-          city = City.find_by(name: image_params[:cityName]) if image_params[:cityName].present?
-          park = find_or_create_park(image_params[:parkName], city)
+          city = City.find_by(name: image_params[:city_name]) if image_params[:city_name].present?
+          park = find_or_create_park(image_params[:park_name], city)
           @images.each do |image|
             attributes = {
               insect_id: insect&.id || image.insect_id,
@@ -49,7 +49,7 @@ module Api
       private
 
         def image_params
-          params.require(:image).permit({ image: [] }, :name, :sex, :parkName, :cityName, :taken_at)
+          params.require(:image).permit( :name, :sex, :park_name, :city_name, :taken_at)
         end
 
         def set_image
