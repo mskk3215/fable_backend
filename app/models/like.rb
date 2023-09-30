@@ -4,5 +4,5 @@ class Like < ApplicationRecord
   belongs_to :user
   belongs_to :image, counter_cache: :likes_count
 
-  validates :user_id, presence: true, uniqueness: { scope: :image_id }
+  validates :user_id, uniqueness: { scope: :image_id }
 end

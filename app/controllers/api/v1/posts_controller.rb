@@ -65,9 +65,9 @@ module Api
 
       private
 
-      def post_params
-        params.require(:image).permit({ image: [] })
-      end
+        def post_params
+          params.require(:image).permit({ image: [] })
+        end
     end
   end
 end

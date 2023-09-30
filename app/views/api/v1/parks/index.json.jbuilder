@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.array! @parks.map do |park|
+json.array!(@parks.map) do |park|
   # id, name, post_code, address, latitude, longitude
   json.extract! park, :id, :name, :post_code, :address, :latitude, :longitude
   # prefecture_name
