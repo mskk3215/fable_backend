@@ -2,8 +2,7 @@
 
 class City < ApplicationRecord
   validates :name, presence: true
-  validates :prefecture_id, presence: true
 
-  has_many :parks
+  has_many :parks, dependent: :destroy
   belongs_to :prefecture
 end
