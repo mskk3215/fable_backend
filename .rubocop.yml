@@ -1,0 +1,171 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  # 結果のsuggest部分を非表示にする
+  SuggestExtensions: false
+  # 最新のルールを適用する
+  NewCops: enable
+  # 何のルールに引っかかったか表示する
+  DisplayCopNames: true
+  # rubocopの対象外ファイル
+  Exclude:
+    - "Gemfile"
+    - "bin/**/*"
+    - "db/**/*"
+    - "log/**/*"
+    - "tmp/**/*"
+    - "vendor/**/*"
+    - "lib/tasks/auto_annotate_models.rake"
+    - "config/environments/*"
+    - "config/puma.rb"
+  TargetRubyVersion: 3.1
+
+Rails/FilePath:
+  Exclude:
+    - "lib/tasks/dev.rake"
+    - "spec/rails_helper.rb"
+
+## `and return` の形式を利用できるようにします。基本的には、&& と || を使います。
+Style/AndOr:
+  Enabled: false
+
+## 日本語コメントを許可します。
+Style/AsciiComments:
+  Enabled: false
+
+# インデント
+Layout/IndentationConsistency:
+  EnforcedStyle: indented_internal_methods
+# コメントのインデント
+Layout/CommentIndentation:
+  Enabled: false
+# AttributeAccessorの前後の空行
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+# メソッド呼び出し演算子の周囲のスペース
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+# https://docs.rubocop.org/rubocop/cops_lint.html#lintdeprecatedopensslconstant
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+# https://rubocop.readthedocs.io/en/stable/cops_lint/#lintraiseexception
+Lint/RaiseException:
+  Enabled: true
+
+# https://rubocop.readthedocs.io/en/stable/cops_lint/#lintstructnewoverride
+Lint/StructNewOverride:
+  Enabled: true
+
+Layout/LineLength:
+  Max: 150
+# メソッドの複雑さ
+Metrics/AbcSize:
+  Exclude:
+    - "lib/tasks/dev.rake"
+# コードブロックの長さ
+Metrics/BlockLength:
+  CountComments: false
+  Exclude:
+    - "Guardfile"
+    - "config/routes.rb"
+    - "spec/**/*"
+    - "app/views/**/*.jbuilder"
+    - "lib/tasks/dev.rake"
+
+Metrics/ClassLength:
+  CountComments: false
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 15
+  Exclude:
+    - "lib/tasks/dev.rake"
+
+Metrics/ModuleLength:
+  CountComments: false
+
+Naming/FileName:
+  Exclude:
+    - "Gemfile"
+    - "Guardfile"
+
+Naming/MethodParameterName:
+  AllowedNames: [e]
+
+# RSpecのcontext記述
+RSpec/ContextWording:
+  Enabled: false
+# RSpecのclass名
+RSpec/DescribedClass:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+# hook内でのexpect使用
+RSpec/ExpectInHook:
+  Enabled: false
+
+# instance変数の使用
+RSpec/InstanceVariable:
+  Enabled: false
+# allowやexpectがマッチャーと一緒に使われているか
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+Style/BlockComments:
+  Exclude:
+    - "spec/spec_helper.rb"
+
+# https://rubocop.readthedocs.io/en/stable/cops_style/#styleblockdelimiters
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+  Exclude:
+    - "spec/**/*"
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+# classやmoduleのコメント
+Style/Documentation:
+  Enabled: false
+
+# 浮動小数点数の指数表記のスタイル
+Style/ExponentialNotation:
+  Enabled: true
+
+# hashにメソッドを使うか
+Style/HashEachMethods:
+  Enabled: true
+
+# hashのキーを変換するスタイル
+Style/HashTransformKeys:
+  Enabled: true
+
+# transform_valuesを推奨するか
+Style/HashTransformValues:
+  Enabled: true
+# if, unlessの修飾子形式
+Style/IfUnlessModifier:
+  Enabled: false
+# ラムダのスタイル
+Style/Lambda:
+  EnforcedStyle: literal
+# 正規表現リテラルのスタイル
+Style/RegexpLiteral:
+  Enabled: false
+
+# ...スライシングのスタイル
+Style/SlicingWithRange:
+  Enabled: true

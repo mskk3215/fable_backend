@@ -4,8 +4,6 @@ class Image < ApplicationRecord
   mount_uploader :image, ImageUploader
 
   validates :image,   presence: true
-  validates :user_id, presence: true
-  validates :post_id, presence: true
 
   belongs_to :insect, optional: true
   belongs_to :park,   optional: true
@@ -18,10 +16,11 @@ class Image < ApplicationRecord
 
   after_destroy :destroy_parent_post_if_no_images
 
+  # likes_countのデフォルト値を設定
   def set_default_likes_count
     self.likes_count ||= 0
   end
-
+  # もしimagesが0ならpostを削除する
   def destroy_parent_post_if_no_images
     post.destroy if post.images.empty?
   end

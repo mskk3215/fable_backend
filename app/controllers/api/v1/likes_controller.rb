@@ -27,9 +27,9 @@ module Api
 
       private
 
-      def like_params
-        params.permit(:image_id)
-      end
+        def like_params
+          params.permit(:image_id)
+        end
     end
   end
 end

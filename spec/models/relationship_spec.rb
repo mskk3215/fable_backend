@@ -7,7 +7,7 @@ RSpec.describe Relationship, type: :model do
     before do
       follower = FactoryBot.create(:user)
       followed = FactoryBot.create(:user)
-      @relationship = FactoryBot.build(:relationship, follower_id: follower.id, followed_id: followed.id)
+      @relationship = FactoryBot.build(:relationship)
     end
 
     context 'フォローできる場合' do
@@ -22,6 +22,7 @@ RSpec.describe Relationship, type: :model do
         @relationship.valid?
         expect(@relationship.errors.full_messages).to include("Follower can't be blank")
       end
+      
       it 'followed_idがないとフォローできない' do
         @relationship.followed_id = nil
         @relationship.valid?
