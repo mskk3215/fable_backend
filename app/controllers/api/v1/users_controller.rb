@@ -5,16 +5,13 @@ module Api
     class UsersController < ApplicationController
       skip_before_action :ensure_logged_in, only: %i[create]
       def index
-        @user = if params[:user_id].present?
-                  User.find(params[:user_id])
-                else
-                  current_user
-                end
+        # ユーザーページの場合は、そのユーザーの情報を取得する
+        @user = params[:user_id].present? ? User.find(params[:user_id]) : current_user
         render 'api/v1/users/index'
       end
 
       def create
-        @user = User.new(users_params)
+        @user = User.new(user_params)
 
         if @user.save
           reset_session
@@ -27,8 +24,8 @@ module Api
       end
 
       def update
-        if users_params[:new_password].present?
         @user = current_user
+        if user_params[:new_password].present?
           handle_password_update
         else
           handle_profile_update
@@ -37,14 +34,14 @@ module Api
 
       private
 
-        def users_params
+        def user_params
           params.require(:user).permit(:nickname, :email, :password, :new_password, :avatar)
         end
 
         def handle_password_update
-          if @user.authenticate(users_params[:password])
+          if @user.authenticate(user_params[:password])
             if @user.update(
-              password: users_params[:new_password]
+              password: user_params[:new_password]
             )
               render 'api/v1/users/update'
             else
@@ -56,8 +53,8 @@ module Api
         end
 
         def handle_profile_update
-          if @user.update(nickname: users_params[:nickname], email: users_params[:email],
-                          avatar: users_params[:avatar].presence || @user.avatar)
+          if @user.update(nickname: user_params[:nickname], email: user_params[:email],
+                          avatar: user_params[:avatar].presence || @user.avatar)
             render 'api/v1/users/update'
           else
             render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
