@@ -17,8 +17,8 @@ class ImageUploader < CarrierWave::Uploader::Base
 
   # exif情報を取得し都道府県市町村撮影日のデータを取得する
   require 'exifr/jpeg'
-  process :get_exif_info
-  def get_exif_info
+  process :exif_info
+  def exif_info
     exif = EXIFR::JPEG.new(file.file)
     latitude = exif.gps.latitude
     longitude = exif.gps.longitude
@@ -27,9 +27,10 @@ class ImageUploader < CarrierWave::Uploader::Base
     result = Geocoder.search("#{latitude},#{longitude}").first
     if result
       @prefecture_name = result.data['address']['province']
-      @city_name = %w[city town village].map { |type| result.data['address'][type] }.compact.join('')
+      @city_name = %w[city town village].filter_map { |type| result.data['address'][type] }.join('')
     end
-  rescue StandardError
+  rescue StandardError => e
+    Rails.logger.error "Error processing EXIF info: #{e.message}"
   end
 
   # Override the directory where uploaded files will be stored.

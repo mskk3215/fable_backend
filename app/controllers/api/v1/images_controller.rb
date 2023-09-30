@@ -48,27 +48,27 @@ module Api
 
       private
 
-      def image_params
-        params.require(:image).permit({ image: [] }, :name, :sex, :parkName, :cityName, :taken_at)
-      end
-
-      def set_image
-        @images = Image.find(params[:id].split(','))
-      end
-
-      def find_or_create_park(park_name, city)
-        # 公園名も市町村名もない場合と、公園名がなく市町村名だけの場合はnilを返す
-        return nil if park_name.blank? || city.blank?
-
-        # 公園名がDBにある場合、その公園名を返す
-        park = Park.find_or_initialize_by(name: park_name, city_id: city.id)
-        # 公園名がDBにない場合、新規でDBに公園名を登録する
-        if park.new_record?
-          park.prefecture_id = city.prefecture_id
-          park.save!
+        def image_params
+          params.require(:image).permit({ image: [] }, :name, :sex, :parkName, :cityName, :taken_at)
         end
-        park
-      end
+
+        def set_image
+          @images = Image.find(params[:id].split(','))
+        end
+
+        def find_or_create_park(park_name, city)
+          # 公園名も市町村名もない場合と、公園名がなく市町村名だけの場合はnilを返す
+          return nil if park_name.blank? || city.blank?
+
+          # 公園名がDBにある場合、その公園名を返す
+          park = Park.find_or_initialize_by(name: park_name, city_id: city.id)
+          # 公園名がDBにない場合、新規でDBに公園名を登録する
+          if park.new_record?
+            park.prefecture_id = city.prefecture_id
+            park.save!
+          end
+          park
+        end
     end
   end
 end
