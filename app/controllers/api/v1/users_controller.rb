@@ -27,8 +27,8 @@ module Api
       end
 
       def update
-        @user = User.find(params[:id])
         if users_params[:new_password].present?
+        @user = current_user
           handle_password_update
         else
           handle_profile_update
