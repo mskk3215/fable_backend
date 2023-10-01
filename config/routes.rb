@@ -8,7 +8,9 @@ Rails.application.routes.draw do
       delete '/logout', to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#logged_in?'
       # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除
-      resources :users, only: %i[index create update], module: :users do
+      resources :users, only: %i[index create], module: :users do
+        resource :profile, only: %i[update], controller: :profile
+        resource :password, only: %i[update], controller: :password
         resources :relationships, only: %i[create destroy]
       end
 
