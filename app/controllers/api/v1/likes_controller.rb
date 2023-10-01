@@ -15,11 +15,8 @@ module Api
       def destroy
         @like = current_user.likes.find_by(image_id: like_params[:image_id])
         if @like
-          if @like.destroy
-            render 'api/v1/images/likes/destroy'
-          else
-            render json: { error: 'Unable to unlike this image.' }, status: :unprocessable_entity
-          end
+          @like.destroy
+          render 'api/v1/images/likes/destroy'
         else
           render json: { error: 'Like not found' }, status: :not_found
         end
