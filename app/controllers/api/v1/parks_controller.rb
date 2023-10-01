@@ -7,8 +7,7 @@ module Api
 
       def index
         @parks = Park.includes(:prefecture, :city, :images).order(created_at: :asc)
-        if params[:search_word].present?
-          insect_name = params[:search_word]
+        if insect_name = params[:search_word]
           @parks = @parks.joins(images: :insect).where('insects.name = ?', insect_name).distinct
         end
         render 'api/v1/parks/index'

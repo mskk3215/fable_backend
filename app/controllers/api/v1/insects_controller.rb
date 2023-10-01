@@ -7,10 +7,10 @@ module Api
 
       def index
         all_insects = Insect.all
-        insects = all_insects.group_by(&:name).map do |name, sex|
+        @insects = all_insects.group_by(&:name).map do |name, sex|
           { name:, availableSexes: sex.map(&:sex) }
         end
-        render json: insects
+        render 'api/v1/insects/index'
       end
     end
   end
