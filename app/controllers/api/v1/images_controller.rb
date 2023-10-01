@@ -25,12 +25,8 @@ module Api
       end
 
       def destroy
-        ActiveRecord::Base.transaction do
-          @images.each(&:destroy!)
-        end
+        @images.each(&:destroy)
         render json: { status: :deleted }
-      rescue ActiveRecord::RecordInvalid
-        render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
       end
 
       private
