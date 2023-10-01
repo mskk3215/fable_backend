@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::Relationships', type: :request do
+RSpec.describe 'Api::V1::Users::Relationships' do
   describe 'GET /index' do
     pending "add some examples (or delete) #{__FILE__}"
   end
