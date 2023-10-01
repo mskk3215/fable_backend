@@ -3,11 +3,12 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
+      # ログイン、ログアウト、ログイン状態の確認
       post '/login',    to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#logged_in?'
-
-      resources :users, only: %i[index create update] do
+      # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除
+      resources :users, only: %i[index create update], module: :users do
         resources :relationships, only: %i[create destroy]
       end
 
