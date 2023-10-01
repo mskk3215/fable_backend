@@ -20,7 +20,7 @@ module Api
           # insect, cityの事前呼び出し
           insect = Insect.find_by(name: image_params[:name], sex: image_params[:sex]) if image_params[:name].present?
           city = City.find_by(name: image_params[:city_name]) if image_params[:city_name].present?
-          park = find_or_create_park(image_params[:park_name], city)
+          park = Park.find_or_create_park(image_params[:park_name], city)
           @images.each do |image|
             attributes = {
               insect_id: insect&.id || image.insect_id,
@@ -54,20 +54,6 @@ module Api
 
         def set_image
           @images = Image.find(params[:id].split(','))
-        end
-
-        def find_or_create_park(park_name, city)
-          # 公園名も市町村名もない場合と、公園名がなく市町村名だけの場合はnilを返す
-          return nil if park_name.blank? || city.blank?
-
-          # 公園名がDBにある場合、その公園名を返す
-          park = Park.find_or_initialize_by(name: park_name, city_id: city.id)
-          # 公園名がDBにない場合、新規でDBに公園名を登録する
-          if park.new_record?
-            park.prefecture_id = city.prefecture_id
-            park.save!
-          end
-          park
         end
     end
   end
