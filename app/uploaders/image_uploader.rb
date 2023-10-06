@@ -8,8 +8,8 @@ class ImageUploader < CarrierWave::Uploader::Base
   attr_accessor :prefecture_name, :city_name, :taken_at
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  # storage :file
+  storage :fog
 
   def asset_host
     'http://localhost:3001'
