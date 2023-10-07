@@ -8,7 +8,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   attr_accessor :prefecture_name, :city_name, :taken_at
 
   # Choose what kind of storage to use for this uploader:
-  if production?
+  if Rails.env.production?
     storage :fog
   else
     storage :file
