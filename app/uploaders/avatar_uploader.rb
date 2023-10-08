@@ -11,9 +11,18 @@ class AvatarUploader < CarrierWave::Uploader::Base
   else
     storage :file
   end
-
+  # 画像ダウンロード時のURLを設定
   def asset_host
-    'http://localhost:3001'
+    if Rails.env.production?
+      'https://d37ypgy0y1gzua.cloudfront.net'
+    else
+      'http://localhost:3001'
+    end
+  end
+
+  # 画像ダウンロード時のURLを上書き(defaultだと保存したパスがasset_hostに適応される。)
+  def url(*_args)
+    "#{asset_host}/#{store_dir}/#{identifier}"
   end
 
   # Override the directory where uploaded files will be stored.
