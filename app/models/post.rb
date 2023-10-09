@@ -17,8 +17,9 @@ class Post < ApplicationRecord
   def self.from_the_last_week
     where('created_at > ?', 1.week.ago)
   end
-  # いいねの多い順に投稿を取得
-  def self.sort_by_recent_likes
-    all.to_a.sort_by { |post| post.images.sum(&:likes_count) }.reverse
+  # いいねが５以上をいいねの多い順に投稿を取得
+  def self.sort_by_likes_with_minimum_five
+    all.select { |post| post.images.sum(&:likes_count) >= 5 }
+       .sort_by { |post| post.images.sum(&:likes_count) }.reverse
   end
 end
