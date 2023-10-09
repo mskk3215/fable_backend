@@ -8,8 +8,9 @@ module Api
       def index
         user_id = params[:user_id].presence || current_user.id
         images_query = Image.where(user_id:)
+        page_size = params[:page_size].presence
 
-        @images = images_query.order(created_at: :desc).includes(:insect, :city).page(params[:page]).per(20)
+        @images = images_query.order(created_at: :desc).includes(:insect, :city).page(params[:page]).per(page_size)
         @total_images_count = images_query.count
 
         render 'api/v1/images/index'
