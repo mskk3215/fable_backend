@@ -72,3 +72,7 @@ gem 'rails-i18n'
 gem 'kaminari'
 
 gem 'activerecord-import'
+
+gem "aws-sdk-s3", require: false
+gem 'fog-aws'
+
