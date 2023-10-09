@@ -11,7 +11,6 @@ CarrierWave.configure do |config|
       aws_access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID_FOR_FABLE', nil),
       aws_secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY_FOR_FABLE', nil),
       region: 'us-east-1',
-      path_style: true
     }
   end
 end
