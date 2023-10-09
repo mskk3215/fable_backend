@@ -24,4 +24,12 @@ class Image < ApplicationRecord
   def destroy_parent_post_if_no_images
     post.destroy if post.images.empty?
   end
+  # オプションによって並び替える
+  def self.sort_by_option(option)
+    case option
+    when 0 then order(created_at: :desc)
+    when 1 then order(taken_at: :desc)
+    when 2 then order(likes_count: :desc)
+    end
+  end
 end
