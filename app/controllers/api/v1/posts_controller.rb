@@ -12,7 +12,7 @@ module Api
         when 1
           @posts = posts_query.for_followed_users(current_user).page(params[:page]).per(5)
         when 2
-          @posts = posts_query.from_the_last_week.page(params[:page]).per(5).sort_by_recent_likes
+          @posts = posts_query.from_the_last_week.page(params[:page]).per(5).sort_by_likes_with_minimum_five
         end
         render 'api/v1/posts/index'
       end
