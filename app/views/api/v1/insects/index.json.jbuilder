@@ -2,5 +2,5 @@
 
 json.array! @insects do |insect|
   json.name insect[:name]
-  json.availableSexes insect[:availableSexes]
+  json.available_sexes insect[:available_sexes]
 end
