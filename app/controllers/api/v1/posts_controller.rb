@@ -6,7 +6,7 @@ module Api
       def index
         posts_query = Post.fetch_all_with_includes
 
-        case params[:tabValue].to_i
+        case params[:tab_value].to_i
         when 0
           @posts = posts_query.page(params[:page]).per(5)
         when 1
