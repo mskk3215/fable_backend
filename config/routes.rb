@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       get '/logged_in', to: 'sessions#logged_in?'
       # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除
       resources :users, only: %i[index create], module: :users do
+        member do
+          get 'confirm_email', to: 'users#confirm_email', as: 'confirm_email_user'
+        end
         resource :profile, only: %i[update], controller: :profile
         resource :password, only: %i[update], controller: :password
         resources :relationships, only: %i[create destroy]
