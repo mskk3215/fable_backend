@@ -293,6 +293,7 @@ GEM
     timeout (0.3.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    unicode (0.4.4.4)
     unicode-display_width (2.3.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -332,6 +333,7 @@ DEPENDENCIES
   rubocop-rspec
   rubyzip
   tzinfo-data
+  unicode
 
 RUBY VERSION
    ruby 3.1.2p20
