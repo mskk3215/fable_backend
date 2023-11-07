@@ -7,12 +7,13 @@ Rails.application.routes.draw do
       post '/login',    to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#logged_in?'
-      # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除
+      # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除, 統計情報取得
       resources :users, only: %i[index create] do
         scope module: :users do
-          resource :profile, only: %i[update], controller: :profile
-          resource :password, only: %i[update], controller: :password
+          resource :profile, only: %i[update]
+          resource :password, only: %i[update]
           resources :relationships, only: %i[create destroy]
+          resources :statistics, only: %i[index]
         end
       end
 
