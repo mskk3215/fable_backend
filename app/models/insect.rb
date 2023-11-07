@@ -5,4 +5,5 @@ class Insect < ApplicationRecord
   validates :sex, presence: true
 
   has_many :images, dependent: :destroy
+  belongs_to :biological_family, dependent: :destroy
 end
