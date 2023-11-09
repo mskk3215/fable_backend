@@ -16,6 +16,7 @@ Rails.application.routes.draw do
           resources :statistics, only: %i[index]
         end
       end
+      resources :rankings, only: %i[index]
 
       resources :posts, only: %i[index create destroy]
 
