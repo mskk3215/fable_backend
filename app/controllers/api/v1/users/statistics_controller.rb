@@ -2,6 +2,7 @@
 
 class Api::V1::Users::StatisticsController < ApplicationController
   include StatisticsQueryConcern
+  before_action :check_user_match, only: %i[index]
 
   def index
     build_search_query
@@ -12,4 +13,12 @@ class Api::V1::Users::StatisticsController < ApplicationController
 
     render 'api/v1/users/statistics/index'
   end
+
+  private
+
+    def check_user_match
+      return if current_user.id == params[:user_id].to_i
+
+      render json: { status: 401, message: 'Unauthorized' }
+    end
 end
