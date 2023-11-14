@@ -28,11 +28,16 @@ image_filenames.each do |image_path|
   # postsテーブルのデータ作成
   post = Post.create!(user_id: user_id)
 
+  # ランダムな日時を生成
+  start_date = Time.new(2023, 7, 1)
+  end_date = Time.new(2023, 8, 31)
+  random_time = Time.at((end_date.to_f - start_date.to_f) * rand + start_date.to_f)
+
   # imagesテーブルのデータ作成
   image = Image.new(
     image: File.open(image_path),
-    created_at: "2023-08-10 13:55:13.469244",
-    taken_at: "2023-08-10 13:55:13.469244",
+    created_at: "2023-09-01 13:55:13.469244",
+    taken_at: random_time,
     insect_id: insect_id,
     park_id: park_id,
     city_id: city_id,
@@ -57,11 +62,16 @@ end
     park_id = park.id
     city_id = park.city_id
 
+    # ランダムな日時を生成
+    start_date = Time.new(2023, 7, 1)
+    end_date = Time.new(2023, 8, 31)    
+    random_time = Time.at((end_date.to_f - start_date.to_f) * rand + start_date.to_f)
+    
     # imagesテーブルのデータ作成
     image = Image.new(
       image: File.open(image_path),
-      created_at: "2023-08-10 13:55:13.469244",
-      taken_at: "2023-08-10 13:55:13.469244",
+      created_at: "2023-09-01 13:55:13.469244",
+      taken_at: random_time,
       insect_id: insect_id,
       park_id: park_id,
       city_id: city_id,
