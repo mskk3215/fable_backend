@@ -23,7 +23,6 @@ Zip::File.open_buffer(response.body) do |zf|
   end
 end
 
-existing_prefectures = Prefecture.pluck(:name).to_set
 existing_cities = City.joins(:prefecture).pluck('cities.name', 'prefectures.name').map { |c, p| "#{c}_#{p}" }.to_set
 
 prefectures_to_insert = []
@@ -35,12 +34,10 @@ CSV.foreach(save_path, encoding: 'Shift_JIS:UTF-8').with_index do |row, index|
   pref_name = row[CSVROW_PREFNAME]
   city_name = row[CSVROW_CITYNAME]
 
-  if !existing_prefectures.include?(pref_name)
+  pref = Prefecture.find_by(name: pref_name)
+  unless pref
     pref = Prefecture.new(name: pref_name)
-    prefectures_to_insert << pref
-    existing_prefectures.add(pref_name)
-  else
-    pref = Prefecture.find_by(name: pref_name)
+    pref.save!
   end
 
   city_key = "#{city_name}_#{pref_name}"
@@ -52,15 +49,12 @@ CSV.foreach(save_path, encoding: 'Shift_JIS:UTF-8').with_index do |row, index|
 
   # 一定のバッチサイズに達したらインサートして、配列を空にする
   if ((index + 1) % BATCH_SIZE).zero?
-    Prefecture.import(prefectures_to_insert, on_duplicate_key_ignore: true)
     City.import(cities_to_insert, on_duplicate_key_ignore: true)
-    prefectures_to_insert.clear
     cities_to_insert.clear
   end
 end
 
 # 残りのデータをインサート
-Prefecture.import(prefectures_to_insert, on_duplicate_key_ignore: true) unless prefectures_to_insert.empty?
 City.import(cities_to_insert, on_duplicate_key_ignore: true) unless cities_to_insert.empty?
 
 # 保存したCSVファイルを削除
