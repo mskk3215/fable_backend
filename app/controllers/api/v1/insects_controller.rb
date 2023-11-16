@@ -66,7 +66,9 @@ module Api
 
             uncollected_insect_park_data.map do |insect|
               found_in_park = nearest_parks.detect do |park|
-                park.images.any? { |image| image.insect_id == insect.id }
+                park.images.any? do |image|
+                  image.insect_id == insect.id
+                end && (params[:city].blank? || park.city.name == params[:city]) && (params[:prefecture].blank? || park.city.prefecture.name == params[:prefecture])
               end
               {
                 name: insect.name,
