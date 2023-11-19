@@ -76,3 +76,4 @@ gem 'activerecord-import'
 gem "aws-sdk-s3", require: false
 gem 'fog-aws'
 
+gem "unicode"
