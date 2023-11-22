@@ -17,7 +17,7 @@ module Api
                      end
 
                    else
-                     fetch_insect_availablesexes
+                     fetch_insect_data
                    end
 
         render 'api/v1/insects/index'
@@ -93,12 +93,10 @@ module Api
         end
 
         # autocomplete用の昆虫のリスト
-        def fetch_insect_availablesexes
-          if params[:query_word].present?
-            all_insects = Insect.where('name LIKE ?', "%#{params[:query_word]}%").limit(20)
-          end
+        def fetch_insect_data
+          all_insects = params[:query_word].present? ? Insect.where('name LIKE ?', "%#{params[:query_word]}%").limit(20) : []
 
-          all_insects.group_by(&:name).map do |name, insects|
+          Array(all_insects).group_by(&:name).map do |name, insects|
             { name:, available_sexes: insects.map(&:sex) }
           end
         end
