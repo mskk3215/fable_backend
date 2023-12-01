@@ -79,8 +79,7 @@ parks = [
   { name: '西郷山公園', post_code: '153-0042', address: '東京都目黒区青葉台2丁目10-28', latitude: 35.650464, longitude: 139.695905, city_id: 664, prefecture_id: 13 },
   { name: '国営昭和記念公園', post_code: '190-0015', address: '東京都立川市東京都立川市緑町3173', latitude: 35.709398, longitude: 139.397383, city_id: 679,
     prefecture_id: 13 },
-  { name: '石神井公園', post_code: '177-0045', address: '東京都練馬区石神井台、石神井町', latitude: 35.737959, longitude: 139.598994, city_id: 674, prefecture_id: 13 }
-
+ 
 ]
 
 parks.each do |park|
