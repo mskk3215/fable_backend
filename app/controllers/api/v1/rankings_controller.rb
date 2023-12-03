@@ -13,7 +13,7 @@ class Api::V1::RankingsController < ApplicationController
                              .limit(100)
                              .map do |user|
       collection_rate = @insect_count.zero? ? 0 : (user.total_insect_count.to_f / @insect_count * 100).round(1)
-      { name: user.nickname, collection_rate: }
+      { user_id:user.id, name: user.nickname, collection_rate: }
     end
     render 'api/v1/rankings/index'
   end
