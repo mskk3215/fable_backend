@@ -15,10 +15,25 @@ module Api
           nickname: @user.nickname,
           avatar: @user.avatar.url,
           email: email_condition ? @user.email : nil,
-          following: current_user.present? ? @user.following.select(:id, :nickname, :avatar) : nil,
-          followers: current_user.present? ? @user.followers.select(:id, :nickname, :avatar) : nil
+          following: if current_user.present?
+                       @user.following.map do |following|
+                         {
+                           id: following.id,
+                           nickname: following.nickname,
+                           avatar: following.avatar.url
+                         }
+                       end
+                     end,
+          followers: if current_user.present?
+                       @user.followers.map do |follower|
+                         {
+                           id: follower.id,
+                           nickname: follower.nickname,
+                           avatar: follower.avatar.url
+                         }
+                       end
+                     end
         }
-
         render 'api/v1/users/index'
       end
 
