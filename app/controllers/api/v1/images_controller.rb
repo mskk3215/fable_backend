@@ -3,16 +3,22 @@
 module Api
   module V1
     class ImagesController < ApplicationController
+      skip_before_action :ensure_logged_in, only: %i[index]
       before_action :set_image, only: %i[bulk_update destroy]
 
       def index
-        user_id = params[:user_id].presence || current_user.id
-        images_query = Image.where(user_id:).sort_by_option(params[:sort_option].to_i)
+        if current_user.present?
+          user_id = params[:user_id].presence || current_user.id
+          images_query = Image.where(user_id:).sort_by_option(params[:sort_option].to_i)
 
-        page_size = params[:page_size].presence
-        @images = images_query.includes(:insect, :city).page(params[:page]).per(page_size)
-        @total_images_count = images_query.count
-
+          page_size = params[:page_size].presence
+          @images = images_query.includes(:insect, :city).page(params[:page]).per(page_size)
+          @total_images_count = images_query.count
+        else
+          images_query = Image.where(user_id: params[:user_id])
+          @images = images_query.order(created_at: :desc).limit(12)
+          @total_images_count = images_query.count
+        end
         render 'api/v1/images/index'
       end
 
