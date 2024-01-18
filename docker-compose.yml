@@ -64,20 +64,20 @@ services:
     # networks:
     #   - backend
 
-  # # ngnixコンテナ
-  # web:
-  #   container_name: nginx
-  #   build:
-  #     context: ./nginx
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ./nginx/log:/var/log/nginx
-  #     - public-data:/backend/public
-  #     - tmp-data:/backend/tmp
-  #   ports:
-  #     - 80:80
-  #   depends_on:
-  #     - api
+  # ngnixコンテナ
+  web:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx/log:/var/log/nginx
+      - public-data:/backend/public
+      - tmp-data:/backend/tmp
+    ports:
+      - 80:80
+    depends_on:
+      - api
 
 # volumeの定義
 volumes:
