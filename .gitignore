@@ -9,6 +9,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
+*.log
 /tmp/*
 !/log/.keep
 !/tmp/.keep
@@ -30,3 +31,5 @@
 /config/master.key
 
 /public/uploads
+
+.env
