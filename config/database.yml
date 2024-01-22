@@ -17,9 +17,9 @@ default: &default
 development:
   <<: *default
   database: fable_backend_development
-  username: <%= ENV['DB_USERNAME'] %>
+  username: <%= ENV['DB_USERNAME'] %> # gem dotenvを使用してアプリ起動時に.env読み込み
   password: <%= ENV['DB_PASSWORD'] %>
-  socket: /tmp/mysql.sock
+  host: db
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -29,7 +29,7 @@ test:
   database: fable_backend_test
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
-  socket: /tmp/mysql.sock
+  host: db
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is

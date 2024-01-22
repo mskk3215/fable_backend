@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  # dbコンテナ
+  db:
+    container_name: db
+    image: mysql:8.0.35
+    # .envファイルを読み込む
+    env_file:
+      - ./.env
+    volumes:
+      - mysql-db:/var/lib/mysql
+    ports:
+      - 3306:3306 # コンテナ側:ホスト側
+    # 文字コード
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --host-cache-size=0
+    # コンテナが正常に起動したかどうかのチェック
+    healthcheck:
+      #ヘルスチェック方法
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "--password=$$DB_PASSWORD",
+        ]
+      #チェックの間隔
+      interval: 10s
+      #タイムアウト時間
+      timeout: 5s
+      #リトライ回数
+      retries: 5
+
+  # backendコンテナ
+  api:
+    container_name: backend
+    build: .
+    env_file:
+      - ./.env
+    environment:
+      RAILS_ENV: development
+      GOOGLE_MAP_API_KEY: ${GOOGLE_MAP_API_KEY}
+      # RAILS_ENV: production
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec pumactl start"
+    volumes:
+      - .:/backend
+      - public-data:/backend/public
+      - tmp-data:/backend/tmp
+      - ./log:/backend/log
+    ports:
+      - 3001:3001
+    # t：インタラクティブモード
+    tty: true
+    # i：標準入力を開く
+    stdin_open: true
+    # dbのhelthcheckが成功したら起動
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ngnixコンテナ
+  web:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx/log:/var/log/nginx
+      - public-data:/backend/public
+      - tmp-data:/backend/tmp
+    ports:
+      - 80:80
+    depends_on:
+      - api
+
+# volumeの定義
+volumes:
+  mysql-db:
+  public-data:
+  tmp-data:
