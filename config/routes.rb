@@ -30,6 +30,8 @@ Rails.application.routes.draw do
       resources :parks, only: %i[index]
       resources :insects, only: %i[index]
       resources :prefectures, only: %i[index]
+      # AWSヘルスチェック用
+      get '/health', to: 'health#index'
     end
   end
 end
