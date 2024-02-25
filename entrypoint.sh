@@ -19,17 +19,12 @@ echo "Database is up!"
 # if ! mysql -h "db" -u "root" --password="$DB_PASSWORD" -e 'use fable_backend_development'; then
 # 本番環境
 if ! mysql -h "$DB_HOST" -u "$DB_USERNAME" --password="$DB_PASSWORD" -e "use $DB_DATABASE;" ; then
-
   echo "Creating database..."
   rails db:create
 fi
 
 rails db:migrate
 
-# if ! rails runner 'User.exists?' ; then
-#   echo "Seeding database..."
-#   rails db:seed
-# fi
 # データベースが空の場合、seedを実行
 if ! rails runner "exit User.exists? ? 0 : 1"; then
   echo "Seeding database..."
