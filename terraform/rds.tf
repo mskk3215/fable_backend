@@ -91,3 +91,31 @@ resource "aws_db_instance" "mysql" {
     Env     = var.environment
   }
 }
+# ----------------------
+# SSM Parameter Store
+# ----------------------
+resource "aws_ssm_parameter" "db_name" {
+  name  = "/${var.project}/${var.environment}/backend/MYSQL_DATABASE"
+  type  = "String"
+  value = aws_db_instance.mysql.db_name
+}
+resource "aws_ssm_parameter" "db_username" {
+  name  = "/${var.project}/${var.environment}/backend/MYSQL_USERNAME"
+  type  = "SecureString"
+  value = aws_db_instance.mysql.username
+}
+resource "aws_ssm_parameter" "db_password" {
+  name  = "/${var.project}/${var.environment}/backend/MYSQL_PASSWORD"
+  type  = "SecureString"
+  value = random_string.db_password.result
+}
+resource "aws_ssm_parameter" "db_host" {
+  name  = "/${var.project}/${var.environment}/backend/MYSQL_HOST"
+  type  = "String"
+  value = aws_db_instance.mysql.address
+}
+resource "aws_ssm_parameter" "db_port" {
+  name  = "/${var.project}/${var.environment}/backend/MYSQL_PORT"
+  type  = "String"
+  value = aws_db_instance.mysql.port
+}
