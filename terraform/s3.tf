@@ -68,3 +68,12 @@ data "aws_iam_policy_document" "s3_static_bucket" {
     }
   }
 }
+# ----------------------
+# SSM Parameter Store
+# ----------------------
+resource "aws_ssm_parameter" "aws_bucket" {
+  name  = "/${var.project}/${var.environment}/backend/aws_bucket"
+  type  = "String"
+  value = aws_s3_bucket.s3_static_bucket.id
+  # overwrite = true
+}
