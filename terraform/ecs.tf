@@ -112,7 +112,7 @@ resource "aws_ecs_task_definition" "backend" {
           valueFrom : aws_ssm_parameter.db_port.arn
         },
         {
-          name : "GOOGLE_API_KEY"
+          name : "GOOGLE_MAP_API_KEY"
           valueFrom : data.aws_ssm_parameter.google_api_key.arn
         },
         {
