@@ -208,8 +208,8 @@ resource "aws_ecs_service" "backend" {
   }
   load_balancer {
     target_group_arn = aws_lb_target_group.alb_tg_backend.arn
-    container_name   = "${var.project}-${var.environment}-backend-container"
-    container_port   = 3001
+    container_name   = "${var.project}-${var.environment}-nginx-container"
+    container_port   = 80
   }
 }
 
