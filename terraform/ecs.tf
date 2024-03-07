@@ -124,7 +124,7 @@ resource "aws_ecs_task_definition" "backend" {
         logDriver = "awslogs"
         options = {
           awslogs-region : "ap-northeast-1"
-          awslogs-group : aws_cloudwatch_log_group.backend_app.name
+          awslogs-group : aws_cloudwatch_log_group.backend.name
           awslogs-stream-prefix : "ecs"
         }
       }
@@ -137,7 +137,7 @@ resource "aws_ecs_task_definition" "backend" {
         logDriver = "awslogs"
         options = {
           awslogs-region : "ap-northeast-1"
-          awslogs-group : aws_cloudwatch_log_group.backend_middleware.name
+          awslogs-group : aws_cloudwatch_log_group.backend.name
           awslogs-stream-prefix : "ecs"
         }
       }
@@ -259,16 +259,11 @@ data "aws_ssm_parameter" "rails_env" {
 # CloudWatch Log Group
 # ----------------------
 resource "aws_cloudwatch_log_group" "frontend" {
-  name              = "/ecs/${var.project}/frontend"
+  name              = "/ecs/${var.project}/frontend/fable-production-frontend-task-definition"
   retention_in_days = 30
 }
 
-resource "aws_cloudwatch_log_group" "backend_middleware" {
-  name              = "/ecs/${var.project}/backend/middleware"
-  retention_in_days = 30
-}
-
-resource "aws_cloudwatch_log_group" "backend_app" {
-  name              = "/ecs/${var.project}/backend/app"
+resource "aws_cloudwatch_log_group" "backend" {
+  name              = "/ecs/${var.project}/backend/fable-production-backend-task-definition"
   retention_in_days = 30
 }
