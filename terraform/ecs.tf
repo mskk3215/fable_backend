@@ -45,11 +45,11 @@ resource "aws_ecs_task_definition" "frontend" {
       secrets = [
         {
           name : "HOSTNAME"
-          valueFrom : data.aws_ssm_parameter.google_api_key.arn
+          valueFrom : data.aws_ssm_parameter.host_name.arn
         },
         {
           name : "NEXT_PUBLIC_BASE_URL"
-          valueFrom : data.aws_ssm_parameter.google_api_key.arn
+          valueFrom : data.aws_ssm_parameter.next_public_base_url.arn
         },
         {
           name : "NEXT_PUBLIC_GOOGLE_MAP_API"
@@ -216,6 +216,14 @@ resource "aws_ecs_service" "backend" {
 # ----------------------
 # SSM Parameter
 # ----------------------
+# Frontend
+data "aws_ssm_parameter" "host_name" {
+  name = "/${var.project}/${var.environment}/frontend/hostname"
+}
+data "aws_ssm_parameter" "next_public_base_url" {
+  name = "/${var.project}/${var.environment}/frontend/NEXT_PUBLIC_BASE_URL"
+}
+# Backend
 data "aws_ssm_parameter" "db_name" {
   name = "/${var.project}/${var.environment}/backend/MYSQL_DATABASE"
 }
