@@ -25,8 +25,8 @@ resource "aws_ecs_task_definition" "frontend" {
     operating_system_family = "LINUX"
     cpu_architecture        = "ARM64"
   }
-  cpu                = 256
-  memory             = 512
+  cpu                = 1024 # 1 vCPU
+  memory             = 3072 # 3GB
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn      = aws_iam_role.ecs_task_execution_role.arn
   container_definitions = jsonencode([
@@ -69,8 +69,8 @@ resource "aws_ecs_task_definition" "backend" {
     operating_system_family = "LINUX"
     cpu_architecture        = "ARM64"
   }
-  cpu                = 256
-  memory             = 512
+  cpu                = 1024 # db:seedでのメモリ使用量が多いため、メモリを増やす
+  memory             = 3072
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn      = aws_iam_role.ecs_task_execution_role.arn
   container_definitions = jsonencode([
