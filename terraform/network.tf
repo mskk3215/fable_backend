@@ -137,7 +137,6 @@ resource "aws_route_table_association" "private_rt_1d" {
 # ----------------------
 # Internet Gateway
 # ----------------------
-# Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
@@ -146,7 +145,6 @@ resource "aws_internet_gateway" "igw" {
     Env     = var.environment
   }
 }
-# route
 resource "aws_route" "public_rt_igw_r" {
   route_table_id         = aws_route_table.public_rt.id
   destination_cidr_block = "0.0.0.0/0" # VPC内にマッチする他のルートがないすべてのトラフィック
