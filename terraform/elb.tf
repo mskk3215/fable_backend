@@ -45,7 +45,7 @@ resource "aws_lb_listener" "alb_listener_https" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.tokyo_cert.arn # 証明書のARN
+  certificate_arn   = aws_acm_certificate.tokyo_cert_sub.arn # 証明書のARN
   # デフォルトのリスナールール
   default_action {
     type             = "forward"
