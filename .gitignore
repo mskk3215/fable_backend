@@ -33,3 +33,43 @@
 /public/uploads
 
 .env
+
+### Terraform関連の設定 ###
+
+# ローカルの.terraformディレクトリを無視
+**/.terraform/*
+
+# .tfstate ファイルを無視
+*.tfstate
+*.tfstate.*
+
+# クラッシュログファイルを無視
+crash.log
+crash.*.log
+
+# 機密情報が含まれる可能性がある.tfvarsファイルを無視
+*.tfvars
+*.tfvars.json
+
+# リソースをローカルでオーバーライドするために使用されるoverrideファイルを無視
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# バージョン管理に含めたいオーバーライドファイルがある場合は、否定パターンを使用
+# !example_override.tf
+
+# terraform plan コマンドの出力ファイル tfplan を無視
+# 例: *tfplan*
+
+# CLI構成ファイルを無視
+.terraformrc
+terraform.rc
+
+# キーペアファイルを無視
+*keypair*
+
+# 圧縮ファイルを無視
+*.gz
+*.zip

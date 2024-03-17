@@ -14,7 +14,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   # 画像ダウンロード時のURLを設定
   def asset_host
     if Rails.env.production?
-      'https://d37ypgy0y1gzua.cloudfront.net'
+      'https://fablesearch.com'
     else
       'http://localhost:3001'
     end
