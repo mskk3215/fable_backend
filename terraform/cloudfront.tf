@@ -64,7 +64,7 @@ resource "aws_cloudfront_distribution" "cf" {
       restriction_type = "none"
     }
   }
-  aliases = ["dev.${var.domain}"]
+  aliases = [var.domain]
   # 証明書
   viewer_certificate {
     cloudfront_default_certificate = true                                  # CloudFrontのデフォルト証明書を使用する
