@@ -11,7 +11,7 @@ resource "aws_cloudfront_distribution" "cf" {
   # オリジン
   # ALB用
   origin {
-    domain_name = aws_route53_record.route53_record.fqdn
+    domain_name = aws_lb.alb.dns_name
     origin_id   = aws_lb.alb.name
     custom_origin_config {
       origin_protocol_policy = "match-viewer" # プロトコルポリシー
