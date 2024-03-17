@@ -80,14 +80,27 @@ resource "aws_cloudfront_origin_access_identity" "cf_s3_origin_access_identity" 
   comment = "s3 static bucket access identity"
 }
 
-# route53 record
-resource "aws_route53_record" "route53_cloudfront" {
+# route53 Aレコード(CloudFrontへのルーティングをマッピング用)
+resource "aws_route53_record" "route53_a_record_to_cloudfront" {
   zone_id = aws_route53_zone.route53_zone.zone_id
-  name    = "dev.${var.domain}"
+  name    = var.domain
   type    = "A"
+  # AWSリソースへのルーティング
   alias {
-    name                   = aws_cloudfront_distribution.cf.domain_name
-    zone_id                = aws_cloudfront_distribution.cf.hosted_zone_id
-    evaluate_target_health = true
+    name                   = aws_cloudfront_distribution.cf.domain_name    # CloudFrontのdomain名
+    zone_id                = aws_cloudfront_distribution.cf.hosted_zone_id # CloudFrontのZone ID
+    evaluate_target_health = false                                         # ターゲットのヘルスチェックを有効にするかどうか
+  }
+}
+# route53 AAAレコード(CloudFrontへのルーティングをマッピング用)
+resource "aws_route53_record" "route53_aaa_record_to_cloudfront" {
+  zone_id = aws_route53_zone.route53_zone.zone_id
+  name    = var.domain
+  type    = "AAAA"
+  # AWSリソースへのルーティング
+  alias {
+    name                   = aws_cloudfront_distribution.cf.domain_name    # CloudFrontのdomain名
+    zone_id                = aws_cloudfront_distribution.cf.hosted_zone_id # CloudFrontのZone ID
+    evaluate_target_health = false                                         # ターゲットのヘルスチェックを有効にするかどうか
   }
 }
