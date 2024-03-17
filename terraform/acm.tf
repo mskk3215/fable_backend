@@ -16,6 +16,12 @@ resource "aws_acm_certificate" "tokyo_cert" {
   }
   depends_on = [aws_route53_zone.route53_zone]
 }
+
+resource "aws_acm_certificate" "virginia_cert" {
+  provider                  = aws.virginia #デフォルトのプロバイダーを上書き
+  domain_name               = var.domain
+  validation_method         = "DNS"
+  subject_alternative_names = ["*.${var.domain}"]
   tags = {
     Name    = "${var.project}-${var.environment}-wildcard-sslcert"
     Project = var.project
@@ -50,18 +56,3 @@ resource "aws_acm_certificate_validation" "cert_valid" {
   validation_record_fqdns = [for record in aws_route53_record.route53_acm_dns_resolve : record.fqdn]
 }
 
-# For US East (N. Virginia) Region(CloudFront用)
-resource "aws_acm_certificate" "virginia_cert" {
-  provider          = aws.virginia #デフォルトのプロバイダーを上書き
-  domain_name       = "*.${var.domain}"
-  validation_method = "DNS"
-  tags = {
-    Name    = "${var.project}-${var.environment}-wildcard-sslcert"
-    Project = var.project
-    Env     = var.environment
-  }
-  lifecycle {
-    create_before_destroy = true
-  }
-  depends_on = [aws_route53_zone.route53_zone]
-}
