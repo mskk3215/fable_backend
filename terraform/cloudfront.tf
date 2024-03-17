@@ -69,7 +69,7 @@ resource "aws_cloudfront_distribution" "cf" {
   viewer_certificate {
     cloudfront_default_certificate = true                                  # CloudFrontのデフォルト証明書を使用する
     acm_certificate_arn            = aws_acm_certificate.virginia_cert.arn # ACM証明書のARN
-    minimum_protocol_version       = "TLSv1.2_2019"
+    minimum_protocol_version       = "TLSv1.2_2021"
     ssl_support_method             = "sni-only"
   }
 }
