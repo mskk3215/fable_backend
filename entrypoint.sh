@@ -14,6 +14,10 @@ until mysqladmin ping -h "$DB_HOST" -u "$DB_USERNAME" --password="$DB_PASSWORD" 
 done
 echo "Database is up!"
 
+# # データベースを初期化(準備用)
+# # export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+# # rails db:drop
+
 # tableを作成
 # 開発環境
 # if ! mysql -h "db" -u "root" --password="$DB_PASSWORD" -e 'use fable_backend_development'; then

@@ -10,7 +10,7 @@ CarrierWave.configure do |config|
       provider: 'AWS',
       aws_access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', nil),
       aws_secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', nil),
-      region: 'us-east-1',
+      region: 'ap-northeast-1',
       path_style: true
     }
   end
