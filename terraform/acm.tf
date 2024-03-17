@@ -28,7 +28,7 @@ resource "aws_acm_certificate" "virginia_cert" {
     Env     = var.environment
   }
   lifecycle {
-    create_before_destroy = true # 削除前に作成
+    create_before_destroy = true
   }
   depends_on = [aws_route53_zone.route53_zone]
 }

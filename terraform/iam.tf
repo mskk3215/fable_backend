@@ -65,7 +65,7 @@ resource "aws_iam_policy" "ecs_s3_access_policy" {
           "s3:PutObject",
           "s3:DeleteObject",
         ]
-        Effect = "Allow"
+        Effect   = "Allow"
         Resource = "${aws_s3_bucket.s3_static_bucket.arn}/*"
       },
     ]
