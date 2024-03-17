@@ -13,31 +13,6 @@ resource "aws_lb" "alb" {
     aws_subnet.public_subnet_1d.id
   ]
 }
-# HTTPリスナー
-resource "aws_lb_listener" "alb_listener_http" {
-  load_balancer_arn = aws_lb.alb.arn
-  port              = 80
-  protocol          = "HTTP"
-  # デフォルトのリスナールール
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.alb_tg_frontend.arn
-  }
-}
-# HTTPリスナールール
-resource "aws_lb_listener_rule" "http_rule_backend" {
-  listener_arn = aws_lb_listener.alb_listener_http.arn
-  priority     = 100
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.alb_tg_backend.arn
-  }
-  condition {
-    path_pattern {
-      values = ["/api/v1/*"]
-    }
-  }
-}
 
 # HTTPSリスナー
 resource "aws_lb_listener" "alb_listener_https" {
