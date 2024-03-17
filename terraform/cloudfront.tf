@@ -7,6 +7,7 @@ resource "aws_cloudfront_distribution" "cf" {
   is_ipv6_enabled = true # IPv6を有効にするかどうか
   comment         = "cache distribution"
   price_class     = "PriceClass_All"
+  http_version    = "http2and3"
 
   # オリジン
   # ALB用
