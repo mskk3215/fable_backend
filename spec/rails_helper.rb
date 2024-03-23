@@ -83,4 +83,16 @@ RSpec.configure do |config|
   # # テスト用のヘルパーメソッドを定義
   config.include Features::SessionHelpers, type: :feature
   config.include Features::SessionHelpers, type: :request
+
+  # database cleanerの設定
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 end
