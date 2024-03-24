@@ -37,5 +37,8 @@ class PostForm
     true
   rescue ActiveRecord::RecordInvalid
     false
+  rescue StandardError => e
+    Rails.logger.error "Unexpected error of type #{e.class} in PostForm: #{e.message}"
+    false
   end
 end
