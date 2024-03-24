@@ -73,3 +73,6 @@ terraform.rc
 # 圧縮ファイルを無視
 *.gz
 *.zip
+
+# test coverageを無視
+/coverage/*
