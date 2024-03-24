@@ -83,7 +83,7 @@ RSpec.describe User, type: :model do
     end
 
     it '平文のパスワードと保存されているパスワードハッシュが一致しない' do
-      expect(@user.authenticate('password')).to eq(false)
+      expect(@user.authenticate('password')).to be_falsey
     end
   end
 
