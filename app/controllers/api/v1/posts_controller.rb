@@ -20,9 +20,9 @@ module Api
       def create
         form = PostForm.new(current_user:, images: post_params[:image])
         if form.save
-          render json: { status: :created }
+          render json: {}, status: :created
         else
-          render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
+          render json: { error_messages: form.errors.full_messages }, status: :unprocessable_entity
         end
       end
 

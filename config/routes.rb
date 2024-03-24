@@ -10,8 +10,8 @@ Rails.application.routes.draw do
       # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除, 統計情報取得
       resources :users, only: %i[index create] do
         scope module: :users do
-          resource :profile, only: %i[update]
-          resource :password, only: %i[update]
+          resource :profile, controller: 'profile', only: [:update]
+          resource :password, controller: 'password', only: %i[update]
           resources :relationships, only: %i[create destroy]
           resources :statistics, only: %i[index]
         end
