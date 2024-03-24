@@ -3,32 +3,55 @@
 require 'rails_helper'
 
 RSpec.describe Park, type: :model do
-  before do
-    @park = FactoryBot.create(:park)
+  let(:prefecture) { create(:prefecture) }
+  let(:city) { create(:city, prefecture:) }
+  let(:park_name) { '公園' }
+  let(:park) { create(:park, name: park_name, city:) }
+
+  describe '新規登録' do
+    it '必要な情報があれば登録できる' do
+      expect(park).to be_valid
+    end
+
+    it 'city_idが空では登録できない' do
+      park.city_id = nil
+      park.valid?
+      expect(park.errors.full_messages).to include('City must exist')
+    end
+
+    it 'prefecture_idが空では登録できない' do
+      park.prefecture_id = nil
+      park.valid?
+      expect(park.errors.full_messages).to include('Prefecture must exist')
+    end
   end
 
-  describe 'park新規登録' do
-    context 'parkを保存できる場合' do
-      it 'name,city_id,prefecture_idがあれば保存できる' do
-        expect(@park).to be_valid
+  # Parkモデルのクラスメソッドに対するテスト
+  describe '.find_or_create_park' do
+    context '存在する公園名が与えられた場合' do
+      it '既存の公園が返される' do
+        existing_park = create(:park, name: park_name, city:)
+        expect(Park.find_or_create_park(park_name, city)).to eq(existing_park)
       end
     end
 
-    context 'parkを保存できない場合' do
-      it 'nameが空では保存できない' do
-        @park.name = nil
-        @park.valid?
-        expect(@park.errors.full_messages).to include("Name can't be blank")
+    context '存在しない公園名が与えられた場合' do
+      let(:new_park_name) { '新しい公園' }
+
+      it '新しい公園が作成される' do
+        expect { Park.find_or_create_park(new_park_name, city) }.to change(Park, :count).by(1)
       end
-      it 'city_idが空では保存できない' do
-        @park.city_id = nil
-        @park.valid?
-        expect(@park.errors.full_messages).to include("City can't be blank")
+
+      it '新しく作成された公園が正しい市町村と県に関連付けられている' do
+        new_park = Park.find_or_create_park('新しい公園', city)
+        expect(new_park.city).to eq(city)
+        expect(new_park.prefecture).to eq(city.prefecture)
       end
-      it 'prefecture_idが空では保存できない' do
-        @park.prefecture_id = nil
-        @park.valid?
-        expect(@park.errors.full_messages).to include("Prefecture can't be blank")
+    end
+
+    context '公園名がない場合' do
+      it '公園名が空の場合はnilを返す' do
+        expect(Park.find_or_create_park('', city)).to be_nil
       end
     end
   end
