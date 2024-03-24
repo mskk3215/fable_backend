@@ -59,6 +59,11 @@ group :development do
 
 end
 
+group :test do
+  gem 'database_cleaner-active_record'
+  gem "simplecov", require: false
+end
+
 gem 'rename'
 
 gem 'carrierwave'
