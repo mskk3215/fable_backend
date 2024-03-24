@@ -48,6 +48,7 @@ module Api
                            .group_by { |insect| [insect.name, insect.sex] }
                            .map do |(name, sex), insects|
             {
+              id: insects.first.id,
               name:,
               sex:,
               biological_family: insects.first.biological_family.name,
@@ -58,7 +59,7 @@ module Api
 
         # 未採集の昆虫と公園のリスト
         def fetch_uncollected_insects(insect_park_data)
-          collected_insect_ids = insect_park_data.where(images: { user_id: current_user.id }).select(:insect_id)
+          collected_insect_ids = insect_park_data.where(images: { user_id: current_user.id }).pluck(:insect_id)
           uncollected_insect_park_data = insect_park_data.where.not(id: collected_insect_ids).distinct
 
           if params[:lat].present? && params[:lng].present?
@@ -71,6 +72,7 @@ module Api
                 end && (params[:city].blank? || park.city.name == params[:city]) && (params[:prefecture].blank? || park.city.prefecture.name == params[:prefecture])
               end
               {
+                id: insect.id,
                 name: insect.name,
                 sex: insect.sex,
                 biological_family: insect.biological_family.name,
@@ -83,6 +85,7 @@ module Api
               .group_by { |insect| [insect.name, insect.sex] }
               .map do |(name, sex), insects|
               {
+                id: insects.first.id,
                 name:,
                 sex:,
                 biological_family: insects.first.biological_family.name,
