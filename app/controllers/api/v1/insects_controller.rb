@@ -48,6 +48,7 @@ module Api
                            .group_by { |insect| [insect.name, insect.sex] }
                            .map do |(name, sex), insects|
             {
+              id: insects.first.id,
               name:,
               sex:,
               biological_family: insects.first.biological_family.name,
@@ -71,6 +72,7 @@ module Api
                 end && (params[:city].blank? || park.city.name == params[:city]) && (params[:prefecture].blank? || park.city.prefecture.name == params[:prefecture])
               end
               {
+                id: insect.id,
                 name: insect.name,
                 sex: insect.sex,
                 biological_family: insect.biological_family.name,
@@ -83,6 +85,7 @@ module Api
               .group_by { |insect| [insect.name, insect.sex] }
               .map do |(name, sex), insects|
               {
+                id: insects.first.id,
                 name:,
                 sex:,
                 biological_family: insects.first.biological_family.name,
