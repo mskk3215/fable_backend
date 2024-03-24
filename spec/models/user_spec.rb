@@ -78,11 +78,11 @@ RSpec.describe User, type: :model do
       @user.save
     end
     
-    it '平文のパスワードと保存されているパスワードハッシュが一致する' do
+    it '正しいパスワードと保存されているパスワードハッシュが一致する' do
       expect(@user.authenticate(@user.password)).to be(@user)
     end
 
-    it '平文のパスワードと保存されているパスワードハッシュが一致しない' do
+    it '間違ったパスワードと保存されているパスワードハッシュが一致しない' do
       expect(@user.authenticate('password')).to be_falsey
     end
   end
