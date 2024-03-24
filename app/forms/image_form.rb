@@ -31,6 +31,8 @@ class ImageForm
     else
       false
     end
+  rescue StandardError => e
+    Rails.logger.error "Unexpected error of type #{e.class} in ImageForm: #{e.message}"
     false
   end
 
