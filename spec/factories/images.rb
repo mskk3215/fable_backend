@@ -12,5 +12,12 @@ FactoryBot.define do
 
     taken_at { Faker::Date.between(from: 1.year.ago, to: Time.zone.today) }
     created_at { Faker::Date.between(from: 1.year.ago, to: Time.zone.today) }
+
+    after(:build) do |image, _evaluator|
+      if image.park
+        image.park = create(:park) unless image.park
+        image.city = image.park.city
+      end
+    end
   end
 end
