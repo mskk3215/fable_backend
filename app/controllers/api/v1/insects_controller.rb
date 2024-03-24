@@ -59,7 +59,7 @@ module Api
 
         # 未採集の昆虫と公園のリスト
         def fetch_uncollected_insects(insect_park_data)
-          collected_insect_ids = insect_park_data.where(images: { user_id: current_user.id }).select(:insect_id)
+          collected_insect_ids = insect_park_data.where(images: { user_id: current_user.id }).pluck(:insect_id)
           uncollected_insect_park_data = insect_park_data.where.not(id: collected_insect_ids).distinct
 
           if params[:lat].present? && params[:lng].present?
