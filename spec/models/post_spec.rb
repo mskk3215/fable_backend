@@ -15,7 +15,7 @@ RSpec.describe Post, type: :model do
     end
 
     context '投稿できない場合' do
-      it '紐づくユーザーが存在しないと投稿できない' do
+      it 'userがないと投稿できない' do
         post.user = nil
         post.valid?
         expect(post.errors.full_messages).to include('User must exist')
