@@ -59,4 +59,8 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # デフォルトのロケールを英語に設定
+  config.i18n.default_locale = :en
+
 end
