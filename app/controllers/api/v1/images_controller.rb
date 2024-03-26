@@ -13,12 +13,11 @@ module Api
 
           page_size = params[:page_size].presence
           @images = images_query.includes(:insect, :city).page(params[:page]).per(page_size)
-          @total_images_count = images_query.count
         else
           images_query = Image.where(user_id: params[:user_id])
           @images = images_query.order(created_at: :desc).limit(12)
-          @total_images_count = images_query.count
         end
+        @total_images_count = images_query.count
         render 'api/v1/images/index'
       end
 
