@@ -10,14 +10,8 @@ class Park < ApplicationRecord
   belongs_to :city
   belongs_to :prefecture
 
-  # geocoded_by :full_street_address
-  # before_validation :geocode, if: :address_changed?
   reverse_geocoded_by :latitude, :longitude
   after_validation :reverse_geocode
-
-  # def full_street_address
-  #   [street, city, state, country].compact.join(', ')
-  # end
 
   # 公園名と市町村名から公園を検索し、なければ新規で作成する
   def self.find_or_create_park(park_name, city)
