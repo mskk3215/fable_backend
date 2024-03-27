@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
 
   helper_method :login!, :current_user
   before_action :ensure_logged_in
+  before_action :check_session_timeout
 
   def login!
     session[:user_id] = @user.id # sessionにユーザーIDを保持する
@@ -25,5 +26,13 @@ class ApplicationController < ActionController::API
       return if current_user
 
       render json: { status: 'ERROR', message: 'ログインしてください' }, status: :unauthorized
+    end
+
+    def check_session_timeout
+      if current_user && session[:last_seen] && session[:last_seen] < 30.minutes.ago
+        reset_session
+        render json: { error: 'セッションがタイムアウトしました。もう一度ログインしてください。' }, status: :unauthorized
+      end
+      session[:last_seen] = Time.current
     end
 end
