@@ -22,10 +22,10 @@ module Api
               )
                 render 'api/v1/users/update'
               else
-                render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+                render json: { error: [@user.errors.full_messages] }, status: :unprocessable_entity
               end
             else
-              render json: { errors: ['現在のパスワードが間違っています'] }, status: :unprocessable_entity
+              render json: { error: ['現在のパスワードが間違っています'] }, status: :unprocessable_entity
             end
           end
       end
