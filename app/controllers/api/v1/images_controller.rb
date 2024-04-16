@@ -26,7 +26,7 @@ module Api
         if form.save
           render json: { status: :updated }
         else
-          render json: { error_messages: '予期せぬエラーが発生しました' }, status: 500
+          render json: { error: [form.errors.full_messages] }, status: :unprocessable_entity
         end
       end
 
