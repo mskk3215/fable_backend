@@ -10,7 +10,7 @@ module Api
           current_user.following << @user
           render 'api/v1/users/relationships/create'
         rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-          render json: { status: 'ERROR', message: 'follow failed', data: e.message },
+          render json: { error: e.message },
                  status: :unprocessable_entity
         end
 
@@ -18,7 +18,7 @@ module Api
           current_user.following.delete(@user)
           render 'api/v1/users/relationships/destroy'
         rescue ActiveRecord::RecordNotDestroyed => e
-          render json: { status: 'ERROR', message: 'unfollow failed', data: e.message },
+          render json: { error: e.message },
                  status: :unprocessable_entity
         end
 

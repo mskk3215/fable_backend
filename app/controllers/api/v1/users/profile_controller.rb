@@ -20,7 +20,7 @@ module Api
                             avatar: profile_params[:avatar].presence || @user.avatar)
               render 'api/v1/users/update'
             else
-              render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+              render json: { error: [@user.errors.full_messages] }, status: :unprocessable_entity
             end
           end
       end

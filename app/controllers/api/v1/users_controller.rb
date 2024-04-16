@@ -46,7 +46,7 @@ module Api
 
           render 'api/v1/users/create'
         else
-          render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+          render json: { error: [@user.errors.full_messages] }, status: :unprocessable_entity
         end
       end
 
