@@ -9,7 +9,7 @@ module Api
           if @like.save
             render 'api/v1/images/likes/create'
           else
-            render json: { error: 'Unable to like this image.' }, status: :unprocessable_entity
+            render json: { error: ['いいねをすることができませんでした。'] }, status: :unprocessable_entity
           end
         end
 
@@ -19,7 +19,7 @@ module Api
             @like.destroy
             render 'api/v1/images/likes/destroy'
           else
-            render json: { error: 'Like not found' }, status: :not_found
+            render json: { error: ['いいねが見つかりません。'] }, status: :not_found
           end
         end
 
