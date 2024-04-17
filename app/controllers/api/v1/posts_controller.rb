@@ -22,7 +22,7 @@ module Api
         if form.save
           render json: {}, status: :created
         else
-          render json: { error_messages: form.errors.full_messages }, status: :unprocessable_entity
+          render json: { error: [form.errors.full_messages] }, status: :unprocessable_entity
         end
       end
 

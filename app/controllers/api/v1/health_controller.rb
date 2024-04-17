@@ -7,6 +7,6 @@ class Api::V1::HealthController < ApplicationController
     ActiveRecord::Base.connection.execute('SELECT 1')
     render json: { status: 'ok' }, status: :ok
   rescue StandardError => e
-    render json: { status: 'error', message: e.message }, status: :internal_server_error
+    render json: { status: 'error', error: e.message }, status: :internal_server_error
   end
 end
