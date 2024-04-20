@@ -35,11 +35,12 @@ class PostForm
       end
     end
     true
-  rescue ActiveRecord::RecordInvalid
+  rescue ActiveRecord::RecordInvalid => e
+    errors.add(:base, e.message)
     false
   rescue StandardError => e
     Rails.logger.error "Unexpected error of type #{e.class} in PostForm: #{e.message}"
-    self.error_message = e.message
+    errors.add(:base, "Unexpected error: #{e.message}")
     false
   end
 end
