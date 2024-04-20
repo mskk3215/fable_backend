@@ -13,7 +13,7 @@ module Api
           login!
           render 'api/v1/sessions/create'
         else
-          render json: { error: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。']  }, status: :unauthorized
+          render json: { error: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。'] }, status: :unauthorized
         end
       end
 
