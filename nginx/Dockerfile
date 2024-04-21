@@ -1,5 +1,5 @@
 # Nginxのバージョンは軽量版の「alpine」
-FROM nginx:alpine
+FROM --platform=linux/arm64/v8 nginx:alpine
 
 # インクルード用のディレクトリ内を削除
 RUN rm -f /etc/nginx/conf.d/*
