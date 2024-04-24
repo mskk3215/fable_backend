@@ -38,10 +38,10 @@ jobs:
       ## Build Docker Image Build
       - name: Build an Image for nginx
         run: |
-          docker build -t fable-production-nginx ./nginx
+          docker build --platform linux/arm64 -t fable-production-nginx ./nginx
       - name: Build an Image for backend
         run: |
-          docker build -t fable-production-backend .
+          docker build --platform linux/arm64 -t fable-production-backend .
       ## Login AWS
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
