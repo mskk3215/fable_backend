@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "frontend" {
   requires_compatibilities = ["FARGATE"]
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
   cpu                = 1024 # 1 vCPU
   memory             = 3072 # 3GB
@@ -67,7 +67,7 @@ resource "aws_ecs_task_definition" "backend" {
   requires_compatibilities = ["FARGATE"]
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
   cpu                = 1024 # db:seedでのメモリ使用量が多いため、メモリを増やす
   memory             = 3072
@@ -118,7 +118,11 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name : "RAILS_ENV"
           valueFrom : data.aws_ssm_parameter.rails_env.arn
-        }
+        },
+        {
+          name : "RAILS_MASTER_KEY"
+          valueFrom : data.aws_ssm_parameter.rails_master_key.arn
+        },
       ]
       logConfiguration = {
         logDriver = "awslogs"
@@ -254,7 +258,18 @@ data "aws_ssm_parameter" "google_api_key" {
 data "aws_ssm_parameter" "rails_env" {
   name = "/${var.project}/${var.environment}/backend/rails_env"
 }
-
+data "aws_ssm_parameter" "rails_master_key" {
+  name = "/${var.project}/${var.environment}/backend/RAILS_MASTER_KEY"
+}
+# ----------------------
+# data source
+# ----------------------
+data "aws_ecs_task_definition" "frontend" {
+  task_definition = aws_ecs_task_definition.frontend.family
+}
+data "aws_ecs_task_definition" "backend" {
+  task_definition = aws_ecs_task_definition.backend.family
+}
 # ----------------------
 # CloudWatch Log Group
 # ----------------------
