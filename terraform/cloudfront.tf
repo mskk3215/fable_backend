@@ -55,7 +55,7 @@ resource "aws_cloudfront_distribution" "cf" {
     origin_request_policy_id = "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
     response_headers_policy_id = "5cc3b908-e619-4b99-88e5-2cf7f45965bd"
     viewer_protocol_policy   = "redirect-to-https"
-    min_ttl                  = 0
+    min_ttl                  = 1
     default_ttl              = 86400
     max_ttl                  = 31536000
     compress                 = true # 圧縮するかどうか
