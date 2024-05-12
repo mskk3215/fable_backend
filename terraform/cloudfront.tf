@@ -51,10 +51,11 @@ resource "aws_cloudfront_distribution" "cf" {
     allowed_methods          = ["GET", "HEAD"]
     cached_methods           = ["GET", "HEAD"]
     target_origin_id         = aws_s3_bucket.s3_static_bucket.id #転送先のオリジンID
-    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
-    origin_request_policy_id = "b689b0a8-53d0-40ab-baf2-68738e2966ac"
+    cache_policy_id          = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    origin_request_policy_id = "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
+    response_headers_policy_id = "5cc3b908-e619-4b99-88e5-2cf7f45965bd"
     viewer_protocol_policy   = "redirect-to-https"
-    min_ttl                  = 0
+    min_ttl                  = 1
     default_ttl              = 86400
     max_ttl                  = 31536000
     compress                 = true # 圧縮するかどうか
