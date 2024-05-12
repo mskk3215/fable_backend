@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "frontend" {
   requires_compatibilities = ["FARGATE"]
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
   cpu                = 1024 # 1 vCPU
   memory             = 3072 # 3GB
@@ -67,7 +67,7 @@ resource "aws_ecs_task_definition" "backend" {
   requires_compatibilities = ["FARGATE"]
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
   cpu                = 1024 # db:seedでのメモリ使用量が多いため、メモリを増やす
   memory             = 3072
