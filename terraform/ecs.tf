@@ -118,7 +118,11 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name : "RAILS_ENV"
           valueFrom : data.aws_ssm_parameter.rails_env.arn
-        }
+        },
+        {
+          name : "RAILS_MASTER_KEY"
+          valueFrom : data.aws_ssm_parameter.rails_master_key.arn
+        },
       ]
       logConfiguration = {
         logDriver = "awslogs"
@@ -254,7 +258,18 @@ data "aws_ssm_parameter" "google_api_key" {
 data "aws_ssm_parameter" "rails_env" {
   name = "/${var.project}/${var.environment}/backend/rails_env"
 }
-
+data "aws_ssm_parameter" "rails_master_key" {
+  name = "/${var.project}/${var.environment}/backend/RAILS_MASTER_KEY"
+}
+# ----------------------
+# data source
+# ----------------------
+data "aws_ecs_task_definition" "frontend" {
+  task_definition = aws_ecs_task_definition.frontend.family
+}
+data "aws_ecs_task_definition" "backend" {
+  task_definition = aws_ecs_task_definition.backend.family
+}
 # ----------------------
 # CloudWatch Log Group
 # ----------------------
