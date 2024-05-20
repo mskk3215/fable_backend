@@ -8,11 +8,11 @@ module Api
 
         case params[:tab_value].to_i
         when 0
-          @posts = posts_query.page(params[:page]).per(5)
+          @posts = posts_query.page(params[:page]).per(2)
         when 1
-          @posts = posts_query.for_followed_users(current_user).page(params[:page]).per(5)
+          @posts = posts_query.for_followed_users(current_user).page(params[:page]).per(2)
         when 2
-          @posts = posts_query.from_the_last_week.page(params[:page]).per(5).sort_by_likes_with_minimum_five
+          @posts = posts_query.from_the_last_week.page(params[:page]).per(2).sort_by_likes_with_minimum_five
         end
         render 'api/v1/posts/index'
       end
