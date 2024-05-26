@@ -51,10 +51,6 @@ resource "aws_ecs_task_definition" "frontend" {
           name : "NEXT_PUBLIC_BASE_URL"
           valueFrom : data.aws_ssm_parameter.next_public_base_url.arn
         },
-        {
-          name : "NEXT_PUBLIC_GOOGLE_MAP_API"
-          valueFrom : data.aws_ssm_parameter.google_api_key.arn
-        }
       ]
     }
   ])
@@ -110,10 +106,6 @@ resource "aws_ecs_task_definition" "backend" {
         {
           name : "DB_PORT"
           valueFrom : aws_ssm_parameter.db_port.arn
-        },
-        {
-          name : "GOOGLE_MAP_API_KEY"
-          valueFrom : data.aws_ssm_parameter.google_api_key.arn
         },
         {
           name : "RAILS_ENV"
@@ -251,9 +243,6 @@ data "aws_ssm_parameter" "aws_secret_key" {
 }
 data "aws_ssm_parameter" "aws_bucket" {
   name = "/${var.project}/${var.environment}/backend/aws_bucket"
-}
-data "aws_ssm_parameter" "google_api_key" {
-  name = "/${var.project}/${var.environment}/backend/google_api_key"
 }
 data "aws_ssm_parameter" "rails_env" {
   name = "/${var.project}/${var.environment}/backend/rails_env"

@@ -47,18 +47,18 @@ resource "aws_cloudfront_distribution" "cf" {
 
   # S3用
   ordered_cache_behavior {
-    path_pattern             = "/uploads/*"
-    allowed_methods          = ["GET", "HEAD"]
-    cached_methods           = ["GET", "HEAD"]
-    target_origin_id         = aws_s3_bucket.s3_static_bucket.id #転送先のオリジンID
-    cache_policy_id          = "658327ea-f89d-4fab-a63d-7e88639e58f6"
-    origin_request_policy_id = "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
+    path_pattern               = "/uploads/*"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = aws_s3_bucket.s3_static_bucket.id #転送先のオリジンID
+    cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+    origin_request_policy_id   = "88a5eaf4-2fd4-4709-b370-b4c650ea3fcf"
     response_headers_policy_id = "5cc3b908-e619-4b99-88e5-2cf7f45965bd"
-    viewer_protocol_policy   = "redirect-to-https"
-    min_ttl                  = 1
-    default_ttl              = 86400
-    max_ttl                  = 31536000
-    compress                 = true # 圧縮するかどうか
+    viewer_protocol_policy     = "redirect-to-https"
+    min_ttl                    = 1
+    default_ttl                = 86400
+    max_ttl                    = 31536000
+    compress                   = true # 圧縮するかどうか
   }
   # アクセス制限
   restrictions {
