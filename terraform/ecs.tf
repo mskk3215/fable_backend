@@ -156,7 +156,7 @@ resource "aws_ecs_service" "frontend" {
   name                               = "${var.project}-${var.environment}-frontend-service"
   cluster                            = aws_ecs_cluster.ecs_cluster.id
   platform_version                   = "LATEST"
-  task_definition                    = aws_ecs_task_definition.frontend.arn
+  task_definition                    = "${aws_ecs_task_definition.frontend.family}:${max(aws_ecs_task_definition.frontend.revision, data.aws_ecs_task_definition.frontend.revision)}"
   desired_count                      = 1
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200
@@ -189,7 +189,7 @@ resource "aws_ecs_service" "backend" {
   name                               = "${var.project}-${var.environment}-backend-service"
   cluster                            = aws_ecs_cluster.ecs_cluster.id
   platform_version                   = "LATEST"
-  task_definition                    = aws_ecs_task_definition.backend.arn
+  task_definition                    = "${aws_ecs_task_definition.backend.family}:${max(aws_ecs_task_definition.backend.revision, data.aws_ecs_task_definition.backend.revision)}"
   desired_count                      = 1
   deployment_minimum_healthy_percent = 100
   deployment_maximum_percent         = 200
