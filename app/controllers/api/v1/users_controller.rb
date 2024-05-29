@@ -5,36 +5,21 @@ module Api
     class UsersController < ApplicationController
       skip_before_action :ensure_logged_in
 
-      def index
-        @user = params[:user_id].present? ? User.find(params[:user_id]) : current_user
+      def current
+        if current_user
+          @user = current_user
+          @user_data = user_data(@user)
+          render 'api/v1/users/show'
+        else
+          render json: { error: ['User not logged in'] }, status: :unauthorized
+        end
+      end
 
-        email_condition = (current_user.present? && current_user.id == params[:user_id].to_i) || params[:user_id].blank?
+      def show
+        @user = User.find(params[:id])
+        @user_data = user_data(@user)
 
-        @user_data = {
-          id: @user.id,
-          nickname: @user.nickname,
-          avatar: @user.avatar.url,
-          email: email_condition ? @user.email : nil,
-          following: if current_user.present?
-                       @user.following.map do |following|
-                         {
-                           id: following.id,
-                           nickname: following.nickname,
-                           avatar: following.avatar.url
-                         }
-                       end
-                     end,
-          followers: if current_user.present?
-                       @user.followers.map do |follower|
-                         {
-                           id: follower.id,
-                           nickname: follower.nickname,
-                           avatar: follower.avatar.url
-                         }
-                       end
-                     end
-        }
-        render 'api/v1/users/index'
+        render 'api/v1/users/show'
       end
 
       def create
@@ -54,6 +39,35 @@ module Api
 
         def user_params
           params.require(:user).permit(:nickname, :email, :password, :new_password, :avatar)
+        end
+
+        def user_data(_user)
+          email_condition = (current_user.present? && current_user.id == params[:id].to_i) || params[:id].blank?
+
+          {
+            id: @user.id,
+            nickname: @user.nickname,
+            avatar: @user.avatar.url,
+            email: email_condition ? @user.email : nil,
+            following: if current_user.present?
+                         @user.following.map do |following|
+                           {
+                             id: following.id,
+                             nickname: following.nickname,
+                             avatar: following.avatar.url
+                           }
+                         end
+                       end,
+            followers: if current_user.present?
+                         @user.followers.map do |follower|
+                           {
+                             id: follower.id,
+                             nickname: follower.nickname,
+                             avatar: follower.avatar.url
+                           }
+                         end
+                       end
+          }
         end
     end
   end
