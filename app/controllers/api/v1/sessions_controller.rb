@@ -23,7 +23,7 @@ module Api
       end
 
       def logged_in?
-        if @current_user
+        if current_user
           render 'api/v1/sessions/logged_in'
         else
           render json: { logged_in: false, message: 'ユーザーが存在しません' }
