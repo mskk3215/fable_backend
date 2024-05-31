@@ -8,7 +8,8 @@ Rails.application.routes.draw do
       delete '/logout', to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#logged_in?'
       # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除, 統計情報取得
-      resources :users, only: %i[index create] do
+      get '/users/current', to: 'users#current'
+      resources :users, only: %i[create show] do
         scope module: :users do
           resource :profile, controller: 'profile', only: [:update]
           resource :password, controller: 'password', only: %i[update]
