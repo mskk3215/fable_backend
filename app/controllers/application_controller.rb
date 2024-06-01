@@ -30,8 +30,7 @@ class ApplicationController < ActionController::API
 
     # sessionタイムアウトした場合はエラーを返す
     def check_session_timeout
-      # if current_user && session[:last_seen] && session[:last_seen] < 30.minutes.ago
-      if current_user && session[:last_seen] && session[:last_seen] < 10.seconds.ago
+      if current_user && session[:last_seen] && session[:last_seen] < 30.minutes.ago
         reset_session
         render json: { error: ['操作がない状態が続いた為、自動ログアウトさせていただきました。'] }, status: :unauthorized
       end
