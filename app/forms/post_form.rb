@@ -3,7 +3,7 @@
 class PostForm
   include ActiveModel::Model
 
-  attr_accessor :images, :current_user
+  attr_accessor :images, :current_user, :error_message
 
   def save
     post = Post.new(user: current_user)
@@ -35,9 +35,7 @@ class PostForm
       end
     end
     true
-  rescue ActiveRecord::RecordInvalid
-    false
-  rescue StandardError => e
+  rescue ActiveRecord::RecordInvalid, StandardError => e
     Rails.logger.error "Unexpected error of type #{e.class} in PostForm: #{e.message}"
     self.error_message = e.message
     false

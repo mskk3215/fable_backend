@@ -50,7 +50,7 @@ RSpec.describe 'パスワード更新' do
       end
 
       it 'エラーメッセージを返すこと' do
-        expect(json['errors']).to include('現在のパスワードが間違っています')
+        expect(json['error']).to include('現在のパスワードが間違っています')
       end
     end
   end
