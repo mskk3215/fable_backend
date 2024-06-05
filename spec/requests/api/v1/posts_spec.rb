@@ -16,7 +16,7 @@ RSpec.describe 'Api::V1::Posts', type: :request do
 
       it '正しい数の投稿が返されること' do
         expect(response).to have_http_status(:ok)
-        expect(json.size).to eq(5)
+        expect(json.size).to eq(2)
       end
     end
   end

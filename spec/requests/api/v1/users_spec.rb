@@ -12,7 +12,7 @@ RSpec.describe 'Api::V1::Users' do
       end
 
       it 'ユーザー情報を返す' do
-        get api_v1_users_path, params: { user_id: user.id }
+        get api_v1_users_current_path, params: { user_id: user.id }
 
         expect(response).to have_http_status(:ok)
         expect(json['user']['id']).to eq(user.id)
@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::Users' do
       end
 
       it 'メールアドレスを除く他のユーザー情報を返す' do
-        get api_v1_users_path, params: { user_id: user.id }
+        get api_v1_user_path(user.id)
 
         expect(response).to have_http_status(:ok)
         expect(json['user']['id']).to eq(user.id)
