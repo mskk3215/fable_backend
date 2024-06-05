@@ -47,8 +47,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-20.04
-    # only run the deployment on push to main branch
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [test] # このjobが実行される前に実行されるjobを指定
     steps:
       - name: Checkout
