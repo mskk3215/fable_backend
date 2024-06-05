@@ -7,8 +7,8 @@ FactoryBot.define do
     end
 
     image { Rack::Test::UploadedFile.new(image_path) }
-    association :user
-    association :post
+    user
+    post
 
     taken_at { Faker::Date.between(from: 1.year.ago, to: Time.zone.today) }
     created_at { Faker::Date.between(from: 1.year.ago, to: Time.zone.today) }
