@@ -4,8 +4,8 @@ FactoryBot.define do
   factory :park do
     name { Faker::Name.name }
 
-    association :city, factory: :city
-    association :prefecture, factory: :prefecture
+    city factory: %i[city]
+    prefecture factory: %i[prefecture]
   end
 
   factory :prefecture do
@@ -14,6 +14,6 @@ FactoryBot.define do
 
   factory :city do
     name { Faker::Address.city }
-    association :prefecture, factory: :prefecture
+    prefecture factory: %i[prefecture]
   end
 end

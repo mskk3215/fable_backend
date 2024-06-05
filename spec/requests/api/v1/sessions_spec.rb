@@ -26,7 +26,7 @@ RSpec.describe 'Api::V1::Sessions' do
       end
 
       it 'エラーメッセージを返す' do
-        expect(json['errors']).to include('ログインに失敗しました。', '入力した情報を確認して再度お試しください。')
+        expect(json['error']).to include('ログインに失敗しました。', '入力した情報を確認して再度お試しください。')
       end
     end
   end
