@@ -6,8 +6,8 @@ RSpec.describe 'Api::V1::Prefectures' do
   describe 'GET /api/v1/prefectures' do
     before do
       prefecture = create(:prefecture, name: '東京都')
-      city1 = create(:city, name: '新宿', prefecture:)
-      city2 = create(:city, name: '渋谷', prefecture:)
+      create(:city, name: '新宿', prefecture:)
+      create(:city, name: '渋谷', prefecture:)
     end
 
     it '都道府県とその市町村のリストを返すこと' do
