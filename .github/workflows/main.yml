@@ -1,9 +1,8 @@
 name: Backend's Deploy CI/CD
 
 on:
-  push: # Trigger the workflow on push events
+  push:
     branches: ["main"]
-  pull_request: # Trigger the workflow on pull request events
 env:
   AWS_REGION: ap-northeast-1
   ECS_SERVICE: fable-production-backend-service
@@ -13,25 +12,42 @@ permissions:
   contents: read
 
 jobs:
-  # backend Container Test
-  backend-test-build-image: # title of the job
-    name: backend Container - Test and Build # name of GitHub Action
-    runs-on: ubuntu-20.04 # environment for job to run on
+  test:
+    name: Test
+    runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3 # checkout the repo
-      ## Test
-      # - name: Run Tests
-      #   run: |
-      #     npm run test
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Set up Ruby
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.2
+          bundler-cache: true
+      # gem install
+      - name: Bundler and gem install
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3 --path vendor/bundle
+      # DB migration
+      - name: DB migration
+        run: |
+          cp config/database.yml.ci config/database.yml
+          bundle exec rails db:create RAILS_ENV=test
+          bundle exec rails db:migrate RAILS_ENV=test
+      # Rubocop
+      - name: Run Rubocop
+        run: bundle exec rubocop
+      # RSpec
+      - name: Run RSpec
+        run: bundle exec rspec
 
   # Deploy
   deploy:
     name: Deploy
     runs-on: ubuntu-20.04
-    needs: [backend-test-build-image] # このjobが実行される前に実行されるjobを指定
-    # only run the deployment on push to main branch
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test] # このjobが実行される前に実行されるjobを指定
     steps:
       - name: Checkout
         uses: actions/checkout@v3
