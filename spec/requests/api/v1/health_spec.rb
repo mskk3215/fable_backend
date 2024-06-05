@@ -22,7 +22,7 @@ RSpec.describe 'Health API' do
         get api_v1_health_path
 
         expect(response).to have_http_status(:internal_server_error)
-        expect(json).to eq({ 'status' => 'error', 'message' => 'some error' })
+        expect(json).to eq({ 'status' => 'error', 'error' => 'some error' })
       end
     end
   end
