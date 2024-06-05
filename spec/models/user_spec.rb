@@ -92,7 +92,7 @@ RSpec.describe User, type: :model do
       @uploader = AvatarUploader.new(@user, :avatar)
       # 画像処理有効かつ画像ファイルをアップロード
       AvatarUploader.enable_processing = true
-      File.open(Rails.root.join('public', 'images', 'test_image.png')) { |f| @uploader.store!(f) }
+      File.open(Rails.root.join('public/images/test_image.png')) { |f| @uploader.store!(f) }
     end
     after do
       # 画像処理無効化かつ画像ファイルを削除

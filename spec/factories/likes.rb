@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :like do
-    association :user
-    association :image
+    user
+    image
   end
 end
