@@ -3,6 +3,7 @@ name: Backend's Deploy CI/CD
 on:
   push:
     branches: ["main"]
+  pull_request:
 env:
   AWS_REGION: ap-northeast-1
   ECS_SERVICE: fable-production-backend-service
