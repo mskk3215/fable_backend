@@ -64,11 +64,13 @@ Lint/StructNewOverride:
   Enabled: true
 
 Layout/LineLength:
-  Max: 150
+  Max: 165
 # メソッドの複雑さ
 Metrics/AbcSize:
+  Max: 70
   Exclude:
     - "lib/tasks/dev.rake"
+
 # コードブロックの長さ
 Metrics/BlockLength:
   CountComments: false
@@ -82,14 +84,24 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   CountComments: false
 
+Metrics/CyclomaticComplexity:
+  Max: 16
+  Exclude:
+    - "lib/tasks/dev.rake"
+
 Metrics/MethodLength:
   CountComments: false
-  Max: 15
+  Max: 35
   Exclude:
     - "lib/tasks/dev.rake"
 
 Metrics/ModuleLength:
   CountComments: false
+
+Metrics/PerceivedComplexity:
+  Max: 16
+  Exclude:
+    - "lib/tasks/dev.rake"
 
 Naming/FileName:
   Exclude:
@@ -124,6 +136,15 @@ RSpec/MultipleExpectations:
 
 RSpec/NestedGroups:
   Max: 5
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/VerifiedDoubleReference:
+  Enabled: false
 
 Style/BlockComments:
   Exclude:

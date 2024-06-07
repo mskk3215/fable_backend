@@ -3,6 +3,6 @@ test:
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password: # 空
+  password: <%= ENV['DB_PASSWORD'] %>
   host: 127.0.0.1
   database: fable_backend_test
