@@ -6,8 +6,8 @@ class Post < ApplicationRecord
   
   # 全ての画像にinsect,park,city,user,likesを含めて作成日の降順で取得
   def self.fetch_all_with_includes
-    all.includes(images: %i[insect park city user
-                            likes]).order(created_at: :desc)
+    includes(images: %i[insect park city user
+                        likes]).order(created_at: :desc)
   end
   # フォローしているユーザーidを取得
   def self.for_followed_users(user)
