@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Insects' do
-  let(:new_user1) { create(:user) }
-  let(:new_user2) { create(:user) }
+  let(:user_with_many_insects) { create(:user) }
+  let(:user_with_single_insect) { create(:user) }
   let(:new_prefecture) { create(:prefecture) }
   let(:new_city) { create(:city, prefecture: new_prefecture) }
   let(:new_park) { create(:park, city: new_city) }
-  let!(:new_insects1) { create_list(:insect, 10) }
-  let!(:new_insects2) { create(:insect, name: 'カブトムシ') }
+  let!(:multiple_insects) { create_list(:insect, 10) }
+  let!(:single_insect) { create(:insect, name: 'カブトムシ') }
 
   describe 'GET /api/v1/insects' do
     context 'キーワードにマッチする昆虫のリストを取得する場合' do
@@ -26,8 +26,8 @@ RSpec.describe 'Api::V1::Insects' do
 
     context '採集済み昆虫のリストを取得する場合' do
       before do
-        login(new_user1)
-        create(:image, user: new_user1, insect: new_insects1.first, park: new_park)
+        login(user_with_many_insects)
+        create(:image, user: user_with_many_insects, insect: multiple_insects.first, park: new_park)
       end
 
       it '採集済み昆虫のリストを正しく取得できること' do
@@ -35,16 +35,16 @@ RSpec.describe 'Api::V1::Insects' do
 
         expect(response).to have_http_status(:ok)
         expect(json.size).to eq(1)
-        expect(json.first['insect_name']).to include(new_insects1.first.name)
+        expect(json.first['insect_name']).to include(multiple_insects.first.name)
       end
     end
 
     context '未採集昆虫のリストを取得する場合' do
       before do
-        login(new_user2)
-        create(:image, user: new_user2, insect: new_insects2, park: new_park)
-        new_insects1.each do |insect|
-          create(:image, user: new_user1, insect:, park: new_park)
+        login(user_with_single_insect)
+        create(:image, user: user_with_single_insect, insect: single_insect, park: new_park)
+        multiple_insects.each do |insect|
+          create(:image, user: user_with_many_insects, insect:, park: new_park)
         end
       end
 
@@ -59,19 +59,19 @@ RSpec.describe 'Api::V1::Insects' do
 
     context '採集済みと未採集の昆虫を比較する場合' do
       before do
-        login(new_user2)
+        login(user_with_single_insect)
 
-        create(:image, user: new_user2, insect: new_insects2, park: new_park)
-        new_insects1.each do |insect|
-          create(:image, user: new_user1, insect:, park: new_park)
+        create(:image, user: user_with_single_insect, insect: single_insect, park: new_park)
+        multiple_insects.each do |insect|
+          create(:image, user: user_with_many_insects, insect:, park: new_park)
         end
       end
 
       it '採集済みと未採集の昆虫の間に重複がないこと' do
-        get api_v1_insects_path(status: 'collected'), params: { user_id: new_user2.id }
+        get api_v1_insects_path(status: 'collected'), params: { user_id: user_with_single_insect.id }
         collected_insects_ids = json.pluck('id')
 
-        get api_v1_insects_path(status: 'uncollected'), params: { user_id: new_user2.id }
+        get api_v1_insects_path(status: 'uncollected'), params: { user_id: user_with_single_insect.id }
         uncollected_insects_ids = json.pluck('id')
 
         expect(collected_insects_ids & uncollected_insects_ids).to be_empty
