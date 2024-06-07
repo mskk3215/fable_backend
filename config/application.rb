@@ -35,6 +35,6 @@ module FableBackend
     # デフォルトのロケールを日本語(:ja)に設定
     config.i18n.default_locale = :ja
     # 複数のロケールファイルを読み込むように設定
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
+    config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}')]
   end
 end

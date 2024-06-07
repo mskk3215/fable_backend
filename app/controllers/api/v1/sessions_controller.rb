@@ -8,12 +8,12 @@ module Api
 
       def create
         @user = User.find_by(email: session_params[:email])
-        if @user&.authenticate(session_params[:password])  # hash化したpasswordとDB内のpassword_digestカラムの値を比較する
+        if @user&.authenticate(session_params[:password]) # hash化したpasswordとDB内のpassword_digestカラムの値を比較する
           reset_session
           login!
           render 'api/v1/sessions/create'
         else
-          render json: { error: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。']  }, status: :unauthorized
+          render json: { error: ['ログインに失敗しました。', '入力した情報を確認して再度お試しください。'] }, status: :unauthorized
         end
       end
 
