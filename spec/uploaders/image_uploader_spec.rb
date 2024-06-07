@@ -21,7 +21,7 @@ RSpec.describe ImageUploader do
     exif_data = EXIFR::JPEG.new(file_path.to_s)
 
     # EXIFから取得した緯度経度を基に地理情報を検索する処理を模擬
-    geocode_result = double(data: { 'address' => { 'province' => '岡山県', 'city' => '岡山市' } })
+    geocode_result = instance_double('GeocodeResult', data: { 'address' => { 'province' => '岡山県', 'city' => '岡山市' } })
     # uploader.exif_infoで取得した緯度経度がexif_data.gps.latitude, exif_data.gps.longitudeと一致したらgeocode_resultを返す
     allow(Geocoder).to receive(:search).with([exif_data.gps.latitude, exif_data.gps.longitude].join(',')).and_return([geocode_result])
 
