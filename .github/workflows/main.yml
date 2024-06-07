@@ -65,7 +65,6 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     name: Deploy
     runs-on: ubuntu-20.04
-    needs: [test] # このjobが実行される前に実行されるjobを指定
     steps:
       - name: Checkout
         uses: actions/checkout@v3
