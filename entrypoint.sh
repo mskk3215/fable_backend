@@ -15,8 +15,8 @@ done
 echo "Database is up!"
 
 # # データベースを初期化(準備用)
-# # export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
-# # rails db:drop
+# export DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+# rails db:drop
 
 # tableを作成
 # 開発環境
@@ -32,7 +32,9 @@ rails db:migrate
 # データベースが空の場合、seedを実行
 if ! rails runner "exit User.exists? ? 0 : 1"; then
   echo "Seeding database..."
+  # parksのaddressの頭に日本が自動追加されないように一時的にskip
   rails db:seed
+
 fi
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
