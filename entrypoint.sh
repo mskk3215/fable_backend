@@ -33,9 +33,7 @@ rails db:migrate
 if ! rails runner "exit User.exists? ? 0 : 1"; then
   echo "Seeding database..."
   # parksのaddressの頭に日本が自動追加されないように一時的にskip
-  rails runner "Park.skip_callback(:validation, :after, :reverse_geocode)"
   rails db:seed
-  rails runner "Park.set_callback(:validation, :after, :reverse_geocode)"
 
 fi
 
