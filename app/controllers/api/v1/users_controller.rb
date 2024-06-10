@@ -5,16 +5,6 @@ module Api
     class UsersController < ApplicationController
       skip_before_action :ensure_logged_in
 
-      def current
-        if current_user
-          @user = current_user
-          @user_data = user_data(@user)
-          render 'api/v1/users/show'
-        else
-          render json: { error: ['User not logged in'] }, status: :unauthorized
-        end
-      end
-
       def show
         @user = User.find(params[:id])
         @user_data = user_data(@user)
