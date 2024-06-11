@@ -48,9 +48,8 @@ class ImageForm
     def validate_name_presence_with_sex
       if image_params[:name].present? && image_params[:sex].blank?
         errors.add(:base, 'nameがある場合、sexも必須です')
+      elsif image_params[:sex].present? && image_params[:name].blank?
+        errors.add(:base, 'sexがある場合、nameも必須です')
       end
-      return unless image_params[:sex].present? && image_params[:name].blank?
-
-      errors.add(:base, 'sexがある場合、nameも必須です')
     end
 end
