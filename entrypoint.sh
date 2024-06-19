@@ -35,10 +35,6 @@ if ! rails runner "exit User.exists? ? 0 : 1"; then
   rails db:seed
 fi
 
-rails db:rollback STEP=4
-rails db:migrate
-rails db:seed
-
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 # CMD ["rails", "server", "-b", "0.0.0.0"]が実行
 exec "$@"
