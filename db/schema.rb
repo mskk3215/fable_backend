@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_11_055133) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_02_145258) do
   create_table "biological_families", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -23,6 +23,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_11_055133) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["prefecture_id"], name: "index_cities_on_prefecture_id"
+  end
+
+  create_table "foods", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "habitat_places", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
+    t.bigint "insect_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["insect_id"], name: "index_habitat_places_on_insect_id"
   end
 
   create_table "images", charset: "utf8mb3", force: :cascade do |t|
@@ -41,6 +55,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_11_055133) do
     t.index ["park_id"], name: "index_images_on_park_id"
     t.index ["post_id"], name: "index_images_on_post_id"
     t.index ["user_id"], name: "index_images_on_user_id"
+  end
+
+  create_table "insect_foods", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "insect_id", null: false
+    t.bigint "food_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["food_id"], name: "index_insect_foods_on_food_id"
+    t.index ["insect_id"], name: "index_insect_foods_on_insect_id"
+  end
+
+  create_table "insect_tools", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "insect_id", null: false
+    t.bigint "tool_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["insect_id"], name: "index_insect_tools_on_insect_id"
+    t.index ["tool_id"], name: "index_insect_tools_on_tool_id"
   end
 
   create_table "insects", charset: "utf8mb3", force: :cascade do |t|
@@ -99,6 +131,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_11_055133) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
+  create_table "tools", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
     t.string "nickname", null: false
     t.string "email", null: false
@@ -111,11 +149,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_11_055133) do
   end
 
   add_foreign_key "cities", "prefectures"
+  add_foreign_key "habitat_places", "insects"
   add_foreign_key "images", "cities"
   add_foreign_key "images", "insects"
   add_foreign_key "images", "parks"
   add_foreign_key "images", "posts"
   add_foreign_key "images", "users"
+  add_foreign_key "insect_foods", "foods"
+  add_foreign_key "insect_foods", "insects"
+  add_foreign_key "insect_tools", "insects"
+  add_foreign_key "insect_tools", "tools"
   add_foreign_key "insects", "biological_families"
   add_foreign_key "likes", "images"
   add_foreign_key "likes", "users"
