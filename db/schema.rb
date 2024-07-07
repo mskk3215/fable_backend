@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_02_145258) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
   create_table "biological_families", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -76,10 +76,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145258) do
   create_table "insects", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "sex", null: false
+    t.string "size", null: false
+    t.string "lifespan", null: false
     t.bigint "biological_family_id", null: false
+    t.bigint "habitat_place_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["biological_family_id"], name: "index_insects_on_biological_family_id"
+    t.index ["habitat_place_id"], name: "index_insects_on_habitat_place_id"
   end
 
   create_table "likes", charset: "utf8mb3", force: :cascade do |t|
@@ -157,6 +161,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145258) do
   add_foreign_key "insect_tools", "insects"
   add_foreign_key "insect_tools", "tools"
   add_foreign_key "insects", "biological_families"
+  add_foreign_key "insects", "habitat_places"
   add_foreign_key "likes", "images"
   add_foreign_key "likes", "users"
   add_foreign_key "parks", "cities"
