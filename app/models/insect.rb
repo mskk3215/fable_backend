@@ -3,6 +3,8 @@
 class Insect < ApplicationRecord
   validates :name, presence: true
   validates :sex, presence: true
+  validates :size, presence: true
+  validates :lifespan, presence: true
 
   has_many :images, dependent: :destroy
   has_many :insect_foods, dependent: :destroy
