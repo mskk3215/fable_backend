@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       put '/images/bulk_update', to: 'images#bulk_update' # 一括更新
 
       resources :parks, only: %i[index]
-      resources :insects, only: %i[index]
+      resources :insects, only: %i[index show]
       resources :prefectures, only: %i[index]
       # AWSヘルスチェック用
       get '/health', to: 'health#index'
