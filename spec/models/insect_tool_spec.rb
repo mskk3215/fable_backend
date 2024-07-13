@@ -19,14 +19,14 @@ RSpec.describe InsectTool do
       tool = create(:tool)
       insect_tool = InsectTool.new(insect: nil, tool:)
       expect(insect_tool).not_to be_valid
-      expect(insect_tool.errors[:insect]).to include("must exist")
+      expect(insect_tool.errors[:insect]).to include('must exist')
     end
 
     it 'toolがない場合は無効である' do
       insect = create(:insect)
       insect_tool = InsectTool.new(insect:, tool: nil)
       expect(insect_tool).not_to be_valid
-      expect(insect_tool.errors[:tool]).to include("must exist")
+      expect(insect_tool.errors[:tool]).to include('must exist')
     end
   end
 

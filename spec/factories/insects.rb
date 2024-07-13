@@ -7,7 +7,7 @@ FactoryBot.define do
     size { "#{rand(1..10)}cm" }
     lifespan { "#{rand(1..10)}ヶ月" }
 
-    habitat_place  factory: %i[habitat_place] 
+    habitat_place factory: %i[habitat_place]
     biological_family factory: %i[biological_family]
   end
 end

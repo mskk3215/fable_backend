@@ -19,14 +19,14 @@ RSpec.describe InsectFood do
       food = create(:food)
       insect_food = InsectFood.new(insect: nil, food:)
       expect(insect_food).not_to be_valid
-      expect(insect_food.errors[:insect]).to include("must exist")
+      expect(insect_food.errors[:insect]).to include('must exist')
     end
 
     it 'foodがない場合は無効である' do
       insect = create(:insect)
       insect_food = InsectFood.new(insect:, food: nil)
       expect(insect_food).not_to be_valid
-      expect(insect_food.errors[:food]).to include("must exist")
+      expect(insect_food.errors[:food]).to include('must exist')
     end
   end
 
