@@ -23,6 +23,17 @@ module Api
         render 'api/v1/insects/index'
       end
 
+      def show
+        @insect = Insect.includes(:biological_family, :habitat_place, :tools, :foods, :images).find(params[:id])
+
+        @taken_amount_per_hour = @insect.taken_amount_per_hour
+        @taken_amount_per_month = @insect.taken_amount_per_month
+        @total_insects_count = @insect.images.count
+        @is_collected = @insect.images.exists?(user_id: current_user.id)
+
+        render 'api/v1/insects/show'
+      end
+
       private
 
         # 初期データの取得
