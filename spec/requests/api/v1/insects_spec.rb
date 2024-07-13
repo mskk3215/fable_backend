@@ -78,4 +78,17 @@ RSpec.describe 'Api::V1::Insects' do
       end
     end
   end
+
+  describe 'GET /api/v1/insects/:insect_id' do
+    before do
+      login(user_with_single_insect)
+    end
+
+    it '昆虫の詳細情報を返す' do
+      get api_v1_insect_path(single_insect.id)
+
+      expect(response).to have_http_status(:ok)
+      expect(json['insect']['id']).to eq(single_insect.id)
+    end
+  end
 end
