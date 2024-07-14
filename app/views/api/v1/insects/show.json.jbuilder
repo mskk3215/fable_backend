@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 json.insect do
+  json.id @insect.id
   json.name @insect.name
   json.biological_family @insect.biological_family.name
   json.size @insect.size
