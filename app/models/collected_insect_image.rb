@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class Image < ApplicationRecord
+class CollectedInsectImage < ApplicationRecord
   mount_uploader :image, ImageUploader
 
-  validates :image,   presence: true
+  validates :image, presence: true
 
   belongs_to :insect, optional: true
-  belongs_to :park,   optional: true
+  belongs_to :park, optional: true
   belongs_to :city, optional: true
   belongs_to :user
   belongs_to :post
@@ -22,7 +22,7 @@ class Image < ApplicationRecord
   end
   # もしimagesが0ならpostを削除する
   def destroy_parent_post_if_no_images
-    post.destroy if post.images.empty?
+    post.destroy if post.collected_insect_images.empty?
   end
   # オプションによって並び替える
   def self.sort_by_option(option)

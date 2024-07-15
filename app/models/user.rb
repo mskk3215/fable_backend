@@ -10,7 +10,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, on: :create
 
   has_many  :posts, dependent: :destroy
-  has_many  :images, dependent: :destroy
+  has_many  :collected_insect_images, dependent: :destroy
   has_many :likes, dependent: :destroy
 
   # follow,followedのrelathionships(中間テーブル)との関連付け

@@ -6,7 +6,7 @@ class Insect < ApplicationRecord
   validates :size, presence: true
   validates :lifespan, presence: true
 
-  has_many :images, dependent: :destroy
+  has_many :collected_insect_images, dependent: :destroy
   has_many :insect_foods, dependent: :destroy
   has_many :foods, through: :insect_foods
   has_many :insect_tools, dependent: :destroy
@@ -20,7 +20,7 @@ class Insect < ApplicationRecord
     (1..12).map do |month|
       {
         month:,
-        count: images.where('extract(month from created_at) = ?', month).count
+        count: collected_insect_images.where('extract(month from created_at) = ?', month).count
       }
     end
   end
@@ -32,7 +32,7 @@ class Insect < ApplicationRecord
       end_hour = start_hour + 2
       {
         time_slot: "#{start_hour}:00 - #{end_hour}:59",
-        count: images.where('extract(hour from created_at) between ? and ?', start_hour, end_hour).count
+        count: collected_insect_images.where('extract(hour from created_at) between ? and ?', start_hour, end_hour).count
       }
     end
   end

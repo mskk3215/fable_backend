@@ -34,7 +34,8 @@ if user_id == 1
       random_time = Time.zone.at(((end_date.to_f - start_date.to_f) * rand) + start_date.to_f)
 
       # imagesテーブルのデータ作成
-      image = Image.new(
+      # collected_insect_imagesテーブルのデータ作成
+      image = CollectedInsectImage.new(
         image: File.open(image_path),
         created_at: '2023-09-01 13:55:13.469244',
         taken_at: random_time,
@@ -70,7 +71,8 @@ end
     random_time = Time.zone.at(((end_date.to_f - start_date.to_f) * rand) + start_date.to_f)
 
     # imagesテーブルのデータ作成
-    image = Image.new(
+    # collected_insect_imagesテーブルのデータ作成
+    image = CollectedInsectImage.new(
       image: File.open(image_path),
       created_at: '2023-09-01 13:55:13.469244',
       taken_at: random_time,

@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::Insects' do
     context '採集済み昆虫のリストを取得する場合' do
       before do
         login(user_with_many_insects)
-        create(:image, user: user_with_many_insects, insect: multiple_insects.first, park: new_park)
+        create(:collected_insect_image, user: user_with_many_insects, insect: multiple_insects.first, park: new_park)
       end
 
       it '採集済み昆虫のリストを正しく取得できること' do
@@ -42,9 +42,9 @@ RSpec.describe 'Api::V1::Insects' do
     context '未採集昆虫のリストを取得する場合' do
       before do
         login(user_with_single_insect)
-        create(:image, user: user_with_single_insect, insect: single_insect, park: new_park)
+        create(:collected_insect_image, user: user_with_single_insect, insect: single_insect, park: new_park)
         multiple_insects.each do |insect|
-          create(:image, user: user_with_many_insects, insect:, park: new_park)
+          create(:collected_insect_image, user: user_with_many_insects, insect:, park: new_park)
         end
       end
 
@@ -61,9 +61,9 @@ RSpec.describe 'Api::V1::Insects' do
       before do
         login(user_with_single_insect)
 
-        create(:image, user: user_with_single_insect, insect: single_insect, park: new_park)
+        create(:collected_insect_image, user: user_with_single_insect, insect: single_insect, park: new_park)
         multiple_insects.each do |insect|
-          create(:image, user: user_with_many_insects, insect:, park: new_park)
+          create(:collected_insect_image, user: user_with_many_insects, insect:, park: new_park)
         end
       end
 

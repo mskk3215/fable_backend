@@ -7,7 +7,7 @@ RSpec.describe 'Api::V1::Parks' do
   let!(:city) { create(:city, name: '新宿区', prefecture:) }
   let!(:park) { create(:park, name: '新宿御苑', city:) }
   let!(:insect) { create(:insect, name: 'カブトムシ') }
-  let!(:image) { create(:image, insect:, park:) }
+  let!(:collected_insect_image) { create(:collected_insect_image, insect:, park:) }
 
   describe 'GET /api/v1/parks' do
     context '検索ワードがない場合' do

@@ -11,9 +11,9 @@ RSpec.describe 'Api::V1::Rankings' do
     let!(:biological_family) { create(:biological_family) }
     let!(:first_insect) { create(:insect, biological_family:) }
     let!(:second_insect) { create(:insect, biological_family:) }
-    let!(:first_image) { create(:image, user: first_user, city:, insect: first_insect) }
-    let!(:second_image) { create(:image, user: first_user, city:, insect: second_insect) }
-    let!(:third_image) { create(:image, user: second_user, city:, insect: first_insect) }
+    let!(:first_image) { create(:collected_insect_image, user: first_user, city:, insect: first_insect) }
+    let!(:second_image) { create(:collected_insect_image, user: first_user, city:, insect: second_insect) }
+    let!(:third_image) { create(:collected_insect_image, user: second_user, city:, insect: first_insect) }
 
     before do
       login(first_user)
