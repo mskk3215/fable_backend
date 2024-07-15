@@ -20,12 +20,12 @@ Rails.application.routes.draw do
 
       resources :posts, only: %i[index create destroy]
 
-      resources :images, only: %i[index destroy] do
-        scope module: :images do
+      resources :collected_insect_images, only: %i[index destroy] do
+        scope module: :collected_insect_images do
           resources :likes, only: %i[create destroy]
         end
       end
-      put '/images/bulk_update', to: 'images#bulk_update' # 一括更新
+      put '/collected_insect_images/bulk_update', to: 'collected_insect_images#bulk_update' # 画像の一括更新
 
       resources :parks, only: %i[index]
       resources :insects, only: %i[index show]

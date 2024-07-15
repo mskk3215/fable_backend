@@ -3,21 +3,21 @@
 class PostForm
   include ActiveModel::Model
 
-  attr_accessor :images, :current_user, :error_message
+  attr_accessor :collected_insect_images, :current_user, :error_message
 
   def save
     post = Post.new(user: current_user)
     ActiveRecord::Base.transaction do
       if post.save!
         # prefecture, cityの事前呼び出し
-        prefecture_names = images.map { |img| Image.new(image: img).image.prefecture_name }.uniq
+        prefecture_names = collected_insect_images.map { |img| CollectedInsectImage.new(image: img).image.prefecture_name }.uniq
         prefectures = Prefecture.where(name: prefecture_names).index_by(&:name)
-        city_names = images.map { |img| Image.new(image: img).image.city_name }.uniq
+        city_names = collected_insect_images.map { |img| CollectedInsectImage.new(image: img).image.city_name }.uniq
         cities = City.where(name: city_names).group_by(&:name)
 
-        images.each do |img|
+        collected_insect_images.each do |img|
           # imageインスタンスの生成
-          image = Image.new(image: img, user: current_user, post:)
+          image = CollectedInsectImage.new(image: img, user: current_user, post:)
 
           # exifデータから取得したcity_idとtaken_atの登録
           prefecture = prefectures[image.image.prefecture_name]

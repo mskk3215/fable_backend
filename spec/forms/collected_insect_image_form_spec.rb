@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ImageForm, type: :model do
+RSpec.describe CollectedInsectImageForm, type: :model do
   describe '#save' do
     # データベースのセットアップ
     let!(:insect) { create(:insect, name: 'カブトムシ', sex: 'オス') }
@@ -11,10 +11,10 @@ RSpec.describe ImageForm, type: :model do
     let!(:park) { create(:park, name: '代々木公園', city:) }
     # imageのセットアップ
     let(:user) { create(:user) }
-    let(:image) { create(:image, user:) }
+    let(:image) { create(:collected_insect_image, user:) }
 
     context '有効な画像パラメータが与えられた場合' do
-      let(:image_params) do
+      let(:collected_insect_image_params) do
         {
           name: 'カブトムシ',
           sex: 'オス',
@@ -24,7 +24,7 @@ RSpec.describe ImageForm, type: :model do
           taken_at: '2023-03-14'
         }
       end
-      let(:form) { described_class.new(images: [image], image_params:) }
+      let(:form) { described_class.new(collected_insect_images: [image], collected_insect_image_params:) }
 
       it '画像データが正しく更新されること' do
         expect(form.save).to be true
@@ -44,11 +44,11 @@ RSpec.describe ImageForm, type: :model do
         { name: 'nameがあってsexがない場合', params: { name: 'カブトムシ', city_name: '渋谷区', park_name: '代々木公園', taken_at: '2023-03-14' } },
         { name: 'sexがあってnameがない場合', params: { sex: 'オス', city_name: '渋谷区', park_name: '代々木公園', taken_at: '2023-03-14' } }
       ]
-      let(:form) { described_class.new(images: [image], image_params: invalid_image_params) }
+      let(:form) { described_class.new(collected_insect_images: [image], collected_insect_image_params: invalid_image_params) }
 
       scenarios.each do |scenario|
         context scenario[:name] do
-          let(:form) { described_class.new(images: [image], image_params: scenario[:params]) }
+          let(:form) { described_class.new(collected_insect_images: [image], collected_insect_image_params: scenario[:params]) }
 
           it '更新が失敗すること' do
             expect(form.save).to be false

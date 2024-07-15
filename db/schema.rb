@@ -25,19 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
     t.index ["prefecture_id"], name: "index_cities_on_prefecture_id"
   end
 
-  create_table "foods", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "habitat_places", charset: "utf8mb3", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "images", charset: "utf8mb3", force: :cascade do |t|
+  create_table "collected_insect_images", charset: "utf8mb3", force: :cascade do |t|
     t.string "image", null: false
     t.datetime "taken_at"
     t.integer "likes_count", default: 0, null: false
@@ -48,11 +36,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
     t.bigint "city_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["city_id"], name: "index_images_on_city_id"
-    t.index ["insect_id"], name: "index_images_on_insect_id"
-    t.index ["park_id"], name: "index_images_on_park_id"
-    t.index ["post_id"], name: "index_images_on_post_id"
-    t.index ["user_id"], name: "index_images_on_user_id"
+    t.index ["city_id"], name: "index_collected_insect_images_on_city_id"
+    t.index ["insect_id"], name: "index_collected_insect_images_on_insect_id"
+    t.index ["park_id"], name: "index_collected_insect_images_on_park_id"
+    t.index ["post_id"], name: "index_collected_insect_images_on_post_id"
+    t.index ["user_id"], name: "index_collected_insect_images_on_user_id"
+  end
+
+  create_table "foods", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "habitat_places", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "insect_foods", charset: "utf8mb3", force: :cascade do |t|
@@ -88,11 +88,11 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
 
   create_table "likes", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "image_id", null: false
+    t.bigint "collected_insect_image_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["image_id"], name: "index_likes_on_image_id"
-    t.index ["user_id", "image_id"], name: "index_likes_on_user_id_and_image_id", unique: true
+    t.index ["collected_insect_image_id"], name: "index_likes_on_collected_insect_image_id"
+    t.index ["user_id", "collected_insect_image_id"], name: "index_likes_on_user_id_and_collected_insect_image_id", unique: true
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
@@ -151,18 +151,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
   end
 
   add_foreign_key "cities", "prefectures"
-  add_foreign_key "images", "cities"
-  add_foreign_key "images", "insects"
-  add_foreign_key "images", "parks"
-  add_foreign_key "images", "posts"
-  add_foreign_key "images", "users"
+  add_foreign_key "collected_insect_images", "cities"
+  add_foreign_key "collected_insect_images", "insects"
+  add_foreign_key "collected_insect_images", "parks"
+  add_foreign_key "collected_insect_images", "posts"
+  add_foreign_key "collected_insect_images", "users"
   add_foreign_key "insect_foods", "foods"
   add_foreign_key "insect_foods", "insects"
   add_foreign_key "insect_tools", "insects"
   add_foreign_key "insect_tools", "tools"
   add_foreign_key "insects", "biological_families"
   add_foreign_key "insects", "habitat_places"
-  add_foreign_key "likes", "images"
+  add_foreign_key "likes", "collected_insect_images"
   add_foreign_key "likes", "users"
   add_foreign_key "parks", "cities"
   add_foreign_key "parks", "prefectures"

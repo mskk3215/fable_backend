@@ -15,8 +15,8 @@ json.insect do
   end
   json.taken_amount_per_month @taken_amount_per_month
   json.taken_amount_per_hour @taken_amount_per_hour
-  json.images do
-    json.array! @insect.images.map do |image|
+  json.collected_insect_images do
+    json.array! @insect.collected_insect_images.map do |image|
       json.url image.image.url
       json.likes_count image.likes_count
     end
