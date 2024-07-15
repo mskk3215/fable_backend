@@ -8,7 +8,7 @@ json.array!(@parks.map) do |park|
   # city_name
   json.city_name park.city&.name
   # image_url
-  park_images = park.images
+  park_images = park.collected_insect_images
   json.image park_images.map { |image| image.image.url }
   # image_count
   json.image_count park_images.count

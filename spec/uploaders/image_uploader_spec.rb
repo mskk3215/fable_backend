@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'exifr/jpeg'
 
 RSpec.describe ImageUploader do
-  let(:image) { create(:image) }
+  let(:image) { create(:collected_insect_image) }
   let(:uploader) { ImageUploader.new(image, :image_file) }
   let(:file_path) { Rails.public_path.join('images/exif_test_image.jpg') }
   let(:file) { File.open(file_path) }

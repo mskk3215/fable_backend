@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :image do
+  factory :collected_insect_image do
     transient do
       image_path { 'public/images/test_image.png' }
     end

@@ -18,7 +18,7 @@ module Api
       end
 
       def create
-        form = PostForm.new(current_user:, images: post_params[:image])
+        form = PostForm.new(current_user:, collected_insect_images: post_params[:images])
         if form.save
           render json: {}, status: :created
         else
@@ -28,7 +28,7 @@ module Api
 
       def destroy
         post = Post.find(params[:id])
-        post.images.each(&:destroy)
+        post.collected_insect_images.each(&:destroy)
         post.destroy
         render json: { status: :deleted }
       end
@@ -36,7 +36,7 @@ module Api
       private
 
         def post_params
-          params.require(:image).permit({ image: [] })
+          params.require(:collected_insect_image).permit(images: [])
         end
     end
   end

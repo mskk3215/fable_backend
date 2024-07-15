@@ -24,12 +24,12 @@ module Api
       end
 
       def show
-        @insect = Insect.includes(:biological_family, :habitat_place, :tools, :foods, :images).find(params[:id])
+        @insect = Insect.includes(:biological_family, :habitat_place, :tools, :foods, :collected_insect_images).find(params[:id])
 
         @taken_amount_per_hour = @insect.taken_amount_per_hour
         @taken_amount_per_month = @insect.taken_amount_per_month
-        @total_insects_count = @insect.images.count
-        @is_collected = @insect.images.exists?(user_id: current_user.id)
+        @total_insects_count = @insect.collected_insect_images.count
+        @is_collected = @insect.collected_insect_images.exists?(user_id: current_user.id)
 
         render 'api/v1/insects/show'
       end
@@ -38,7 +38,7 @@ module Api
 
         # 初期データの取得
         def initialize_insect_park_data
-          insect_park_data = Insect.joins(images: [{ city: :prefecture }, :park, :user])
+          insect_park_data = Insect.joins(collected_insect_images: [{ city: :prefecture }, :park, :user])
 
           if params[:prefecture].present?
             insect_park_data = insect_park_data.where(prefectures: { name: params[:prefecture] })
@@ -53,7 +53,7 @@ module Api
 
         # 採集済みの昆虫と公園のリスト
         def fetch_collected_insects(insect_park_data)
-          collected_insects = insect_park_data.where(images: { user_id: current_user.id })
+          collected_insects = insect_park_data.where(collected_insect_images: { user_id: current_user.id })
 
           collected_insects.select('insects.*, parks.name AS park_name')
                            .group_by { |insect| [insect.name, insect.sex] }
@@ -70,7 +70,7 @@ module Api
 
         # 未採集の昆虫と公園のリスト
         def fetch_uncollected_insects(insect_park_data)
-          collected_insect_ids = insect_park_data.where(images: { user_id: current_user.id }).pluck(:insect_id)
+          collected_insect_ids = insect_park_data.where(collected_insect_images: { user_id: current_user.id }).pluck(:insect_id)
           uncollected_insect_park_data = insect_park_data.where.not(id: collected_insect_ids).distinct
 
           if params[:lat].present? && params[:lng].present?
@@ -78,7 +78,7 @@ module Api
 
             uncollected_insect_park_data.map do |insect|
               found_in_park = nearest_parks.detect do |park|
-                park.images.any? do |image|
+                park.collected_insect_images.any? do |image|
                   image.insect_id == insect.id
                 end && (params[:city].blank? || park.city.name == params[:city]) && (params[:prefecture].blank? || park.city.prefecture.name == params[:prefecture])
               end

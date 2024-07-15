@@ -5,7 +5,7 @@ json.array! @posts.map do |post|
   json.avatar post.user.avatar.url
   json.user_id post.user.id
   json.username post.user.nickname
-  json.images post.images do |image|
+  json.collected_insect_images post.collected_insect_images do |image|
     json.id image.id
     json.image image.image.url
     # insect_name

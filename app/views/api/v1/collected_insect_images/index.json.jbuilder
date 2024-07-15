@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-json.set! :images do
-  json.array! @images.map do |image|
+json.set! :collected_insect_images do
+  json.array! @collected_insect_images.map do |image|
     # id, user_id, insect_id, park_id, updated_at
     json.extract! image, :id, :user_id, :insect_id, :park_id, :taken_at, :created_at
     # image_url

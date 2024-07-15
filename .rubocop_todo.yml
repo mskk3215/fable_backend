@@ -11,7 +11,7 @@
 # Configuration parameters: EmptyLineBetweenMethodDefs, EmptyLineBetweenClassDefs, EmptyLineBetweenModuleDefs, AllowAdjacentOneLineDefs, NumberOfEmptyLines.
 Layout/EmptyLineBetweenDefs:
   Exclude:
-    - "app/models/image.rb"
+    - "app/models/collected_insect_image.rb"
     - "app/models/post.rb"
 
 # Offense count: 1
@@ -20,7 +20,7 @@ Layout/EmptyLineBetweenDefs:
 # SupportedStyles: space, compact, no_space
 Layout/SpaceInsideParens:
   Exclude:
-    - "app/controllers/api/v1/images_controller.rb"
+    - "app/controllers/api/v1/collected_insect_images_controller.rb"
 
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
@@ -43,7 +43,7 @@ Lint/AmbiguousBlockAssociation:
 Lint/AssignmentInCondition:
   Exclude:
     - "app/controllers/api/v1/parks_controller.rb"
-    - "app/views/api/v1/images/index.json.jbuilder"
+    - "app/views/api/v1/collected_insect_images/index.json.jbuilder"
 
 # Offense count: 1
 Lint/ShadowingOuterLocalVariable:
@@ -115,7 +115,7 @@ RSpec/EmptyLineAfterHook:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 FactoryBot/SyntaxMethods:
   Exclude:
-    - "spec/models/image_spec.rb"
+    - "spec/models/collected_insect_image_spec.rb"
     - "spec/models/like_spec.rb"
     - "spec/models/park_spec.rb"
     - "spec/models/post_spec.rb"
@@ -165,7 +165,7 @@ Rails/HasManyOrHasOneDependent:
 # SupportedStyles: numeric, symbolic
 Rails/HttpStatus:
   Exclude:
-    - "app/controllers/api/v1/images_controller.rb"
+    - "app/controllers/api/v1/collected_insect_images_controller.rb"
     - "app/controllers/api/v1/posts_controller.rb"
 
 # Offense count: 2
