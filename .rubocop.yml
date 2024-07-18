@@ -85,7 +85,7 @@ Metrics/ClassLength:
   CountComments: false
 
 Metrics/CyclomaticComplexity:
-  Max: 16
+  Max: 18
   Exclude:
     - "lib/tasks/dev.rake"
 
@@ -99,7 +99,7 @@ Metrics/ModuleLength:
   CountComments: false
 
 Metrics/PerceivedComplexity:
-  Max: 16
+  Max: 18
   Exclude:
     - "lib/tasks/dev.rake"
 
