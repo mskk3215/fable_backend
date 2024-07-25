@@ -8,11 +8,11 @@ json.array!(@parks.map) do |park|
   # city_name
   json.city_name park.city&.name
   # image_url
-  park_images = park.collected_insect_images
-  json.image park_images.map { |image| image.image.url }
+  json.images park.collected_insects.filter_map { |collected_insect|
+    collected_insect.collected_insect_image&.image&.url
+  }
   # image_count
-  json.image_count park_images.count
+  json.image_count park.collected_insects.joins(:collected_insect_image).count
   # insect_count in the park
-  insect_count = park_images.distinct.count(:insect_id)
-  json.insect_count insect_count
+  json.insect_count park.collected_insects.pluck(:insect_id).uniq.count
 end
