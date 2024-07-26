@@ -9,33 +9,40 @@ class PostForm
     post = Post.new(user: current_user)
     ActiveRecord::Base.transaction do
       if post.save!
-        # prefecture, cityの事前呼び出し
-        prefecture_names = collected_insect_images.map { |img| CollectedInsectImage.new(image: img).image.prefecture_name }.uniq
-        prefectures = Prefecture.where(name: prefecture_names).index_by(&:name)
-        city_names = collected_insect_images.map { |img| CollectedInsectImage.new(image: img).image.city_name }.uniq
-        cities = City.where(name: city_names).group_by(&:name)
-
         collected_insect_images.each do |img|
-          # imageインスタンスの生成
-          image = CollectedInsectImage.new(image: img, user: current_user, post:)
+          # CollectedInsectインスタンス生成
+          collected_insect = CollectedInsect.new(
+            user: current_user,
+            post:
+          )
+          collected_insect.save!
 
-          # exifデータから取得したcity_idとtaken_atの登録
-          prefecture = prefectures[image.image.prefecture_name]
-          city = cities[image.image.city_name]&.find { |c| c.prefecture_id == prefecture&.id }
+          # CollectedInsectImageインスタンス生成し、collected_insectに紐付け
+          collected_insect_image = CollectedInsectImage.new(
+            image: img,
+            collected_insect:
+          )
+          collected_insect_image.save!
 
-          date_time = image.image.taken_at&.strftime('%Y-%m-%d %H:%M:%S.%N')
-          image.assign_attributes(
-            taken_at: date_time,
+          # exifデータから取得したcity_idとtaken_date_timeの登録
+          prefecture = Prefecture.find_by(name: collected_insect_image.image.prefecture_name)
+          city = City.find_by(name: collected_insect_image.image.city_name, prefecture:)
+          taken_date_time = collected_insect_image.image.taken_date_time&.strftime('%Y-%m-%d %H:%M:%S.%N')
+
+          # CollectedInsectインスタンスを更新
+          collected_insect.update!(
+            taken_date_time:,
             city_id: city&.id
           )
-
-          # imageの保存
-          image.save!
         end
       end
     end
     true
-  rescue ActiveRecord::RecordInvalid, StandardError => e
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error "Validation error in PostForm: #{e.record.errors.full_messages.join(', ')}"
+    self.error_message = e.record.errors.full_messages.join(', ')
+    false
+  rescue StandardError => e
     Rails.logger.error "Unexpected error of type #{e.class} in PostForm: #{e.message}"
     self.error_message = e.message
     false
