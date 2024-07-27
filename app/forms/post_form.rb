@@ -5,7 +5,12 @@ class PostForm
 
   attr_accessor :collected_insect_images, :current_user, :error_message
 
+  validates :collected_insect_images, presence: true
+  validate :validate_image_data
+
   def save
+    return false if invalid?
+
     post = Post.new(user: current_user)
     ActiveRecord::Base.transaction do
       if post.save!
@@ -39,12 +44,19 @@ class PostForm
     end
     true
   rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.error "Validation error in PostForm: #{e.record.errors.full_messages.join(', ')}"
-    self.error_message = e.record.errors.full_messages.join(', ')
-    false
-  rescue StandardError => e
     Rails.logger.error "Unexpected error of type #{e.class} in PostForm: #{e.message}"
     self.error_message = e.message
     false
+  end
+
+  def validate_image_data
+    return if collected_insect_images.blank?
+
+    collected_insect_images.each do |image|
+      unless image.is_a?(ActionDispatch::Http::UploadedFile) || image.is_a?(Rack::Test::UploadedFile)
+        errors.add(:collected_insect_images, "can't be blank")
+        break
+      end
+    end
   end
 end
