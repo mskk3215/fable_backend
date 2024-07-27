@@ -3,13 +3,20 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Insects' do
-  let(:user_with_many_insects) { create(:user) }
-  let(:user_with_single_insect) { create(:user) }
-  let(:new_prefecture) { create(:prefecture) }
-  let(:new_city) { create(:city, prefecture: new_prefecture) }
-  let(:new_park) { create(:park, city: new_city) }
-  let!(:multiple_insects) { create_list(:insect, 10) }
-  let!(:single_insect) { create(:insect, name: 'カブトムシ') }
+
+  let!(:user) { create(:user) }
+  let!(:other_user) { create(:user) }
+  let!(:prefecture) { Prefecture.create(name: '東京都') }
+  let!(:city) { City.create(name: '新宿区', prefecture: prefecture) }
+  let!(:park) { Park.create(name: '新宿御苑', city: city, prefecture: prefecture) }
+
+  let!(:insect_one) { create(:insect, name: 'カブトムシ') }
+  let!(:insect_second) { create(:insect, name: 'ノコギリクワガタ') }
+  let!(:insect_third) { create(:insect, name: 'カナブン') }
+
+  let!(:collected_insect_one) { create(:collected_insect, user: other_user, insect: insect_one, park: park, sex: 'オス') }
+  let!(:collected_insect_second) { create(:collected_insect, user: other_user, insect: insect_second, park: park, sex: 'メス') }
+  let!(:collected_insect_third) { create(:collected_insect, user: other_user, insect: insect_third, park: park, sex: 'オス') }
 
   describe 'GET /api/v1/insects' do
     context 'キーワードにマッチする昆虫のリストを取得する場合' do
@@ -26,26 +33,23 @@ RSpec.describe 'Api::V1::Insects' do
 
     context '採集済み昆虫のリストを取得する場合' do
       before do
-        login(user_with_many_insects)
-        create(:collected_insect_image, user: user_with_many_insects, insect: multiple_insects.first, park: new_park)
+        login(user)
+        create(:collected_insect, user: , insect: insect_one, park: , sex: 'オス')
       end
 
       it '採集済み昆虫のリストを正しく取得できること' do
         get api_v1_insects_path(status: 'collected')
 
         expect(response).to have_http_status(:ok)
-        expect(json.size).to eq(1)
-        expect(json.first['insect_name']).to include(multiple_insects.first.name)
+         expect(json.size).to eq(1)
+        expect(json.first['insect_name']).to  eq(insect_one.name)
       end
     end
 
     context '未採集昆虫のリストを取得する場合' do
       before do
-        login(user_with_single_insect)
-        create(:collected_insect_image, user: user_with_single_insect, insect: single_insect, park: new_park)
-        multiple_insects.each do |insect|
-          create(:collected_insect_image, user: user_with_many_insects, insect:, park: new_park)
-        end
+        login(user)
+        create(:collected_insect, user: user, insect: insect_one)
       end
 
       it '未採集昆虫のリストを正しく取得できること' do
@@ -59,19 +63,17 @@ RSpec.describe 'Api::V1::Insects' do
 
     context '採集済みと未採集の昆虫を比較する場合' do
       before do
-        login(user_with_single_insect)
-
-        create(:collected_insect_image, user: user_with_single_insect, insect: single_insect, park: new_park)
-        multiple_insects.each do |insect|
-          create(:collected_insect_image, user: user_with_many_insects, insect:, park: new_park)
+        login(user)
+        [insect_one, insect_second, insect_third].each do |insect|
+          create(:collected_insect, insect: insect, user: user)
         end
       end
 
       it '採集済みと未採集の昆虫の間に重複がないこと' do
-        get api_v1_insects_path(status: 'collected'), params: { user_id: user_with_single_insect.id }
+        get api_v1_insects_path(status: 'collected'), params: { user_id: user.id }
         collected_insects_ids = json.pluck('id')
 
-        get api_v1_insects_path(status: 'uncollected'), params: { user_id: user_with_single_insect.id }
+        get api_v1_insects_path(status: 'uncollected'), params: { user_id: user.id }
         uncollected_insects_ids = json.pluck('id')
 
         expect(collected_insects_ids & uncollected_insects_ids).to be_empty
@@ -81,14 +83,14 @@ RSpec.describe 'Api::V1::Insects' do
 
   describe 'GET /api/v1/insects/:insect_id' do
     before do
-      login(user_with_single_insect)
+      login(user)
     end
 
     it '昆虫の詳細情報を返す' do
-      get api_v1_insect_path(single_insect.id)
+      get api_v1_insect_path(insect_one.id)
 
       expect(response).to have_http_status(:ok)
-      expect(json['insect']['id']).to eq(single_insect.id)
+      expect(json['insect']['insect_id']).to eq(insect_one.id)
     end
   end
 end

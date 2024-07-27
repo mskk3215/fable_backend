@@ -6,12 +6,12 @@ RSpec.describe Like, type: :model do
   describe 'いいね機能' do
     before do
       user = FactoryBot.create(:user)
-      collected_insect_image = FactoryBot.create(:collected_insect_image)
-      @like = FactoryBot.build(:like, user_id: user.id, collected_insect_image_id: collected_insect_image.id)
+      collected_insect = FactoryBot.create(:collected_insect)
+      @like = FactoryBot.build(:like, user_id: user.id, collected_insect_id: collected_insect.id)
     end
 
     context 'いいねできる場合' do
-      it 'user_idとcollected_insect_image_idがあればいいねできる' do
+      it 'user_idとcollected_insect_idがあればいいねできる' do
         expect(@like).to be_valid
       end
     end
@@ -23,9 +23,9 @@ RSpec.describe Like, type: :model do
         expect(@like.errors.full_messages).to include('User must exist')
       end
       it 'collected_insect_image_idがないといいねできない' do
-        @like.collected_insect_image_id = nil
+        @like.collected_insect_id = nil
         @like.valid?
-        expect(@like.errors.full_messages).to include('Collected insect image must exist')
+        expect(@like.errors.full_messages).to include('Collected insect must exist')
       end
     end
   end
