@@ -7,16 +7,13 @@ FactoryBot.define do
     end
 
     image { Rack::Test::UploadedFile.new(image_path) }
-    user
-    post
 
-    taken_at { Faker::Date.between(from: 1.year.ago, to: Time.zone.today) }
-    created_at { Faker::Date.between(from: 1.year.ago, to: Time.zone.today) }
+    collected_insect
 
     after(:build) do |image, _evaluator|
-      if image.park
-        image.park = create(:park) unless image.park
-        image.city = image.park.city
+      if image.collected_insect&.park
+        image.collected_insect.park = create(:park) unless image.collected_insect.park
+        image.collected_insect.city = image.collected_insect.park.city
       end
     end
   end
