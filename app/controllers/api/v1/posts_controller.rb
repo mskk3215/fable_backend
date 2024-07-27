@@ -28,7 +28,7 @@ module Api
 
       def destroy
         post = Post.find(params[:id])
-        post.collected_insect_images.each(&:destroy)
+        post.collected_insects.each(&:destroy)
         post.destroy
         render json: { status: :deleted }
       end
@@ -36,7 +36,7 @@ module Api
       private
 
         def post_params
-          params.require(:collected_insect_image).permit(images: [])
+          params.require(:collected_insect).permit(images: [])
         end
     end
   end
