@@ -29,17 +29,17 @@ RSpec.describe Post, type: :model do
       # テストデータのセットアップ
       older_post = create(:post, created_at: 2.days.ago)
       newer_post = create(:post, created_at: 1.day.ago)
-      create_list(:collected_insect_image, 3, user:, post: older_post)
-      create_list(:collected_insect_image, 2, user:, post: newer_post)
+      create_list(:collected_insect, 3, user:, post: older_post)
+      create_list(:collected_insect, 2, user:, post: newer_post)
 
       # メソッド実行
       results = Post.fetch_all_with_includes
       # 降順に取得されているか検証
       expect(results.to_a).to eq([newer_post, older_post])
-      expect(results.first.collected_insect_images.size).to eq(2)
-      expect(results.second.collected_insect_images.size).to eq(3)
+      expect(results.first.collected_insects.size).to eq(2)
+      expect(results.second.collected_insects.size).to eq(3)
       # 関連データが含まれているか検証
-      expect(results.first.collected_insect_images.first.user).not_to be_nil
+      expect(results.first.collected_insects.first.user).not_to be_nil
     end
   end
 
@@ -79,10 +79,10 @@ RSpec.describe Post, type: :model do
     it 'いいねが5以上の投稿をいいねの多い順に取得する' do
       # テストデータのセットアップ
       post_with_few_likes = create(:post)
-      create_list(:like, 4, collected_insect_image: create(:collected_insect_image, post: post_with_few_likes))
+      create_list(:like, 4, collected_insect: create(:collected_insect, post: post_with_few_likes))
 
       post_with_many_likes = create(:post)
-      create_list(:like, 6, collected_insect_image: create(:collected_insect_image, post: post_with_many_likes))
+      create_list(:like, 6, collected_insect: create(:collected_insect, post: post_with_many_likes))
 
       # メソッド実行
       results = Post.sort_by_likes_with_minimum_five

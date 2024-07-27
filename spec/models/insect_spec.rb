@@ -8,7 +8,7 @@ RSpec.describe Insect do
   describe '.taken_amount_per_month' do
     before do
       (1..12).each do |month|
-        create(:collected_insect_image, insect:, created_at: DateTime.new(2023, month, 1))
+        create(:collected_insect, insect:, taken_date_time: DateTime.new(2023, month, 1))
       end
     end
 
@@ -28,7 +28,7 @@ RSpec.describe Insect do
   describe '.taken_amount_per_hour' do
     before do
       (0..23).each do |hour|
-        create(:collected_insect_image, insect:, created_at: DateTime.new(2023, 1, 1, hour))
+        create(:collected_insect, insect:, taken_date_time: DateTime.new(2023, 1, 1, hour))
       end
     end
 

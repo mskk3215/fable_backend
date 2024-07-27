@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe CollectedInsectImage do
-  let(:user) { FactoryBot.create(:user) }
-  let(:post) { FactoryBot.create(:post, user:) }
-  let(:image) { FactoryBot.build(:collected_insect_image, image_path: 'public/images/test_image.png', user:, post:) }
+  let(:user) { create(:user) }
+  let(:post) { create(:post, user:) }
+  let(:collected_insect) { create(:collected_insect, user:, post:) }
+  let(:image) { build(:collected_insect_image, image: File.open('public/images/test_image.png'), collected_insect:) }
 
   describe '画像投稿' do
     subject(:valid_image) { image.valid? }
@@ -23,50 +24,11 @@ RSpec.describe CollectedInsectImage do
         expect(image.errors.full_messages).to include("Image can't be blank")
       end
 
-      it '紐づくユーザーが存在しないと投稿できない' do
-        image.user = nil
+      it '紐づくCollectedInsectが存在しないと投稿できない' do
+        image.collected_insect = nil
         expect(valid_image).to be false
-        expect(image.errors.full_messages).to include('User must exist')
+        expect(image.errors.full_messages).to include('Collected insect must exist')
       end
-    end
-  end
-
-  # Imageのモデルメソッドに対するテスト
-  describe '#set_default_likes_count' do
-    it '新規レコードのlikes_countがデフォルトで0になっている' do
-      new_image = build(:collected_insect_image)
-      expect(new_image.likes_count).to eq(0)
-    end
-  end
-
-  describe '#destroy_parent_post_if_no_images' do
-    it '画像が0枚になったらポストも削除される' do
-      image.save!
-      image.destroy
-      expect { post.reload }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
-  describe '.sort_by_option' do
-    let(:user) { FactoryBot.create(:user) }
-    let(:post) { FactoryBot.create(:post, user:) }
-
-    before do
-      3.times do
-        FactoryBot.create(:collected_insect_image, user:, post:, likes_count: rand(1..10))
-      end
-    end
-
-    it 'オプション0で作成日時の降順に並べ替える' do
-      expect(CollectedInsectImage.sort_by_option(0)).to eq(CollectedInsectImage.order(created_at: :desc))
-    end
-
-    it 'オプション1で撮影日時の降順に並べ替える' do
-      expect(CollectedInsectImage.sort_by_option(1)).to eq(CollectedInsectImage.order(taken_at: :desc))
-    end
-
-    it 'オプション2でいいね数の降順に並べ替える' do
-      expect(CollectedInsectImage.sort_by_option(2)).to eq(CollectedInsectImage.order(likes_count: :desc))
     end
   end
 end
