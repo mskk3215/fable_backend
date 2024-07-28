@@ -26,11 +26,11 @@ RSpec.describe 'Api::V1::Posts', type: :request do
     let(:image_file) { Rack::Test::UploadedFile.new(Rails.public_path.join('images/test_image.png'), 'image/png') }
     let(:valid_attributes) {
       {
-        image: [image_file]
+        images: [image_file]
       }
     }
     let(:invalid_attributes) {
-      { image: nil }
+      { images: nil }
     }
 
     context 'ログインしているユーザーの場合' do
@@ -41,7 +41,7 @@ RSpec.describe 'Api::V1::Posts', type: :request do
       context '有効なパラメータの場合' do
         it '新しい投稿を作成する' do
           expect {
-            post api_v1_posts_path, params: { image: valid_attributes }
+            post api_v1_posts_path, params: { collected_insect: valid_attributes }
           }.to change(Post, :count).by(1)
           expect(response).to have_http_status(:created)
         end
@@ -50,7 +50,7 @@ RSpec.describe 'Api::V1::Posts', type: :request do
       context '無効なパラメータの場合' do
         it '投稿が作成されない' do
           expect {
-            post api_v1_posts_path, params: { image: invalid_attributes }
+            post api_v1_posts_path, params: { collected_insect: invalid_attributes }
           }.not_to change(Post, :count)
           expect(response).to have_http_status(:unprocessable_entity)
         end

@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :like do
     user
-    image
+    collected_insect
   end
 end
