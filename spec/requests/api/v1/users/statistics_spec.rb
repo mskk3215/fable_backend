@@ -7,7 +7,7 @@ RSpec.describe 'Api::V1::Users::Statistics' do
   let(:prefecture) { create(:prefecture, name: '東京都') }
   let(:city) { create(:city, name: '渋谷', prefecture:) }
   let!(:insect) { create(:insect) }
-  let!(:image) { create(:image, user:, city:, insect:) }
+  let!(:collected_insect) { create(:collected_insect, user:, city:, insect:) }
 
   describe 'GET /api/v1/users/:user_id/statistics' do
     context 'ログインしているユーザーが自分の統計情報を要求した場合' do

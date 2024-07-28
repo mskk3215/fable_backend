@@ -2,13 +2,14 @@
 
 class Post < ApplicationRecord
   belongs_to :user
-  has_many :images, dependent: :destroy
+  has_many :collected_insects, dependent: :destroy
   
-  # 全ての画像にinsect,park,city,user,likesを含めて作成日の降順で取得
+  # collected_insectsに画像を含めて作成日の降順で取得
   def self.fetch_all_with_includes
-    includes(images: %i[insect park city user
-                        likes]).order(created_at: :desc)
+    includes(collected_insects: :collected_insect_image)
+      .order(created_at: :desc)
   end
+
   # フォローしているユーザーidを取得
   def self.for_followed_users(user)
     where(user_id: user.following.pluck(:id))
@@ -19,7 +20,7 @@ class Post < ApplicationRecord
   end
   # いいねが５以上をいいねの多い順に投稿を取得
   def self.sort_by_likes_with_minimum_five
-    all.select { |post| post.images.sum(&:likes_count) >= 5 }
-       .sort_by { |post| post.images.sum(&:likes_count) }.reverse
+    all.select { |post| post.collected_insects.sum(&:likes_count) >= 5 }
+       .sort_by { |post| post.collected_insects.sum(&:likes_count) }.reverse
   end
 end

@@ -6,7 +6,7 @@ class Park < ApplicationRecord
   validates :name, presence: true
   validates :post_code, format: { with: VALID_POSTAL_CODE_REGEX }, allow_blank: true
 
-  has_many :images
+  has_many :collected_insects
   belongs_to :city
   belongs_to :prefecture
 
