@@ -82,7 +82,9 @@ Metrics/BlockLength:
     - "lib/tasks/dev.rake"
 
 Metrics/ClassLength:
-  CountComments: false
+  Max: 120
+  Exclude:
+    - "app/controllers/api/v1/insects_controller.rb"
 
 Metrics/CyclomaticComplexity:
   Max: 18
