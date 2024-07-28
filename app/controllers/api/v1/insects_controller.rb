@@ -112,12 +112,33 @@ module Api
           end
         end
 
-        # autocomplete用の昆虫のリスト
+        # Mapとinsect list用の昆虫リスト
         def fetch_insect_data
-          all_insects = params[:query_word].present? ? Insect.where('name LIKE ?', "%#{params[:query_word]}%").limit(20) : []
+          if params[:query_word].present?
+            insects = Insect.joins(collected_insects: :collected_insect_image)
+                            .where('name LIKE ?', "%#{params[:query_word]}%")
+                            .distinct
+                            .limit(10)
+            insects.map do |insect|
+              { name: insect.name, id: insect.id, image: insect.collected_insects.first.collected_insect_image.image.url }
+            end
+          else
+            case params[:page_type]
+            when 'picturebooklist'
+              page = params[:page].to_i || 1
+              per_page = page == 1 ? 6 : 5
+              offset = page == 1 ? 0 : 6 + ((page - 2) * 5)
 
-          all_insects.map do |insect|
-            { name: insect.name }
+              insects = Insect.joins(collected_insects: :collected_insect_image)
+                              .distinct
+                              .offset(offset)
+                              .limit(per_page)
+              insects.map do |insect|
+                { name: insect.name, id: insect.id, image: insect.collected_insects.first.collected_insect_image.image.url }
+              end
+            else
+              []
+            end
           end
         end
     end
