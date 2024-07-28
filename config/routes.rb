@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
       # ログイン、ログアウト、ログイン状態の確認
-      post '/login',    to: 'sessions#create'
+      post '/login', to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#logged_in?'
       # ユーザー登録、プロフィール更新、パスワード更新、フォロー、フォロー解除, 統計情報取得

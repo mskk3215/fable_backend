@@ -9,7 +9,6 @@ module Api
         @insects = if params[:status].present?
                      insect_park_data = initialize_insect_park_data
                      case params[:status]
-                      
                      when 'collected'
                        fetch_collected_insects(insect_park_data)
                      when 'uncollected'
@@ -38,8 +37,6 @@ module Api
         def initialize_insect_park_data
           insect_park_data = Insect.joins(collected_insects: [{ city: :prefecture }, :park, :user]).order(:id)
           insect_park_data = insect_park_data.joins(collected_insects: :collected_insect_image)
-
-          Rails.logger.debug { "Insect Park Data: #{insect_park_data.inspect}" }
 
           if params[:prefecture].present?
             insect_park_data = insect_park_data.where(prefectures: { name: params[:prefecture] })
@@ -78,8 +75,6 @@ module Api
         def fetch_uncollected_insects(insect_park_data)
           collected_insect_ids = insect_park_data.where(collected_insects: { user_id: current_user.id }).pluck(:insect_id)
           uncollected_insect_park_data = insect_park_data.where.not(id: collected_insect_ids).distinct
-
-          Rails.logger.debug { "Uncollected Insect Park Data: #{uncollected_insect_park_data.inspect}" }
 
           if params[:lat].present? && params[:lng].present?
             nearest_parks = Park.near([params[:lat], params[:lng]], 2000, units: :km).order(:distance)
