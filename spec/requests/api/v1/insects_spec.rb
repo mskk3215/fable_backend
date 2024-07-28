@@ -3,20 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Insects' do
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
+  let(:park) { create(:park) }
+  let(:insects) { create_list(:insect, 3, name: %w[カブトムシ ノコギリクワガタ カナブン]) }
 
-  let!(:user) { create(:user) }
-  let!(:other_user) { create(:user) }
-  let!(:prefecture) { Prefecture.create(name: '東京都') }
-  let!(:city) { City.create(name: '新宿区', prefecture: prefecture) }
-  let!(:park) { Park.create(name: '新宿御苑', city: city, prefecture: prefecture) }
-
-  let!(:insect_one) { create(:insect, name: 'カブトムシ') }
-  let!(:insect_second) { create(:insect, name: 'ノコギリクワガタ') }
-  let!(:insect_third) { create(:insect, name: 'カナブン') }
-
-  let!(:collected_insect_one) { create(:collected_insect, user: other_user, insect: insect_one, park: park, sex: 'オス') }
-  let!(:collected_insect_second) { create(:collected_insect, user: other_user, insect: insect_second, park: park, sex: 'メス') }
-  let!(:collected_insect_third) { create(:collected_insect, user: other_user, insect: insect_third, park: park, sex: 'オス') }
+  before do
+    insects.each do |insect|
+      create(:collected_insect, user: other_user, insect:, park:)
+    end
+  end
 
   describe 'GET /api/v1/insects' do
     context 'キーワードにマッチする昆虫のリストを取得する場合' do
@@ -34,22 +30,22 @@ RSpec.describe 'Api::V1::Insects' do
     context '採集済み昆虫のリストを取得する場合' do
       before do
         login(user)
-        create(:collected_insect, user: , insect: insect_one, park: , sex: 'オス')
+        create(:collected_insect, user:, insect: insects.first, park:, sex: 'オス')
       end
 
       it '採集済み昆虫のリストを正しく取得できること' do
         get api_v1_insects_path(status: 'collected')
 
         expect(response).to have_http_status(:ok)
-         expect(json.size).to eq(1)
-        expect(json.first['insect_name']).to  eq(insect_one.name)
+        expect(json.size).to eq(1)
+        expect(json.first['insect_name']).to eq(insects.first.name)
       end
     end
 
     context '未採集昆虫のリストを取得する場合' do
       before do
         login(user)
-        create(:collected_insect, user: user, insect: insect_one)
+        create(:collected_insect, user:, insect: insects.first)
       end
 
       it '未採集昆虫のリストを正しく取得できること' do
@@ -64,8 +60,8 @@ RSpec.describe 'Api::V1::Insects' do
     context '採集済みと未採集の昆虫を比較する場合' do
       before do
         login(user)
-        [insect_one, insect_second, insect_third].each do |insect|
-          create(:collected_insect, insect: insect, user: user)
+        insects.each do |insect|
+          create(:collected_insect, insect:, user:)
         end
       end
 
@@ -87,10 +83,10 @@ RSpec.describe 'Api::V1::Insects' do
     end
 
     it '昆虫の詳細情報を返す' do
-      get api_v1_insect_path(insect_one.id)
+      get api_v1_insect_path(insects.first.id)
 
       expect(response).to have_http_status(:ok)
-      expect(json['insect']['insect_id']).to eq(insect_one.id)
+      expect(json['insect']['insect_id']).to eq(insects.first.id)
     end
   end
 end
