@@ -2,7 +2,7 @@
 
 require 'unicode'
 
-puts '投稿画像データの挿入を開始します'
+puts 'Start inserting Posts and Images data'
 
 image_filenames = Dir[Rails.root.join('db/seeds/dummy_data/images/*.png')]
 
@@ -113,4 +113,4 @@ end
   end
 end
 
-puts '投稿画像データを作成しました!'
+puts 'Posts and Images data created!'
