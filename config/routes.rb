@@ -26,6 +26,8 @@ Rails.application.routes.draw do
         end
       end
       put '/collected_insects/bulk_update', to: 'collected_insects#bulk_update' # 画像の一括更新
+      # 通知
+      resources :sighting_notifications, only: %i[index create destroy]
 
       resources :parks, only: %i[index]
       resources :insects, only: %i[index show]
