@@ -10,6 +10,7 @@ class Insect < ApplicationRecord
   has_many :foods, through: :insect_foods
   has_many :insect_tools, dependent: :destroy
   has_many :tools, through: :insect_tools
+  has_many :sighting_notifications, dependent: :destroy
 
   belongs_to :habitat_place, dependent: :destroy
   belongs_to :biological_family, dependent: :destroy
