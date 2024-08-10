@@ -4,14 +4,12 @@ class Api::V1::SightingNotificationsController < ApplicationController
   before_action :set_sighting_notification, only: %i[destroy]
 
   def index
-    @sighting_notifications = if params[:insect_id]
-                                if params[:is_notification_enabled]
+    @sighting_notifications = if params[:include_notification_button]
                                 # picturebookページの通知設定ボタンおよび通知設定一覧modalのon/off切り替え
-                                  fetch_notifications_for_toggle
-                                else
+                                fetch_notification_settings
+                              elsif params[:insect_id]
                                 # piturebookページの最近の出没先リストに表示
-                                  fetch_recent_collected_insects
-                                end
+                                fetch_recent_collected_insects
                               else
                                 # notificationページでcurrent_userの通知一覧を表示
                                 fetch_current_user_notifications
@@ -28,7 +26,6 @@ class Api::V1::SightingNotificationsController < ApplicationController
     end
   end
 
-
   def destroy
     if @sighting_notification.destroy
       render 'api/v1/sighting_notifications/destroy'
@@ -43,10 +40,11 @@ class Api::V1::SightingNotificationsController < ApplicationController
       @sighting_notification = SightingNotification.find(params[:id])
     end
 
-    def fetch_notifications_for_toggle
-      notifications = SightingNotification.where(insect_id: params[:insect_id], user_id: current_user.id).includes(:insect).distinct
+    def fetch_notification_settings
+      notifications = current_user.sighting_notifications.where(user_id: current_user.id).includes(:insect)
       notifications.map do |notification|
         {
+          id: notification.id,
           insect_id: notification.insect_id,
           insect_name: notification.insect.name
         }
@@ -55,7 +53,7 @@ class Api::V1::SightingNotificationsController < ApplicationController
 
     def fetch_recent_collected_insects
       collected_insects = CollectedInsect.where(insect_id: params[:insect_id]).joins(:insect,
-                                                                                     :park).order(taken_date_time: :desc).page(params[:page]).limit(8)
+                                                                                     :park).order(taken_date_time: :desc).page(params[:page]).limit(5)
       format_collected_insects(collected_insects)
     end
 
