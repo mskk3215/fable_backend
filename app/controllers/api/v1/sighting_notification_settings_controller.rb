@@ -1,47 +1,48 @@
 # frozen_string_literal: true
 
-class Api::V1::SightingNotificationsController < ApplicationController
-  before_action :set_sighting_notification, only: %i[destroy]
+class Api::V1::SightingNotificationSettingsController < ApplicationController
+  before_action :set_sighting_notification_setting, only: %i[destroy]
 
   def index
-    @sighting_notifications = if params[:include_notification_button]
+    @sighting_notification_settings = if params[:include_notification_button]
                                 # picturebookページの通知設定ボタンおよび通知設定一覧modalのon/off切り替え
-                                fetch_notification_settings
-                              elsif params[:insect_id]
+                                        fetch_sighting_notification_settings
+                                      elsif params[:insect_id]
                                 # piturebookページの最近の出没先リストに表示
-                                fetch_recent_collected_insects
-                              else
+                                        fetch_recent_collected_insects
+                                      else
                                 # notificationページでcurrent_userの通知一覧を表示
-                                fetch_current_user_notifications
-                              end
-    render 'api/v1/sighting_notifications/index'
+                                        fetch_current_user_notifications
+                                      end
+    render 'api/v1/sighting_notification_settings/index'
   end
 
   def create
-    @sighting_notification = current_user.sighting_notifications.build(insect_id: params[:insect_id])
-    if @sighting_notification.save
-      render 'api/v1/sighting_notifications/create', status: :created
+    @sighting_notification_setting = current_user.sighting_notification_settings.build(insect_id: params[:insect_id])
+    if @sighting_notification_setting.save
+      render json: {},status: :created
     else
-      render json: { error: @sighting_notification.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: [@sighting_notification_setting.errors.full_messages] }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @sighting_notification.destroy
-        render json: { status: :deleted }
+    if @sighting_notification_setting.destroy
+      render json: {}, status: :no_content
     else
-      render json: { error: 'Failed to delete notification' }, status: :unprocessable_entity
+      binding.pry
+      render json: { error: ['Failed to delete sighting notification setting'] }, status: :unprocessable_entity
     end
   end
 
   private
 
-    def set_sighting_notification
-      @sighting_notification = SightingNotification.find(params[:id])
+    def set_sighting_notification_setting
+      @sighting_notification_setting = SightingNotificationSetting.find(params[:id])
     end
 
-    def fetch_notification_settings
-      notifications = current_user.sighting_notifications.where(user_id: current_user.id).includes(:insect)
+    def fetch_sighting_notification_settings
+      notifications = current_user.sighting_notification_settings.where(user_id: current_user.id).includes(:insect)
       notifications.map do |notification|
         {
           id: notification.id,
@@ -58,9 +59,9 @@ class Api::V1::SightingNotificationsController < ApplicationController
     end
 
     def fetch_current_user_notifications
-      collected_insects = CollectedInsect.joins(insect: :sighting_notifications)
+      collected_insects = CollectedInsect.joins(insect: :sighting_notification_settings)
                                          .joins(:park)
-                                         .where(sighting_notifications: { user_id: current_user.id })
+                                         .where(sighting_notification_settings: { user_id: current_user.id })
                                          .order(taken_date_time: :desc)
                                          .page(params[:page]).per(8)
       format_collected_insects(collected_insects)

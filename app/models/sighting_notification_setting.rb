@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SightingNotification < ApplicationRecord
+class SightingNotificationSetting < ApplicationRecord
   belongs_to :user
   belongs_to :insect
 end
