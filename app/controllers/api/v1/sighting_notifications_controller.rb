@@ -28,7 +28,7 @@ class Api::V1::SightingNotificationsController < ApplicationController
 
   def destroy
     if @sighting_notification.destroy
-      render 'api/v1/sighting_notifications/destroy'
+        render json: { status: :deleted }
     else
       render json: { error: 'Failed to delete notification' }, status: :unprocessable_entity
     end
