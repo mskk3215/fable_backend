@@ -140,13 +140,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_062814) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
-  create_table "sighting_notifications", charset: "utf8mb3", force: :cascade do |t|
+  create_table "sighting_notification_settings", charset: "utf8mb3", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "insect_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["insect_id"], name: "index_sighting_notifications_on_insect_id"
-    t.index ["user_id"], name: "index_sighting_notifications_on_user_id"
+    t.index ["insect_id"], name: "index_sighting_notification_settings_on_insect_id"
+    t.index ["user_id"], name: "index_sighting_notification_settings_on_user_id"
   end
 
   create_table "tools", charset: "utf8mb3", force: :cascade do |t|
@@ -184,6 +184,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_062814) do
   add_foreign_key "parks", "cities"
   add_foreign_key "parks", "prefectures"
   add_foreign_key "posts", "users"
-  add_foreign_key "sighting_notifications", "insects"
-  add_foreign_key "sighting_notifications", "users"
+  add_foreign_key "sighting_notification_settings", "insects"
+  add_foreign_key "sighting_notification_settings", "users"
 end
