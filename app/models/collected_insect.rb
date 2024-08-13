@@ -54,7 +54,8 @@ class CollectedInsect < ApplicationRecord
   private
 
     def recent_post_and_recent_taken?
-      return false unless taken_date_time.present?
+      return false if taken_date_time.blank?
+
       created_at > 1.hour.ago && taken_date_time > 1.week.ago
     end
 end
