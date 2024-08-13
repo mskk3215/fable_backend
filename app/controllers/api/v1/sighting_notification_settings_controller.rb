@@ -20,7 +20,7 @@ class Api::V1::SightingNotificationSettingsController < ApplicationController
   def create
     @sighting_notification_setting = current_user.sighting_notification_settings.build(insect_id: params[:insect_id])
     if @sighting_notification_setting.save
-      render json: {},status: :created
+      head :created
     else
       render json: { error: [@sighting_notification_setting.errors.full_messages] }, status: :unprocessable_entity
     end
@@ -28,9 +28,8 @@ class Api::V1::SightingNotificationSettingsController < ApplicationController
 
   def destroy
     if @sighting_notification_setting.destroy
-      render json: {}, status: :no_content
+      head :no_content
     else
-      binding.pry
       render json: { error: ['Failed to delete sighting notification setting'] }, status: :unprocessable_entity
     end
   end
