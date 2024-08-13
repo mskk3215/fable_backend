@@ -7,4 +7,5 @@ json.array! @sighting_notifications.map do |notifications|
   json.insect_name notifications[:insect_name]
   json.taken_date_time notifications[:taken_date_time]
   json.park_name notifications[:park_name]
+  json.is_read notifications[:is_read]
 end
