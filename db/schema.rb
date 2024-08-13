@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_13_062814) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_12_154315) do
   create_table "biological_families", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -150,6 +150,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_062814) do
     t.index ["user_id"], name: "index_sighting_notification_settings_on_user_id"
   end
 
+  create_table "sighting_notifications", charset: "utf8mb3", force: :cascade do |t|
+    t.boolean "is_read", default: false, null: false
+    t.bigint "user_id", null: false
+    t.bigint "collected_insect_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collected_insect_id"], name: "index_sighting_notifications_on_collected_insect_id"
+    t.index ["user_id"], name: "index_sighting_notifications_on_user_id"
+  end
+
   create_table "tools", charset: "utf8mb3", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -187,4 +197,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_062814) do
   add_foreign_key "posts", "users"
   add_foreign_key "sighting_notification_settings", "insects"
   add_foreign_key "sighting_notification_settings", "users"
+  add_foreign_key "sighting_notifications", "collected_insects"
+  add_foreign_key "sighting_notifications", "users"
 end
