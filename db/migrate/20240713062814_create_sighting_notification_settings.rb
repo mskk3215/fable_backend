@@ -6,5 +6,6 @@ class CreateSightingNotificationSettings < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+       add_index :sighting_notification_settings, %i[user_id insect_id], unique: true
   end
 end

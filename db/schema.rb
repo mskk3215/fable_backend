@@ -146,6 +146,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_13_062814) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["insect_id"], name: "index_sighting_notification_settings_on_insect_id"
+    t.index ["user_id", "insect_id"], name: "index_sighting_notification_settings_on_user_id_and_insect_id", unique: true
     t.index ["user_id"], name: "index_sighting_notification_settings_on_user_id"
   end
 
