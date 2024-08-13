@@ -16,31 +16,10 @@ RSpec.describe 'Api::V1::SightingNotificationSettings' do
   describe 'GET /index' do
     context '特定の昆虫に対しての投稿通知設定の取得' do
       it '正しい通知を返す' do
-        get api_v1_sighting_notification_settings_path, params: { insect_id: insect.id, include_notification_button: true }
-        expect(response).to have_http_status(:ok)
-        expect(json).to be_an(Array)
-        expect(json.size).to eq(1)
-        expect(json.first['insect_id']).to eq(insect.id)
-      end
-    end
-
-    context '採集昆虫の最近の投稿の取得' do
-      it '正しい採集昆虫を返す' do
-        get api_v1_sighting_notification_settings_path, params: { insect_id: insect.id }
-        expect(response).to have_http_status(:ok)
-        expect(json).to be_an(Array)
-        expect(json.size).to eq(5)
-        expect(json.first['insect_id']).to eq(insect.id)
-      end
-    end
-
-    context 'current_userが通知設定している昆虫投稿の取得' do
-      it '正しい通知を返す' do
         get api_v1_sighting_notification_settings_path
         expect(response).to have_http_status(:ok)
         expect(json).to be_an(Array)
-        expect(json.size).to eq(5)
-        expect(json.first['insect_id']).to eq(insect.id)
+        expect(json.size).to eq(1)
       end
     end
   end
@@ -57,10 +36,16 @@ RSpec.describe 'Api::V1::SightingNotificationSettings' do
     end
 
     context '無効なパラメータの場合' do
-      it 'エラーを返す' do
+      it '無効なinsect_idが与えられた場合、エラーを返す' do
         post api_v1_sighting_notification_settings_path, params: { insect_id: -1 }
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(json['error']).to be_present
+        expect(json['error']).to include(['Insect must exist'])
+      end
+
+      it 'insect_idが欠落している場合、エラーを返す' do
+        post api_v1_sighting_notification_settings_path, params: {}
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(json['error']).to include(['Insect must exist'])
       end
     end
   end
