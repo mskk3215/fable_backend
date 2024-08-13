@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# spec/requests/api/v1/sighting_notification_setting_spec.rb
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::SightingNotificationSettings' do
@@ -49,8 +48,9 @@ RSpec.describe 'Api::V1::SightingNotificationSettings' do
   describe 'POST /create' do
     context '有効なパラメータの場合' do
       it '新しい通知を作成する' do
+        new_insect = create(:insect)
         expect {
-          post api_v1_sighting_notification_settings_path, params: { insect_id: insect.id }
+          post api_v1_sighting_notification_settings_path, params: { insect_id: new_insect.id }
         }.to change(SightingNotificationSetting, :count).by(1)
         expect(response).to have_http_status(:created)
       end
