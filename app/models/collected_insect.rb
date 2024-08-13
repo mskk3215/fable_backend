@@ -11,6 +11,7 @@ class CollectedInsect < ApplicationRecord
   has_many :likes, dependent: :destroy
 
   after_initialize :set_default_likes_count, if: :new_record?
+  has_many :sighting_notifications, dependent: :destroy
 
   after_destroy :destroy_parent_post_if_no_collected_insects
 
