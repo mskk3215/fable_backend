@@ -21,7 +21,7 @@ module Api
       end
 
       def bulk_update
-        form = CollectedInsectForm.new(collected_insects: @collected_insects, collected_insect_params:)
+        form = CollectedInsectForm.new(collected_insects: @collected_insects, collected_insect_params:, current_user:)
         if form.save
           render json: { status: :updated }
         else

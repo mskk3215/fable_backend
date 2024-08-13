@@ -15,6 +15,20 @@ class CollectedInsect < ApplicationRecord
 
   after_destroy :destroy_parent_post_if_no_collected_insects
 
+  # 通知を作成
+  def create_sighting_notifications_if_recent_and_insect_changed(current_user)
+    # 投稿１時間以内に昆虫名、撮影日時、公園名が変更された場合のみ通知を作成
+    return unless park_id.present? && taken_date_time.present? && insect_id.present?
+    return unless saved_change_to_insect_id? && saved_change_to_taken_date_time? && saved_change_to_park_id?
+    return unless recent_post?
+
+    insect.sighting_notification_settings.each do |setting|
+      if setting.user_id != current_user.id
+        SightingNotification.create(user_id: setting.user_id, collected_insect_id: id, is_read: false)
+      end
+    end
+  end
+
   # likes_countのデフォルト値を設定
   def set_default_likes_count
     self.likes_count ||= 0
@@ -33,4 +47,10 @@ class CollectedInsect < ApplicationRecord
     when 2 then order(likes_count: :desc)
     end
   end
+
+  private
+
+    def recent_post?
+      created_at > 1.hour.ago
+    end
 end

@@ -60,4 +60,88 @@ RSpec.describe CollectedInsect do
       expect(CollectedInsect.sort_by_option(2)).to eq(CollectedInsect.order(likes_count: :desc))
     end
   end
+
+  describe '#create_sighting_notifications_if_recent_and_insect_changed' do
+    let(:user) { create(:user) }
+    let(:another_user) { create(:user) }
+    let(:insect) { create(:insect) }
+    let(:park) { create(:park) }
+    let(:collected_insect) { create(:collected_insect, user:, insect:, park:, created_at: Time.current) }
+    let!(:sighting_notification_setting) { create(:sighting_notification_setting, user: another_user, insect:) }
+
+    before do
+      allow(collected_insect).to receive_messages(saved_change_to_insect_id?: true, saved_change_to_taken_date_time?: true, saved_change_to_park_id?: true)
+    end
+
+    context '条件が満たされた場合' do
+      it '新しい通知を作成する' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+        }.to change(SightingNotification, :count).by(1)
+
+        notification = SightingNotification.last
+        expect(notification.user_id).to eq(another_user.id)
+        expect(notification.collected_insect_id).to eq(collected_insect.id)
+        expect(notification.is_read).to be_falsey
+      end
+    end
+
+    context 'insect_idが変更されていない場合' do
+      before do
+        allow(collected_insect).to receive(:saved_change_to_insect_id?).and_return(false)
+      end
+
+      it '通知を作成しない' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+        }.not_to(change(SightingNotification, :count))
+      end
+    end
+
+    context 'taken_date_timeが変更されていない場合' do
+      before do
+        allow(collected_insect).to receive(:saved_change_to_taken_date_time?).and_return(false)
+      end
+
+      it '通知を作成しない' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+        }.not_to(change(SightingNotification, :count))
+      end
+    end
+
+    context 'park_idが変更されていない場合' do
+      before do
+        allow(collected_insect).to receive(:saved_change_to_park_id?).and_return(false)
+      end
+
+      it '通知を作成しない' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+        }.not_to(change(SightingNotification, :count))
+      end
+    end
+
+    context 'ポストが1時間以上前に作成された場合' do
+      before do
+        collected_insect.update(created_at: 2.hours.ago)
+      end
+
+      it '通知を作成しない' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+        }.not_to(change(SightingNotification, :count))
+      end
+    end
+
+    context 'ユーザーが設定されたユーザーと同じ場合' do
+      let(:collected_insect) { create(:collected_insect, user: another_user, insect:, park:, created_at: Time.current) }
+
+      it '通知を作成しない' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(another_user)
+        }.not_to(change(SightingNotification, :count))
+      end
+    end
+  end
 end
