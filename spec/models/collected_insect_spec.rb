@@ -66,12 +66,8 @@ RSpec.describe CollectedInsect do
     let(:another_user) { create(:user) }
     let(:insect) { create(:insect) }
     let(:park) { create(:park) }
-    let(:collected_insect) { create(:collected_insect, user:, insect:, park:, created_at: Time.current) }
+    let(:collected_insect) { create(:collected_insect, user:, insect:, park:, taken_date_time: Time.current, created_at: Time.current) }
     let!(:sighting_notification_setting) { create(:sighting_notification_setting, user: another_user, insect:) }
-
-    before do
-      allow(collected_insect).to receive_messages(saved_change_to_insect_id?: true, saved_change_to_taken_date_time?: true, saved_change_to_park_id?: true)
-    end
 
     context '条件が満たされた場合' do
       it '新しい通知を作成する' do
@@ -86,9 +82,9 @@ RSpec.describe CollectedInsect do
       end
     end
 
-    context 'insect_idが変更されていない場合' do
+    context 'insect_idが存在しない場合' do
       before do
-        allow(collected_insect).to receive(:saved_change_to_insect_id?).and_return(false)
+        collected_insect.update(insect_id: nil)
       end
 
       it '通知を作成しない' do
@@ -98,9 +94,9 @@ RSpec.describe CollectedInsect do
       end
     end
 
-    context 'taken_date_timeが変更されていない場合' do
+    context 'taken_date_timeが存在しない場合' do
       before do
-        allow(collected_insect).to receive(:saved_change_to_taken_date_time?).and_return(false)
+        collected_insect.update(taken_date_time: nil)
       end
 
       it '通知を作成しない' do
@@ -110,9 +106,9 @@ RSpec.describe CollectedInsect do
       end
     end
 
-    context 'park_idが変更されていない場合' do
+    context 'park_idが存在しない場合' do
       before do
-        allow(collected_insect).to receive(:saved_change_to_park_id?).and_return(false)
+        collected_insect.update(park_id: nil)
       end
 
       it '通知を作成しない' do
@@ -122,7 +118,7 @@ RSpec.describe CollectedInsect do
       end
     end
 
-    context 'ポストが1時間以上前に作成された場合' do
+    context '投稿が1時間以上前の場合' do
       before do
         collected_insect.update(created_at: 2.hours.ago)
       end
@@ -134,13 +130,39 @@ RSpec.describe CollectedInsect do
       end
     end
 
-    context 'ユーザーが設定されたユーザーと同じ場合' do
+    context '撮影日時が1週間以上前の場合' do
+      before do
+        collected_insect.update(taken_date_time: 2.weeks.ago)
+      end
+
+      it '通知を作成しない' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+        }.not_to(change(SightingNotification, :count))
+      end
+    end
+
+    context '通知ユーザーが設定されたユーザーと同じ場合' do
       let(:collected_insect) { create(:collected_insect, user: another_user, insect:, park:, created_at: Time.current) }
 
       it '通知を作成しない' do
         expect {
           collected_insect.create_sighting_notifications_if_recent_and_insect_changed(another_user)
         }.not_to(change(SightingNotification, :count))
+      end
+    end
+
+    context '既存の通知がある場合' do
+      let!(:existing_notification) { create(:sighting_notification, user: another_user, collected_insect:) }
+
+      it '通知を更新し、既読を未読に変更する' do
+        expect {
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+        }.not_to change(SightingNotification, :count)
+
+        existing_notification.reload
+        expect(existing_notification.is_read).to be_falsey
+        expect(existing_notification.updated_at).to be_within(1.second).of(Time.current)
       end
     end
   end

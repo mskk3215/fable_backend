@@ -17,13 +17,16 @@ class CollectedInsect < ApplicationRecord
 
   # 通知を作成
   def create_sighting_notifications_if_recent_and_insect_changed(current_user)
-    # 投稿１時間以内に昆虫名、撮影日時、公園名が変更された場合のみ通知を作成
-    return unless park_id.present? && taken_date_time.present? && insect_id.present?
-    return unless saved_change_to_insect_id? && saved_change_to_taken_date_time? && saved_change_to_park_id?
-    return unless recent_post?
+    # 投稿１時間以内に昆虫名、公園名、撮影日時が追加された場合のみ通知を作成
+    return unless recent_post_and_recent_taken? && insect_id.present? && park_id.present? && taken_date_time.present?
 
     insect.sighting_notification_settings.each do |setting|
-      if setting.user_id != current_user.id
+      next unless setting.user_id != current_user.id
+
+      notification = SightingNotification.find_by(user_id: setting.user_id, collected_insect_id: id)
+      if notification
+        notification.update(is_read: false, updated_at: Time.current)
+      else
         SightingNotification.create(user_id: setting.user_id, collected_insect_id: id, is_read: false)
       end
     end
@@ -50,7 +53,8 @@ class CollectedInsect < ApplicationRecord
 
   private
 
-    def recent_post?
-      created_at > 1.hour.ago
+    def recent_post_and_recent_taken?
+      return false unless taken_date_time.present?
+      created_at > 1.hour.ago && taken_date_time > 1.week.ago
     end
 end
