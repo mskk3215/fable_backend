@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CollectedInsect < ApplicationRecord
+  after_initialize :set_default_likes_count, if: :new_record?
+
   belongs_to :insect, optional: true
   belongs_to :park, optional: true
   belongs_to :city, optional: true
@@ -9,8 +11,6 @@ class CollectedInsect < ApplicationRecord
 
   has_one :collected_insect_image, dependent: :destroy
   has_many :likes, dependent: :destroy
-
-  after_initialize :set_default_likes_count, if: :new_record?
   has_many :sighting_notifications, dependent: :destroy
 
   after_destroy :destroy_parent_post_if_no_collected_insects

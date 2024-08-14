@@ -3,7 +3,7 @@
 class ImageUploader < BaseUploader
   attr_accessor :prefecture_name, :city_name, :taken_date_time
 
-  # exif情報を取得し都道府県市町村撮影日のデータを取得する
+  # exif情報を取得し都道府県市町村撮影日時のデータを取得する
   require 'exifr/jpeg'
   process :exif_info
   def exif_info

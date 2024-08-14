@@ -17,9 +17,9 @@ Rails.application.routes.draw do
         end
       end
       resources :rankings, only: %i[index]
-
+      # 投稿
       resources :posts, only: %i[index create destroy]
-
+      # 採集した昆虫
       resources :collected_insects, only: %i[index destroy] do
         scope module: :collected_insects do
           resources :likes, only: %i[create destroy]
