@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# spec/models/collected_insect_spec.rb
 require 'rails_helper'
 
 RSpec.describe CollectedInsect do
@@ -23,7 +22,7 @@ RSpec.describe CollectedInsect do
     end
   end
 
-  # coolected_insectのモデルメソッドに対するテスト
+  # collected_insectのモデルメソッドに対するテスト
   describe '#set_default_likes_count' do
     it '新規レコードのlikes_countがデフォルトで0になっている' do
       new_image = build(:collected_insect)

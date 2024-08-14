@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Api::V1::SightingNotifications', type: :request do
+RSpec.describe 'Api::V1::SightingNotifications' do
   let(:user) { create(:user) }
   let(:insect) { create(:insect) }
   let(:park) { create(:park) }
@@ -26,7 +26,7 @@ RSpec.describe 'Api::V1::SightingNotifications', type: :request do
       it '期待される通知を返す' do
         expect(json_response).to be_an_instance_of(Array)
         expect(json_response.first['insect_id']).to eq(insect.id)
-                expect(json_response.first['insect_name']).to eq(insect.name)
+        expect(json_response.first['insect_name']).to eq(insect.name)
         expect(json_response.first['park_name']).to eq(park.name)
       end
     end
@@ -63,7 +63,6 @@ RSpec.describe 'Api::V1::SightingNotifications', type: :request do
       end
     end
   end
-
 end
 
 def json_response
