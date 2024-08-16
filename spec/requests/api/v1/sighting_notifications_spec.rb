@@ -21,9 +21,6 @@ RSpec.describe 'Api::V1::SightingNotifications' do
 
       it '成功したレスポンスを返す' do
         expect(response).to have_http_status(:ok)
-      end
-
-      it '期待される通知を返す' do
         expect(json_response).to be_an_instance_of(Array)
         expect(json_response.first['insect_name']).to eq(insect.name)
         expect(json_response.first['park_name']).to eq(park.name)
@@ -37,9 +34,6 @@ RSpec.describe 'Api::V1::SightingNotifications' do
 
       it '成功したレスポンスを返す' do
         expect(response).to have_http_status(:ok)
-      end
-
-      it '未読の通知を返す' do
         expect(json_response).to be_an_instance_of(Array)
         expect(json_response.first['is_read']).to be false
       end
@@ -52,12 +46,13 @@ RSpec.describe 'Api::V1::SightingNotifications' do
 
       it '成功したレスポンスを返す' do
         expect(response).to have_http_status(:ok)
-      end
-
-      it '期待される通知を返す' do
         expect(json_response).to be_an_instance_of(Array)
         expect(json_response.first['insect_name']).to eq(insect.name)
         expect(json_response.first['park_name']).to eq(park.name)
+      end
+    end
+  end
+
   describe 'PATCH /update' do
     context '通知を既読に更新する場合' do
       before do
