@@ -17,7 +17,7 @@ class Api::V1::SightingNotificationsController < ApplicationController
 
   def update
     sighting_notification = SightingNotification.find(params[:id])
-    if sighting_notification.update(is_read: params[:is_read])
+    if sighting_notification.update(is_read: true)
       render json: { status: :updated }
     else
       render json: { error: [sighting_notification.errors.full_messages] }, status: :unprocessable_entity
