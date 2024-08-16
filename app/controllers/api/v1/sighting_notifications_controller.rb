@@ -15,6 +15,17 @@ class Api::V1::SightingNotificationsController < ApplicationController
     render 'api/v1/sighting_notifications/index'
   end
 
+  def update
+    sighting_notification = SightingNotification.find(params[:id])
+    if sighting_notification.update(is_read: params[:is_read])
+      render json: { status: :updated }
+    else
+      render json: { error: [sighting_notification.errors.full_messages] }, status: :unprocessable_entity
+    end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: ['Notification not found'] }, status: :not_found
+  end
+
   private
 
     def fetch_recent_collected_insects
@@ -35,27 +46,28 @@ class Api::V1::SightingNotificationsController < ApplicationController
                                          .includes(collected_insect: %i[insect park])
                                          .where(is_read: false)
                                          .order(updated_at: :desc)
-                                         .limit(1)
+                                         .limit(8)
+
       format_notifications(unread_notifications)
     end
 
     def fetch_current_user_notifications
       notifications = current_user.sighting_notifications
                                   .includes(collected_insect: %i[insect park])
-                                  .order(updated_at: :desc)
+                                  .order('collected_insects.taken_date_time DESC')
                                   .page(params[:page])
                                   .per(8)
-      format_notifications(notifications, mark_as_read: true)
+      format_notifications(notifications)
     end
 
     # format
-    def format_notifications(notifications, mark_as_read: false)
+    def format_notifications(notifications)
       notifications.map do |notification|
-        notification.update(is_read: true) if mark_as_read
         {
-          insect_id: notification.collected_insect.insect_id,
-          insect_name: notification.collected_insect.insect.name,
-          taken_date_time: notification.collected_insect.taken_date_time,
+          id: notification.id,
+          insect_id: notification.collected_insect&.insect_id,
+          insect_name: notification.collected_insect&.insect&.name,
+          taken_date_time: notification.collected_insect&.taken_date_time,
           park_name: notification.collected_insect.park&.name,
           is_read: notification.is_read
         }
