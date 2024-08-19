@@ -17,7 +17,7 @@ class CollectedInsect < ApplicationRecord
 
   # 通知を作成
   def create_sighting_notifications_if_recent_and_insect_changed(current_user)
-    # 投稿１時間以内に昆虫名、公園名、撮影日時が追加された場合のみ通知を作成
+    # 投稿24時間以内に昆虫名、公園名、撮影日時が追加された場合のみ通知を作成
     return unless recent_post_and_recent_taken? && insect_id.present? && park_id.present? && taken_date_time.present?
 
     insect.sighting_notification_settings.each do |setting|
@@ -56,6 +56,6 @@ class CollectedInsect < ApplicationRecord
     def recent_post_and_recent_taken?
       return false if taken_date_time.blank?
 
-      created_at > 1.hour.ago && taken_date_time > 1.week.ago
+      created_at > 1.day.ago && taken_date_time > 1.week.ago
     end
 end

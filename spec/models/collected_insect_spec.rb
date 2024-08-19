@@ -117,9 +117,9 @@ RSpec.describe CollectedInsect do
       end
     end
 
-    context '投稿が1時間以上前の場合' do
+    context '投稿が25時間以上前の場合' do
       before do
-        collected_insect.update(created_at: 2.hours.ago)
+        collected_insect.update(created_at: 25.hours.ago)
       end
 
       it '通知を作成しない' do
