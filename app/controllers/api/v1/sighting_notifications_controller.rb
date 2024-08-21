@@ -72,6 +72,7 @@ class Api::V1::SightingNotificationsController < ApplicationController
       notifications.map do |notification|
         {
           id: notification.id,
+          collected_insect_id: notification.collected_insect_id,
           insect_id: notification.collected_insect&.insect_id,
           insect_name: notification.collected_insect&.insect&.name,
           taken_date_time: notification.collected_insect&.taken_date_time,
