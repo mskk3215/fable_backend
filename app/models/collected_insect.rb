@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CollectedInsect < ApplicationRecord
+  after_initialize :set_default_likes_count, if: :new_record?
+
   belongs_to :insect, optional: true
   belongs_to :park, optional: true
   belongs_to :city, optional: true
@@ -9,10 +11,26 @@ class CollectedInsect < ApplicationRecord
 
   has_one :collected_insect_image, dependent: :destroy
   has_many :likes, dependent: :destroy
-
-  after_initialize :set_default_likes_count, if: :new_record?
+  has_many :sighting_notifications, dependent: :destroy
 
   after_destroy :destroy_parent_post_if_no_collected_insects
+
+  # 通知を作成
+  def create_sighting_notifications_if_recent_and_insect_changed(current_user)
+    # 投稿24時間以内に昆虫名、公園名、撮影日時が追加された場合のみ通知を作成
+    return unless recent_post_and_recent_taken? && insect_id.present? && park_id.present? && taken_date_time.present?
+
+    insect.sighting_notification_settings.each do |setting|
+      next unless setting.user_id != current_user.id
+
+      notification = SightingNotification.find_by(user_id: setting.user_id, collected_insect_id: id)
+      if notification
+        notification.update(is_read: false, updated_at: Time.current)
+      else
+        SightingNotification.create(user_id: setting.user_id, collected_insect_id: id, is_read: false)
+      end
+    end
+  end
 
   # likes_countのデフォルト値を設定
   def set_default_likes_count
@@ -32,4 +50,12 @@ class CollectedInsect < ApplicationRecord
     when 2 then order(likes_count: :desc)
     end
   end
+
+  private
+
+    def recent_post_and_recent_taken?
+      return false if taken_date_time.blank?
+
+      created_at > 1.day.ago && taken_date_time > 1.week.ago
+    end
 end

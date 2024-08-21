@@ -17,16 +17,20 @@ Rails.application.routes.draw do
         end
       end
       resources :rankings, only: %i[index]
-
+      # 投稿
       resources :posts, only: %i[index create destroy]
-
+      # 採集した昆虫
       resources :collected_insects, only: %i[index destroy] do
         scope module: :collected_insects do
           resources :likes, only: %i[create destroy]
         end
       end
       put '/collected_insects/bulk_update', to: 'collected_insects#bulk_update' # 画像の一括更新
-
+      # 通知
+      resources :sighting_notification_settings, only: %i[index create destroy]
+      resources :sighting_notifications, only: %i[index]
+      put '/sighting_notifications/mark_all_as_read', to: 'sighting_notifications#mark_all_as_read' # 通知を全て既読にする
+      # 公園、昆虫、都道府県
       resources :parks, only: %i[index]
       resources :insects, only: %i[index show]
       resources :prefectures, only: %i[index]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_12_154315) do
   create_table "biological_families", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -140,6 +140,26 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
+  create_table "sighting_notification_settings", charset: "utf8mb3", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "insect_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["insect_id"], name: "index_sighting_notification_settings_on_insect_id"
+    t.index ["user_id", "insect_id"], name: "index_sighting_notification_settings_on_user_id_and_insect_id", unique: true
+    t.index ["user_id"], name: "index_sighting_notification_settings_on_user_id"
+  end
+
+  create_table "sighting_notifications", charset: "utf8mb3", force: :cascade do |t|
+    t.boolean "is_read", default: false, null: false
+    t.bigint "user_id", null: false
+    t.bigint "collected_insect_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collected_insect_id"], name: "index_sighting_notifications_on_collected_insect_id"
+    t.index ["user_id"], name: "index_sighting_notifications_on_user_id"
+  end
+
   create_table "tools", charset: "utf8mb3", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -175,4 +195,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_02_145054) do
   add_foreign_key "parks", "cities"
   add_foreign_key "parks", "prefectures"
   add_foreign_key "posts", "users"
+  add_foreign_key "sighting_notification_settings", "insects"
+  add_foreign_key "sighting_notification_settings", "users"
+  add_foreign_key "sighting_notifications", "collected_insects"
+  add_foreign_key "sighting_notifications", "users"
 end
