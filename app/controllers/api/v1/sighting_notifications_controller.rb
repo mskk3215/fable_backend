@@ -53,7 +53,7 @@ class Api::V1::SightingNotificationsController < ApplicationController
                                          .includes(collected_insect: %i[insect park])
                                          .where(is_read: false)
                                          .order(updated_at: :desc)
-                                         .limit(8)
+                                         .limit(10)
 
       format_notifications(unread_notifications)
     end
@@ -63,7 +63,7 @@ class Api::V1::SightingNotificationsController < ApplicationController
                                   .includes(collected_insect: %i[insect park])
                                   .order('collected_insects.taken_date_time DESC')
                                   .page(params[:page])
-                                  .per(8)
+                                  .per(10)
       format_notifications(notifications)
     end
 
