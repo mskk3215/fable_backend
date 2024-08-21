@@ -42,6 +42,9 @@ def create_collected_insect_and_image(insect_name, sex, park_id, city_id, user_i
         collected_insect_image.collected_insect = collected_insect
         collected_insect_image.save!
 
+        # 通知を作成
+        collected_insect.create_sighting_notifications_if_recent_and_insect_changed(user)
+
       else
         puts "採集済み昆虫の作成に失敗しました: #{collected_insect.errors.full_messages}"
         raise ActiveRecord::Rollback
@@ -82,8 +85,8 @@ if user_id == 1
       city_id = park.city_id
 
       # ランダムな日時を生成
-      start_date = Time.zone.local(2023, 7, 1)
-      end_date = Time.zone.local(2023, 8, 31)
+      start_date = Time.zone.local(2024, 7, 20)
+      end_date = Time.zone.local(2024, 8, 31)
       random_time = Time.zone.at(((end_date.to_f - start_date.to_f) * rand) + start_date.to_f)
 
       # CollectedInsectとCollectedInsectImageを作成
@@ -105,12 +108,33 @@ end
     park_id = park.id
     city_id = park.city_id
 
-    start_date = Time.zone.local(2023, 7, 1)
-    end_date = Time.zone.local(2023, 8, 31)
+    start_date = Time.zone.local(2024, 7, 20)
+    end_date = Time.zone.local(2024, 8, 31)
     random_time = Time.zone.at(((end_date.to_f - start_date.to_f) * rand) + start_date.to_f)
 
       create_collected_insect_and_image(insect_name, sex, park_id, city_id, user_id, post.id, random_time, image_path)
   end
 end
+
+# user_id=2でinsect_id~16,34,40,43の昆虫をcreated_atより1週間以内前の撮影日時でpostする
+  user_id = 2
+  user = User.find(user_id)
+  random_images = image_filenames.select{|filename| filename.include?('クワガタ')}.shuffle.take(10)
+
+  post = Post.create!(user_id: user_id)
+
+  random_images.each do |image_path|
+    insect_name, sex = extract_insect_name_and_sex(image_path)
+
+    park = parks.sample
+    park_id = park.id
+    city_id = park.city_id
+
+    start_date = Time.zone.now - 1.week
+    end_date = Time.zone.now
+    random_time = Time.zone.at(((end_date.to_f - start_date.to_f) * rand) + start_date.to_f)
+
+      create_collected_insect_and_image(insect_name, sex, park_id, city_id, user_id, post.id, random_time, image_path)
+  end
 
 puts 'Posts and Images data created!'

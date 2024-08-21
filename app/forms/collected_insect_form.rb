@@ -3,7 +3,7 @@
 class CollectedInsectForm
   include ActiveModel::Model
 
-  attr_accessor :collected_insects, :collected_insect_params, :error_message
+  attr_accessor :collected_insects, :collected_insect_params, :error_message, :current_user
 
   validate :validate_park_presence_with_city
   validate :validate_name_presence_with_sex
@@ -30,6 +30,9 @@ class CollectedInsectForm
           # cityがあってparkがない場合はpark_idを削除する
           attributes[:park_id] = nil if city.present? && park.nil?
           collected_insect.update!(attributes)
+
+          # 通知を作成
+          collected_insect.create_sighting_notifications_if_recent_and_insect_changed(current_user)
         end
       end
       true
