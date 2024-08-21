@@ -7,7 +7,7 @@ RSpec.describe 'Api::V1::SightingNotifications' do
   let(:insect) { create(:insect) }
   let(:park) { create(:park) }
   let(:collected_insect) { create(:collected_insect, insect:, park:) }
-  let!(:sighting_notification) { create(:sighting_notification, user:, collected_insect:) }
+  let!(:sighting_notification) { create(:sighting_notification, user:, collected_insect:, is_read: false) }
 
   before do
     login(user)
@@ -53,34 +53,30 @@ RSpec.describe 'Api::V1::SightingNotifications' do
     end
   end
 
-  describe 'PATCH /update' do
-    context '通知を既読に更新する場合' do
-      before do
-        patch api_v1_sighting_notification_path(sighting_notification), params: { is_read: true }
-        sighting_notification.reload
-      end
+  describe 'PATCH /mark_all_as_read' do
+    context '未読の通知が存在する場合' do
+      it '全ての未読通知を既読にする' do
+        expect {
+          put api_v1_sighting_notifications_mark_all_as_read_path
+        }.to change { user.sighting_notifications.where(is_read: false).count }.from(1).to(0)
 
-      it '成功したレスポンスを返す' do
         expect(response).to have_http_status(:ok)
-        expect(sighting_notification.is_read).to be true
         expect(json_response['status']).to eq('updated')
       end
     end
 
     context '更新が失敗する場合' do
-      let(:error_message) { 'エラーメッセージ' }
-      let(:errors) { instance_double(ActiveModel::Errors, full_messages: [error_message]) }
+      let(:unread_notification) { create(:sighting_notification, user:, is_read: false) }
 
       before do
-        allow(SightingNotification).to receive(:find).and_return(sighting_notification)
-        allow(sighting_notification).to receive_messages(update: false, errors:)
+        allow(ActiveRecord::Base).to receive(:transaction).and_raise(ActiveRecord::RecordInvalid.new(unread_notification))
       end
 
       it 'エラーメッセージを返す' do
-        patch api_v1_sighting_notification_path(sighting_notification), params: { is_read: true }
+        put api_v1_sighting_notifications_mark_all_as_read_path
 
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.parsed_body).to eq({ 'error' => [[error_message]] })
+        expect(json_response['error']).to eq(['Failed to mark notifications as read'])
       end
     end
   end

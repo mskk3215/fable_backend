@@ -15,15 +15,22 @@ class Api::V1::SightingNotificationsController < ApplicationController
     render 'api/v1/sighting_notifications/index'
   end
 
-  def update
-    sighting_notification = SightingNotification.find(params[:id])
-    if sighting_notification.update(is_read: true)
+  def mark_all_as_read
+    notifications = current_user.sighting_notifications.where(is_read: false)
+
+    begin
+      ActiveRecord::Base.transaction do
+        notifications.each do |notification|
+          notification.update!(is_read: true)
+        end
+      end
+
       render json: { status: :updated }
-    else
-      render json: { error: [sighting_notification.errors.full_messages] }, status: :unprocessable_entity
+    rescue ActiveRecord::RecordInvalid
+      render json: { error: ['Failed to mark notifications as read'] }, status: :unprocessable_entity
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: ['Notification not found'] }, status: :not_found
     end
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: ['Notification not found'] }, status: :not_found
   end
 
   private
