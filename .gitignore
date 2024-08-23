@@ -33,6 +33,10 @@
 # public/uploads をignore
 /public/uploads
 
+# seedの画像データをignore
+/db/seeds/dummy_data/images/*
+/db/seeds/dummy_data/users/*
+
 # 環境変数ファイルをignore
 .env
 
