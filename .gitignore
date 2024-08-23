@@ -37,7 +37,6 @@
 /db/seeds/dummy_data/images/*
 /db/seeds/dummy_data/users/*
 
-
 # 環境変数ファイルをignore
 .env
 
