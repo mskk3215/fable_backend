@@ -63,7 +63,7 @@ class Api::V1::SightingNotificationsController < ApplicationController
                                   .includes(collected_insect: %i[insect park])
                                   .order('collected_insects.taken_date_time DESC')
                                   .page(params[:page])
-                                  .per(10)
+                                  .per(15)
       format_notifications(notifications)
     end
 
