@@ -27,8 +27,11 @@ module Api
         @taken_amount_per_hour = @insect.taken_amount_per_hour
         @total_insects_count = @insect.collected_insects.count
         @is_collected = @insect.collected_insects.any? { |ci| ci.user_id == current_user.id }
-
         render 'api/v1/insects/show'
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: ['この昆虫は存在しません。'] }, status: :not_found
+      rescue StandardError => e
+        render json: { error: e.message }, status: :internal_server_error
       end
 
       private
