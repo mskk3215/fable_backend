@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 puts 'Start inserting Likes data...'
 
 # 全てのユーザーと画像を取得

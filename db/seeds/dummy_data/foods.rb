@@ -15,11 +15,11 @@ foods = [
   { name: '樹液' },
   { name: '樹皮' },
   { name: '水中の小動物' },
-  { name: '小型の飛翔昆虫'},
+  { name: '小型の飛翔昆虫' },
   { name: '小型の昆虫' },
   { name: 'アブラムシ' },
   { name: 'カタツムリ' },
-  { name: '水' },
+  { name: '水' }
 ]
 
 foods.each do |food|

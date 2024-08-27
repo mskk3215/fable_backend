@@ -21,7 +21,7 @@ insect_foods = [
   { insect_id: 13, food_id: 3 }, # イチモンジセセリ
   { insect_id: 14, food_id: 1 }, # エンマコオロギ
   { insect_id: 14, food_id: 5 },
-  { insect_id: 14, food_id: 6 }, 
+  { insect_id: 14, food_id: 6 },
   { insect_id: 15, food_id: 3 }, # オオウラギンスジヒョウモン
   { insect_id: 16, food_id: 2 }, # オオクワガタ
   { insect_id: 16, food_id: 10 },
@@ -41,10 +41,10 @@ insect_foods = [
   { insect_id: 25, food_id: 10 },
   { insect_id: 26, food_id: 3 }, # カラスアゲハ
   { insect_id: 27, food_id: 5 }, # カンタン
-  { insect_id: 27, food_id: 8 }, 
+  { insect_id: 27, food_id: 8 },
   { insect_id: 27, food_id: 9 },
   { insect_id: 28, food_id: 5 }, # キリギリス
-  { insect_id: 28, food_id: 9 }, 
+  { insect_id: 28, food_id: 9 },
   { insect_id: 28, food_id: 14 },
   { insect_id: 29, food_id: 13 }, # ギンヤンマ
   { insect_id: 30, food_id: 10 }, # クマゼミ
@@ -73,7 +73,7 @@ insect_foods = [
   { insect_id: 45, food_id: 3 }, # ヤマトシジミ
   { insect_id: 46, food_id: 3 }, # リュウキュウアサギマダラ
   { insect_id: 47, food_id: 2 }, # ルリタテハ
-  { insect_id: 47, food_id: 10 },
+  { insect_id: 47, food_id: 10 }
 ]
 
 insect_foods.each do |insect_food|

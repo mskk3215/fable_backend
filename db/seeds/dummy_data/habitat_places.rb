@@ -6,7 +6,7 @@ habitat_places = [
   { name: '草むら' },
   { name: '水辺' },
   { name: '樹上' },
-  { name: '砂地' },  
+  { name: '砂地' }
 ]
 
 habitat_places.each do |habitat_place|
