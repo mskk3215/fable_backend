@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 puts 'Start inserting Relationships data'
 
 users = User.all
@@ -5,7 +7,7 @@ users = User.all
 users.each do |user|
   # 自分自身を除いたユーザーの配列を作成
   other_users = users.reject { |u| u.id == user.id }
-  
+
   # 15人以上をランダムに選択
   followed_users = other_users.sample(rand(10..other_users.size))
 

@@ -9,7 +9,7 @@ tools = [
   { name: 'ピンセット' },
   { name: 'ルーペ' },
   { name: '手袋' },
-  { name: 'ライト' },
+  { name: 'ライト' }
 ]
 
 tools.each do |tool|

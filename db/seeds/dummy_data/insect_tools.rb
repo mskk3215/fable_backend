@@ -119,7 +119,7 @@ insect_tools = [
   { insect_id: 46, tool_id: 1 }, # リュウキュウアサギマダラ
   { insect_id: 46, tool_id: 2 },
   { insect_id: 47, tool_id: 1 }, # ルリタテハ
-  { insect_id: 47, tool_id: 2 },
+  { insect_id: 47, tool_id: 2 }
 ]
 
 insect_tools.each do |insect_tool|

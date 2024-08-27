@@ -10,7 +10,7 @@ names = %w[Ares Blaze Cyrus Drake Elara Faylinn Galen Helix Iris Jaxon Kai Lyra
     nickname: names[n],
     email: "#{names[n].downcase}@example.com",
     password: '111111',
-    avatar: File.open("#{Rails.root}/db/seeds/dummy_data/users/avatar#{n + 1}.png")
+    avatar: File.open(Rails.root.join("db/seeds/dummy_data/users/avatar#{n + 1}.png").to_s)
   )
 end
 

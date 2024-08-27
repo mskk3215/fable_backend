@@ -23,9 +23,7 @@ Zip::File.open_buffer(response.body) do |zf|
   end
 end
 
-existing_cities = City.joins(:prefecture).pluck('cities.name', 'prefectures.name').map { |c, p| "#{c}_#{p}" }.to_set
-
-prefectures_to_insert = []
+existing_cities = City.joins(:prefecture).pluck('cities.name', 'prefectures.name').to_set { |c, p| "#{c}_#{p}" }
 cities_to_insert = []
 BATCH_SIZE = 1000
 
