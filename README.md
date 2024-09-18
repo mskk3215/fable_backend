@@ -86,14 +86,14 @@ fablesearch は、昆虫採集を目的とする人たち向けのサービス�
 - react-chartjs, react-leaflet
 - react-google-maps/api
 - prettier, eslint
-- Jest,React Testing Library
+- Jest, React Testing Library
 
 ### インフラ
 
 - Docker / Docker-Compose
-- Github Actions (ECR, ECS, Rubocop, Rspec,Jest)
+- Github Actions (ECR, ECS, Rubocop, Rspec, Jest)
 - Nginx
-- AWS (Route53, CloudFront, S3,VPC, ALB, ECR, ECS Fargate, RDS, ACM, SSM, CloudWatch, IAM)
+- AWS (Route53, CloudFront, S3, VPC, ALB, ECR, ECS Fargate, RDS, ACM, SSM, CloudWatch, IAM)
 - Terraform
 
 # 機能一覧
@@ -146,13 +146,11 @@ fablesearch は、昆虫採集を目的とする人たち向けのサービス�
 
 ## フロントエンド
 
-- 完全 SPA で作成しました。
 - 様々なデバイスで操作・閲覧しやすいようにレスポンシブデザインを適用しました。
 - MUI や react-chartjs、react-leaflet を使用してデザイン性のある UI を実現しました。
 - toast やロード処理（スピナー、無限スクロール、プログレスバー）を追加し、ユーザーがエラーや動作状況を把握できるようにしました。
 - Next.js の SSR をユーザーページに適用し、読み込みを高速化しつつ、Google などの検索アプリのクローラーに捕捉されるようにしました。
 - シェアリング機能により、アプリがネット上で展開されやすくしました。
-- 画像編集ページでは、画像情報をまとめて編集できるように画像を複数選択できるようにしました。
 - ユーザーページでは、ログインしていない場合にログインを促すモーダルを表示し、ユーザー登録数が増えるようにしました。
 - TypeScript（strict）、Prettier、ESLint、Jest, RTL を使用してコードの一貫性と品質を確保しました。
 
